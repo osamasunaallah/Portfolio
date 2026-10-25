@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Osama Sunaallah | CV Resume</title>
+<meta name="description" content="CV of Osama Sunaallah, Industrial Engineer in supply chain and planning. Download the PDF with clickable links to projects and portfolio.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Osama Sunaallah | CV Resume">
+<meta property="og:description" content="Industrial Engineer in supply chain, procurement and planning. Open or download the PDF with clickable project links.">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/cv-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/cv.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F8FB;--card:#FFFFFF;--fg:#0B1220;--muted:#5B6678;--line:rgba(11,18,32,.08);--a1:#059669;--a2:#0891B2;--on-a:#FFFFFF}
+@media (prefers-color-scheme:dark){:root{--bg:#07090D;--card:#10151D;--fg:#ECF1F7;--muted:#8C98A8;--line:rgba(255,255,255,.08);--a1:#34D399;--a2:#22D3EE;--on-a:#04120D}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--fg);font-family:"Work Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card)}
+.who{min-width:0}
+.who h1{font-family:Outfit,system-ui,sans-serif;font-size:20px;font-weight:700;margin:0;line-height:1.2}
+.who p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.who a{color:inherit}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:10px;font-weight:500;font-size:14px;text-decoration:none;border:1px solid var(--line);color:var(--fg);background:var(--card)}
+.btn.primary{background:linear-gradient(120deg,var(--a1),var(--a2));color:var(--on-a);border-color:transparent}
+.btn svg{width:16px;height:16px}
+main{flex:1;display:flex;min-height:0}
+iframe{flex:1;border:0;width:100%;min-height:calc(100vh - 80px)}
+.fallback{display:none;flex:1;padding:16px;text-align:center}
+.fallback img{max-width:100%;height:auto;border-radius:8px;box-shadow:0 20px 40px -24px rgba(11,18,32,.35)}
+.fallback p{color:var(--muted);font-size:14px}
+.no-pdf iframe{display:none}
+.no-pdf .fallback{display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="who">
+    <h1>Osama Sunaallah</h1>
+    <p>Industrial Engineer · Supply Chain &amp; Planning · <a href="./">Portfolio</a></p>
+  </div>
+  <div class="actions">
+    <a class="btn primary" href="Osama_Sunaallah_Resume.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7M10 14L21 3M21 14v5a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h5"/></svg>Open PDF</a>
+    <a class="btn" href="Osama_Sunaallah_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Download</a>
+  </div>
+</header>
+<main>
+  <iframe src="Osama_Sunaallah_Resume.pdf#view=FitH" title="Osama Sunaallah CV"></iframe>
+  <div class="fallback">
+    <a href="Osama_Sunaallah_Resume.pdf" target="_blank" rel="noopener"><img src="cv-preview.png" alt="Preview of Osama Sunaallah's CV" width="1200" height="627"></a>
+    <p>Tap <strong>Open PDF</strong> to view the full CV with clickable links.</p>
+  </div>
+</main>
+<script>
+if (navigator.pdfViewerEnabled === false || window.matchMedia('(max-width: 700px)').matches) document.body.classList.add('no-pdf');
+</script>
+</body>
+</html>
