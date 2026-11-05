@@ -132,14 +132,14 @@ function start(host){
   add(uno.g, new THREE.BoxGeometry(.01, .01, .0016), black, .006, -.003, .0016);
 
   // 9 V battery lying on the floor of the case
-  const bat = part('bat', '9 V battery', new V3(-.008, -.0355, .0005), [.045, .0], .22, [0, 0, .6], [.044, 0, 0]);
+  const bat = part('bat', '9 V battery', new V3(-.008, -.0355, .0005), [.15, .088], .22, [0, 0, .6], [0, .02, 0]);
   add(bat.g, new RoundedBoxGeometry(.0485, .0175, .0265, 3, .002), M(0x18181a, .4, .2), -.006, 0, 0);
   add(bat.g, new RoundedBoxGeometry(.012, .0177, .0267, 3, .002), M(0xb87333, .3, .8), -.0245, 0, 0);
   add(bat.g, new THREE.CylinderGeometry(.0042, .0042, .004, 18), silver, .0195, 0, .006).rotation.z = Math.PI / 2;
   add(bat.g, new THREE.CylinderGeometry(.0042, .0042, .004, 6), silver, .0195, 0, -.006).rotation.z = Math.PI / 2;
 
   // load cell under the device (the weighing part of the station)
-  const cell = part('cell', 'Load cell', new V3(0, -.0535, 0), [.03, -.086], .3, [0, -.4, 0], [0, -.015, 0]);
+  const cell = part('cell', 'Load cell', new V3(0, -.0535, 0), [.07, -.088], .3, [0, -.4, 0], [0, -.015, 0]);
   add(cell.g, new THREE.BoxGeometry(.08, .0127, .0127), alu);
   [-.018, .018].forEach(x => add(cell.g, new THREE.CylinderGeometry(.0045, .0045, .0129, 20), M(0x2b2f36, .6), x, 0, 0).rotation.x = Math.PI / 2);
   add(cell.g, new THREE.BoxGeometry(.012, .0128, .008), M(0xf4f1ea, .6), 0, 0, 0);
@@ -148,7 +148,7 @@ function start(host){
   const card = part('card', 'RFID card', new V3(.012, -.0603, .052), [-.055, -.004], .26, [0, 0, 0], [0, .034, 0]);
   const cardMesh = add(card.g, new THREE.BoxGeometry(.0856, .054, .0008), boxFaces(M(0xf7f9fc, .4), new THREE.MeshStandardMaterial({ map: cardTex, roughness: .35 })));
   cardMesh.rotation.x = -Math.PI / 2;
-  const fob = part('fob', 'Key fob', new V3(-.038, -.0595, .06), [.092, -.07], .32, [0, 0, 0], [0, .024, 0]);
+  const fob = part('fob', 'Key fob', new V3(-.038, -.0595, .06), [.012, .02], .32, [0, 0, 0], [0, .024, 0]);
   const fobShape = new THREE.Shape(); fobShape.absarc(0, 0, .015, Math.PI * .15, Math.PI * .85, true); fobShape.lineTo(0, .03); fobShape.closePath();
   const hole = new THREE.Path(); hole.absarc(0, .022, .0028, 0, Math.PI * 2, true); fobShape.holes.push(hole);
   const fobMesh = add(fob.g, new THREE.ExtrudeGeometry(fobShape, { depth: .004, bevelEnabled: true, bevelThickness: .0012, bevelSize: .0012, bevelSegments: 3, curveSegments: 24 }), M(0x2463d6, .35));
@@ -188,8 +188,8 @@ function start(host){
     ...[0xff8a3d, 0x9b59d0, 0x2a9d6f, 0xf4f1ea, 0xe53935].map((c, i) => W(rfid, [-.005 + i * .0025, -.0185, -.0085], [0, -.3, -1], uno, [.0 + i * .00254, -.0245, .0095], [0, -.4, 1], c)),
     // 9 V battery -> power switch -> Arduino power jack
     W(bat, [.0215, 0, .006], [1, 0, 0], tub, [.0425, .021, -.004], [-1, 0, 0], 0xe53935),
-    W(tub, [.0425, .021, .004], [-1, 0, 0], uno, [-.03, -.009, .012], [0, 0, 1], 0xe53935),
-    W(bat, [.0215, 0, -.006], [1, 0, 0], uno, [-.027, -.016, .012], [0, 0, 1], 0x111111),
+    W(tub, [.0425, .021, .004], [-1, 0, 0], uno, [.0315, -.0245, .0095], [.4, -.4, 1], 0xe53935),
+    W(bat, [.0215, 0, -.006], [1, 0, 0], uno, [.029, -.0245, .0095], [.4, -.4, 1], 0x111111),
     // load cell (through its amplifier) -> Arduino
     ...[0xe53935, 0x111111, 0xf4f1ea, 0x2a9d6f].map((c, i) => W(cell, [.026 + i * .0022, .0064, 0], [0, 1, 0], uno, [.02 + i * .00254, -.0245, .0095], [0, -.4, 1], c)),
   ];
