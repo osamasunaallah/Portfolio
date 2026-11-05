@@ -116,7 +116,7 @@ svg.i{width:18px;height:18px;flex:none}
 .g1{width:74%;aspect-ratio:1200/627;right:0;top:6%;transform:rotate(3deg);animation:fl 9s ease-in-out infinite}
 .g2{width:70%;aspect-ratio:1200/627;left:0;top:36%;transform:rotate(-4deg);animation:fl 10s ease-in-out infinite -3s;z-index:2}
 .g3{width:46%;aspect-ratio:928/565;right:4%;bottom:6%;transform:rotate(4deg);animation:fl 8s ease-in-out infinite -5s;z-index:3}
-.g4{width:34%;aspect-ratio:889/616;left:10%;top:2%;transform:rotate(-6deg);animation:fl 11s ease-in-out infinite -2s;opacity:.92}
+.g4{width:28%;aspect-ratio:4/5;left:9%;top:0;transform:rotate(-6deg);animation:fl 11s ease-in-out infinite -2s;z-index:1}
 @keyframes fl{50%{translate:0 -12px}}
 .collage:hover .g1{transform:rotate(1deg) translateY(-6px)}.collage:hover .g2{transform:rotate(-2deg)}.collage:hover .g3{transform:rotate(2deg)}
 .stage-tag{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line-2);background:color-mix(in srgb,var(--card) 85%,transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow);font-size:13px;animation:bob 6s ease-in-out infinite}
@@ -140,11 +140,11 @@ svg.i{width:18px;height:18px;flex:none}
 :root[data-theme="light"] .dev-hint{color:#5B6678}
 
 /* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:10px}
 .stat{background:var(--bg);padding:26px 22px}
 .stat b{display:block;font:700 clamp(30px,3.6vw,42px)/1 Outfit;margin-bottom:6px}
 .stat span{color:var(--muted);font-size:14px}
-@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.stats{grid-template-columns:1fr}}
 
 /* sections */
 section{position:relative}
@@ -281,6 +281,48 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
   .rv,.rv-st>*{opacity:1;transform:none}
   .hero h1 .ln>span{transform:none}
 }
+
+/* live 3D bottles (HydraCap) */
+.bottle3d{position:absolute;inset:0;z-index:1;cursor:pointer}
+.bottle3d canvas{display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1s var(--ease)}
+.bottle3d.ready canvas{opacity:1}
+/* live mini dashboards in the supply-chain cards (placeholder data) */
+.card-media.live{background:linear-gradient(180deg,var(--card-2),var(--card));border-bottom:1px solid var(--line)}
+.card-media.live .tag{z-index:3}
+.md{position:absolute;inset:0;padding:48px 18px 16px;display:flex;flex-direction:column;gap:12px;font:500 12px "Work Sans";color:var(--fg-soft);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px}
+.md-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.md-kpi{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 80%,transparent);transition:border-color .3s,transform .3s var(--ease)}
+.md-kpi small{display:block;color:var(--muted);font-size:10.5px;letter-spacing:.02em}
+.md-kpi b{display:block;font:700 20px Outfit;color:var(--fg);font-variant-numeric:tabular-nums}
+.md-kpi.hot{border-color:var(--a1);transform:translateY(-2px)}
+.md-kpi.bump b{animation:mdBump .5s var(--ease)}
+@keyframes mdBump{40%{color:var(--a1);transform:scale(1.08)}}
+.md-pipe{position:relative;height:30px;margin:2px 16px}
+.md-track,.md-run{position:absolute;left:0;right:0;top:50%;height:2px;margin-top:-1px;border-radius:2px;background:var(--line-2)}
+.md-run{right:auto;width:0;background:var(--grad);transition:width .9s var(--ease)}
+.md-node{position:absolute;top:50%;transform:translate(-50%,-50%);padding:4px 8px;border-radius:999px;border:1px solid var(--line-2);background:var(--card);color:var(--fg-soft);font:600 10.5px "JetBrains Mono";cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.md-node.on{background:var(--grad);color:var(--on-a);border-color:transparent}
+.md-rows{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.md-rows li{display:grid;grid-template-columns:70px 1fr auto;gap:8px;align-items:center;padding:5px 10px;border-radius:8px;background:color-mix(in srgb,var(--card) 70%,transparent);border:1px solid var(--line);transition:border-color .3s,opacity .3s}
+.md-rows li span:first-child{font:600 11px "JetBrains Mono";color:var(--fg)}
+.md-rows em{font-style:normal;font:600 10.5px "JetBrains Mono";padding:2px 8px;border-radius:999px;background:var(--line);color:var(--fg-soft);transition:background .3s,color .3s}
+.md-rows li[data-s="3"] em{background:color-mix(in srgb,var(--a1) 22%,transparent);color:var(--a1)}
+.md.focus .md-rows li{opacity:.4}.md.focus .md-rows li.hot{opacity:1;border-color:var(--a2)}
+.md-tabs{display:flex;gap:6px}
+.md-tabs button{padding:5px 11px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--fg-soft);font:600 11px "Work Sans";cursor:pointer;transition:background .3s,color .3s}
+.md-tabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:transparent}
+.md-bars{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;align-items:end;padding-top:6px}
+.md-bar{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;cursor:default}
+.md-fill{width:100%;max-width:44px;height:var(--h,0%);border-radius:8px 8px 3px 3px;background:var(--grad);transition:height .8s var(--ease),background .5s,filter .3s;transform-origin:bottom}
+.md-fill.warn{background:linear-gradient(180deg,var(--a3),color-mix(in srgb,var(--a3) 60%,transparent))}
+.md-fill.bad{background:linear-gradient(180deg,#F87171,color-mix(in srgb,#F87171 60%,transparent))}
+.md-bar em{font-style:normal;font:700 11px "JetBrains Mono";color:var(--fg);font-variant-numeric:tabular-nums;transition:opacity .3s}
+.md-bar small{font:600 10.5px "JetBrains Mono";color:var(--muted)}
+.md-bar:hover .md-fill{filter:brightness(1.18)}
+.md-bars:hover .md-bar:not(:hover){opacity:.55}
+.md-bar{transition:opacity .3s}
+@media (max-width:560px){.card-media.live{aspect-ratio:5/4}.md{padding:44px 12px 12px;gap:9px}.md-kpi{padding:6px 8px}.md-kpi b{font-size:16px}.md-kpi small{font-size:9.5px}.md-rows li{grid-template-columns:62px 1fr auto}}
 </style>
 </head>
 <body>
@@ -341,7 +383,7 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
         <div class="glass g1"><img src="assets/proj-supply-chain.webp" alt=""></div>
         <div class="glass g2"><img src="assets/proj-supplier-scorecard.webp" alt=""></div>
         <div class="glass g3 device"><div class="dev3d" data-dev="hero"></div><span class="dev-hint mono">VeriGate · live 3D</span></div>
-        <div class="glass g4"><img src="assets/hydracap.webp" alt=""></div>
+        <div class="glass g4 device"><div class="bottle3d" data-bottles="cap"></div><span class="dev-hint mono">HydraCap · live 3D</span></div>
         <div class="stage-tag t1"><span class="sq"><svg class="i"><use href="#i-cube"/></svg></span><div><b>4 projects</b><small>Supply chain · IoT · Product</small></div></div>
       </div>
     </div>
@@ -349,7 +391,6 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
       <div class="stat"><b class="grad-text" data-count="4">0</b><span>featured projects</span></div>
       <div class="stat"><b class="grad-text" data-count="6000" data-suffix="+">0</b><span>lines of VBA automation</span></div>
       <div class="stat"><b class="grad-text" data-count="350" data-suffix="+">0</b><span>SKUs planned per month</span></div>
-      <div class="stat"><b class="grad-text" data-count="2">0</b><span>certifications, PMP next</span></div>
     </div>
   </div>
 </section>
@@ -384,7 +425,24 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
     </div>
     <div class="work rv-st" id="workGrid">
       <article class="card" data-cat="sc">
-        <div class="card-media"><span class="tag">EXCEL + VBA</span><img src="assets/proj-supply-chain.webp" alt="Supply Chain Control System dashboard preview" loading="lazy" width="1200" height="627"></div>
+        <div class="card-media live" data-live="sc"><span class="tag">EXCEL + VBA · LIVE</span>
+          <div class="md" role="img" aria-label="Live preview: purchase requests move through PO, received and invoiced, with the counts updating">
+            <div class="md-kpis">
+              <div class="md-kpi" data-s="0"><small>PRs raised</small><b data-n="128">0</b></div>
+              <div class="md-kpi" data-s="1"><small>POs issued</small><b data-n="112">0</b></div>
+              <div class="md-kpi" data-s="2"><small>Received</small><b data-n="97">0</b></div>
+              <div class="md-kpi" data-s="3"><small>Invoiced</small><b data-n="91">0</b></div>
+            </div>
+            <div class="md-pipe"><span class="md-track"></span><span class="md-run"></span>
+              <button class="md-node" data-s="0" style="left:0%">PR</button><button class="md-node" data-s="1" style="left:33.33%">PO</button><button class="md-node" data-s="2" style="left:66.66%">GRN</button><button class="md-node" data-s="3" style="left:100%">INV</button>
+            </div>
+            <ul class="md-rows">
+              <li data-s="3"><span>PO-1584</span><span>Supplier C</span><em>Invoiced</em></li>
+              <li data-s="2"><span>PO-1591</span><span>Supplier A</span><em>Received</em></li>
+              <li data-s="1"><span>PO-1602</span><span>Supplier F</span><em>PO issued</em></li>
+            </ul>
+          </div>
+        </div>
         <div class="card-body">
           <h3>Supply Chain Control System</h3>
           <p>An Excel tool that tracks purchasing from request to invoice: imports PRs and POs from PDF, links invoices automatically, and sends daily status reports.</p>
@@ -393,7 +451,19 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
         </div>
       </article>
       <article class="card" data-cat="sc">
-        <div class="card-media"><span class="tag">EXCEL FORMULAS</span><img src="assets/proj-supplier-scorecard.webp" alt="Supplier Scorecard preview" loading="lazy" width="1200" height="627"></div>
+        <div class="card-media live" data-live="ss"><span class="tag">EXCEL FORMULAS · LIVE</span>
+          <div class="md" role="img" aria-label="Live preview: a supplier scorecard that switches between spend, delivery days and items received">
+            <div class="md-tabs"><button data-m="0" aria-pressed="true">Spend</button><button data-m="1" aria-pressed="false">Delivery days</button><button data-m="2" aria-pressed="false">Items</button></div>
+            <div class="md-bars">
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>A</small></div>
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>B</small></div>
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>C</small></div>
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>D</small></div>
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>E</small></div>
+              <div class="md-bar"><em></em><span class="md-fill"></span><small>F</small></div>
+            </div>
+          </div>
+        </div>
         <div class="card-body">
           <h3>Supplier Scorecard</h3>
           <p>A live scorecard showing spend, items received and real delivery days for every supplier, built with dynamic arrays and no macros.</p>
@@ -414,7 +484,7 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
         </div>
       </article>
       <article class="card" data-cat="pd">
-        <div class="card-media"><span class="tag">PRODUCT DESIGN</span><img src="assets/hydracap.webp" alt="HydraCap bottle concepts with integrated medication compartments" loading="lazy"></div>
+        <div class="card-media device"><span class="tag">PRODUCT DESIGN · LIVE 3D</span><div class="bottle3d" data-bottles="duo" role="img" aria-label="3D models of both HydraCap bottles side by side: the clear bottle with the flip-top pill cap and the steel bottle with the rope-tied case. They open on their own; click to open or close."></div><span class="dev-hint mono">Click to open</span></div>
         <div class="card-body">
           <h3>HydraCap</h3>
           <p>A bottle cap with an integrated medication compartment that makes carrying daily medication simpler.</p>
@@ -422,6 +492,7 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
           <details class="more"><summary><span class="pm"><svg class="i" style="width:12px;height:12px"><use href="#i-plus"/></svg></span>More about this project</summary>
             <div class="inner"><span>Carrying medication separately is easy to forget. HydraCap puts a compartment into an item people already carry every day.</span><span>I ran concept generation, design evaluation, material selection and prototyping analysis to compare two integration approaches.</span></div>
           </details>
+          <div class="card-foot"><a class="link" href="https://osamasunaallah.github.io/HydraCap/" target="_blank" rel="noopener">Project site <svg class="i"><use href="#i-arrow"/></svg></a></div>
         </div>
       </article>
     </div>
@@ -663,6 +734,77 @@ if(mounts.length){
     new IntersectionObserver(es=>{const v=es[0].isIntersecting;if(v&&!raf){last=0;raf=requestAnimationFrame(loop)}else if(!v&&raf){cancelAnimationFrame(raf);raf=0}},{rootMargin:'100px'}).observe(mount);
   });
 }
+</script>
+<script type="module" src="assets/hydracap3d.js"></script>
+<script>
+/* live mini dashboards in the supply-chain cards. Placeholder data only. */
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const onVisible = (el, fn) => new IntersectionObserver((es, io) => { if (es[0].isIntersecting){ io.disconnect(); fn(); } }, { threshold: .3 }).observe(el);
+
+  // Supply Chain Control System: a PO moves PR -> PO -> GRN -> INV, the counts follow
+  document.querySelectorAll('[data-live="sc"]').forEach(card => {
+    const md = card.querySelector('.md'), kpis = [...md.querySelectorAll('.md-kpi')], nodes = [...md.querySelectorAll('.md-node')];
+    const rows = [...md.querySelectorAll('.md-rows li')], run = md.querySelector('.md-run');
+    const LABEL = ['PR raised', 'PO issued', 'Received', 'Invoiced'];
+    const nums = kpis.map(k => +k.querySelector('b').dataset.n);
+    const show = () => kpis.forEach((k, i) => k.querySelector('b').textContent = nums[i]);
+    let stage = 0, hover = -1;
+    const paint = () => {
+      nodes.forEach((n, i) => n.classList.toggle('on', i <= stage));
+      run.style.width = (stage / 3 * 100) + '%';
+      const f = hover >= 0 ? hover : -1;
+      md.classList.toggle('focus', f >= 0);
+      kpis.forEach((k, i) => k.classList.toggle('hot', i === f));
+      rows.forEach(r => r.classList.toggle('hot', +r.dataset.s === f));
+    };
+    const step = () => {
+      stage = (stage + 1) % 4;
+      if (stage === 0){ rows.forEach(r => { const s = (+r.dataset.s + 1) % 4; r.dataset.s = s; r.querySelector('em').textContent = LABEL[s]; }); }
+      nums[stage]++; const b = kpis[stage]; b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+      show(); paint();
+    };
+    nodes.forEach((n, i) => { n.addEventListener('mouseenter', () => { hover = i; paint(); }); n.addEventListener('mouseleave', () => { hover = -1; paint(); }); n.addEventListener('focus', () => { hover = i; paint(); }); n.addEventListener('blur', () => { hover = -1; paint(); }); });
+    kpis.forEach((k, i) => { k.addEventListener('mouseenter', () => { hover = i; paint(); }); k.addEventListener('mouseleave', () => { hover = -1; paint(); }); });
+    onVisible(card, () => {
+      const t0 = performance.now(), dur = reduce ? 0 : 1100;
+      const count = now => { const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3);
+        kpis.forEach((x, i) => x.querySelector('b').textContent = Math.round(nums[i] * e)); if (k < 1) requestAnimationFrame(count); };
+      requestAnimationFrame(count); paint();
+      if (!reduce) setInterval(() => { if (!document.hidden && hover < 0) step(); }, 1500);
+    });
+  });
+
+  // Supplier Scorecard: spend / delivery days / items per supplier
+  document.querySelectorAll('[data-live="ss"]').forEach(card => {
+    const tabs = [...card.querySelectorAll('.md-tabs button')], bars = [...card.querySelectorAll('.md-bar')];
+    const DATA = [
+      { v: [184, 142, 96, 77, 58, 41], f: v => v + 'k' },          // spend, SAR thousands
+      { v: [6, 11, 4, 14, 8, 5], f: v => v + 'd', days: true },      // real delivery days (lower is better)
+      { v: [420, 310, 265, 190, 150, 88], f: v => String(v) },       // items received
+    ];
+    let m = 0, hold = 0;
+    const show = i => {
+      m = i; const d = DATA[i], max = Math.max(...d.v);
+      tabs.forEach((t, j) => t.setAttribute('aria-pressed', j === i));
+      bars.forEach((b, j) => {
+        const v = d.v[j], fill = b.querySelector('.md-fill');
+        fill.style.setProperty('--h', Math.max(6, v / max * 100) + '%');
+        fill.classList.toggle('warn', !!d.days && v > 7 && v <= 11);
+        fill.classList.toggle('bad', !!d.days && v > 11);
+        b.querySelector('em').textContent = d.f(v);
+        b.title = 'Supplier ' + b.querySelector('small').textContent + ': ' + d.f(v);
+      });
+    };
+    tabs.forEach((t, i) => t.addEventListener('click', e => { e.preventDefault(); hold = performance.now() + 9000; show(i); }));
+    card.addEventListener('mouseenter', () => { hold = performance.now() + 4000; });
+    bars.forEach(b => b.querySelector('.md-fill').style.setProperty('--h', '0%'));
+    onVisible(card, () => {
+      setTimeout(() => show(0), 120);
+      if (!reduce) setInterval(() => { if (!document.hidden && performance.now() > hold) show((m + 1) % 3); }, 3200);
+    });
+  });
+})();
 </script>
 </body>
 </html>
