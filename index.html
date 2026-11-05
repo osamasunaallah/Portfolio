@@ -190,23 +190,24 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 .spot-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
 @media (max-width:980px){.spot-grid{grid-template-columns:1fr}}
 .spot-grid>*{min-width:0}
-.exploded{position:relative;border-radius:24px;border:1px solid var(--line);background:radial-gradient(ellipse at 50% 60%,#ffffff 0%,#EDF1F6 70%);padding:24px;box-shadow:var(--shadow);overflow:hidden}
-.exploded img{width:100%;display:block;transition:transform 1.2s var(--ease)}
-.exploded:hover img{transform:scale(1.03)}
-.pin{position:absolute;display:flex;align-items:center;gap:6px;font:600 11.5px "JetBrains Mono";color:#0B1220;background:#fff;border:1px solid rgba(11,18,32,.12);padding:5px 9px;border-radius:999px;box-shadow:0 6px 16px -6px rgba(11,18,32,.3);opacity:0;transform:translateY(8px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.pin i{width:8px;height:8px;border-radius:50%;background:#059669}
-.in .pin{opacity:1;transform:none}
+.vg-xp{position:relative;aspect-ratio:16/9;border-radius:24px;border:1px solid var(--line);overflow:hidden;cursor:pointer;box-shadow:var(--shadow);
+  background:radial-gradient(ellipse 70% 65% at 50% 48%,#ffffff 0%,#EDF1F6 62%,#DCE3EC 100%)}
+.vg-xp canvas{position:absolute;inset:0;display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1s var(--ease)}
+.vg-xp.ready canvas{opacity:1}
+.vg-xp-labels{position:absolute;inset:0;pointer-events:none}
+.vg-xp-label{position:absolute;left:0;top:0;display:flex;align-items:center;gap:6px;white-space:nowrap;font:600 12.5px "JetBrains Mono";color:#0B1220;background:#fff;border:1px solid rgba(11,18,32,.12);padding:5px 9px;border-radius:999px;box-shadow:0 6px 16px -6px rgba(11,18,32,.3);opacity:0;will-change:transform}
+.vg-xp-label i{width:8px;height:8px;border-radius:50%;background:#059669}
+@media (max-width:760px){.vg-xp{aspect-ratio:1/1}}@media (max-width:560px){.vg-xp-label{font-size:10px;padding:4px 7px}}
+.spot .spot-grid{grid-template-columns:1fr;gap:34px}
+.spot .flow{grid-template-columns:repeat(4,1fr);gap:18px;margin-top:18px}
+.spot .flow li{grid-template-columns:1fr;gap:12px;border-bottom:0;border-top:1px solid var(--line);padding:18px 0 0}
+@media (max-width:900px){.spot .flow{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.spot .flow{grid-template-columns:1fr}.spot .flow li{grid-template-columns:44px 1fr;border-top:0;border-bottom:1px solid var(--line);padding:14px 0}}
 .flow{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:4px;counter-reset:s}
 .flow li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
 .flow li::before{content:counter(s,decimal-leading-zero);font:600 13px "JetBrains Mono";width:44px;height:44px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--a1)}
 .flow b{display:block;font:600 16px Outfit}
 .flow span{color:var(--muted);font-size:14.5px}
-.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
-.part{border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden;transition:transform .4s var(--ease),border-color .3s}
-.part:hover{transform:translateY(-4px);border-color:var(--a1)}
-.part img{width:100%;aspect-ratio:1;object-fit:cover;background:#fff;display:block}
-.part div{padding:10px 12px;font:600 13px Outfit}
-.part small{display:block;color:var(--muted);font:400 12px "Work Sans"}
 
 /* about + skills */
 .about{display:grid;grid-template-columns:1fr 1fr;gap:48px}
@@ -503,23 +504,11 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
   <div class="wrap">
     <div class="sec-head rv">
       <div><span class="eyebrow">Spotlight · VeriGate</span><h2>From the receiving gate<br><span class="grad-text">to the database in seconds.</span></h2></div>
-      <p>Built at Alfaisal University to fix slow, error-prone receiving: long waits, missing data and inconsistent records.</p>
     </div>
     <div class="spot-grid">
       <div class="rv" id="explodedWrap">
-        <div class="exploded">
-          <img src="assets/exploded.png" alt="Exploded view of VeriGate components: front panel, LCD, RFID reader, Arduino, wiring, battery, enclosure, RFID card and tag" loading="lazy">
-          <span class="pin" style="left:6%;top:18%;transition-delay:.1s"><i></i>Front panel</span>
-          <span class="pin" style="left:22%;top:8%;transition-delay:.2s"><i></i>16×2 LCD</span>
-          <span class="pin" style="left:30%;top:66%;transition-delay:.3s"><i></i>RC522 RFID</span>
-          <span class="pin" style="left:44%;top:12%;transition-delay:.4s"><i></i>Arduino Uno R4</span>
-          <span class="pin" style="left:62%;top:86%;transition-delay:.5s"><i></i>RFID card &amp; tag</span>
-          <span class="pin" style="left:76%;top:6%;transition-delay:.6s"><i></i>Enclosure</span>
-        </div>
-        <div class="parts rv-st" id="parts">
-          <div class="part"><img src="assets/arduino.webp" alt="Arduino Uno R4 board" loading="lazy"><div>Arduino Uno R4<small>Main controller</small></div></div>
-          <div class="part"><img src="assets/rfid.webp" alt="RC522 RFID reader with card and tag" loading="lazy"><div>RC522 RFID<small>Reads driver cards</small></div></div>
-          <div class="part"><img src="assets/loadcell.webp" alt="Load cell with module" loading="lazy"><div>Load cell<small>Weight checks</small></div></div>
+        <div class="vg-xp" role="img" aria-label="3D VeriGate device that explodes into its parts and goes back together: front panel, 16x2 LCD, RC522 RFID reader, Arduino Uno R4, 9 V battery, enclosure, load cell, RFID card and key fob. ">
+          <div class="vg-xp-labels" aria-hidden="true"></div>
         </div>
       </div>
       <div class="rv">
@@ -736,6 +725,7 @@ if(mounts.length){
 }
 </script>
 <script type="module" src="assets/hydracap3d.js"></script>
+<script type="module" src="assets/verigate-explode.js"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
 (() => {
