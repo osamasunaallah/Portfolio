@@ -135,6 +135,8 @@ svg.i{width:18px;height:18px;flex:none}
 :root[data-theme="light"] .card-media.device,:root[data-theme="light"] .glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#ffffff 0%,#e6ecf3 60%,#d5dde8 100%)}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .card-media.device,:root:not([data-theme="dark"]) .glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#ffffff 0%,#e6ecf3 60%,#d5dde8 100%)}}
 .dev3d{position:absolute;inset:0;z-index:1}
+.card-media.device .dev3d,.card-media.device .bottle3d{top:46px;bottom:6px}
+@media (max-width:560px){.card-media.device{aspect-ratio:4/3}}
 .glass .dev-hint{font-size:10.5px;right:10px;bottom:8px}
 .dev3d canvas{display:block;width:100%!important;height:100%!important;opacity:0;transition:opacity 1s var(--ease)}
 .dev3d.ready canvas{opacity:1}
@@ -385,8 +387,8 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
       <div class="collage rv" aria-hidden="true">
         <div class="glass g1"><img src="assets/proj-supply-chain.webp" alt=""></div>
         <div class="glass g2"><img src="assets/proj-supplier-scorecard.webp" alt=""></div>
-        <div class="glass g3 device"><div class="dev3d" data-dev="hero"></div><span class="dev-hint mono">VeriGate · live 3D</span></div>
-        <div class="glass g4 device"><div class="bottle3d" data-bottles="cap"></div><span class="dev-hint mono">HydraCap · live 3D</span></div>
+        <div class="glass g3 device"><div class="dev3d" data-dev="hero"></div></div>
+        <div class="glass g4 device"><div class="bottle3d" data-bottles="cap"></div></div>
         <div class="stage-tag t1"><span class="sq"><svg class="i"><use href="#i-cube"/></svg></span><div><b>4 projects</b><small>Supply chain · IoT · Product</small></div></div>
       </div>
     </div>
@@ -475,7 +477,7 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
         </div>
       </article>
       <article class="card" data-cat="pd">
-        <div class="card-media device"><span class="tag">IOT · LIVE 3D</span><div class="dev3d" data-dev="card" role="img" aria-label="3D model of the VeriGate RFID receiving device, slowly rotating, with its LCD showing READY SCAN and APPROVED"></div><span class="dev-hint mono">VeriGate · 3D model</span></div>
+        <div class="card-media device"><span class="tag">IOT</span><div class="dev3d" data-dev="card" role="img" aria-label="3D model of the VeriGate RFID receiving device, slowly rotating, with its LCD showing READY SCAN and APPROVED"></div></div>
         <div class="card-body">
           <h3>VeriGate</h3>
           <p>An IoT receiving device that verifies driver identity and shipment data at the gate with RFID, cutting manual entry and waiting time.</p>
@@ -487,7 +489,7 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
         </div>
       </article>
       <article class="card" data-cat="pd">
-        <div class="card-media device"><span class="tag">PRODUCT DESIGN · LIVE 3D</span><div class="bottle3d" data-bottles="duo" role="img" aria-label="3D models of both HydraCap bottles side by side: the clear bottle with the flip-top pill cap and the steel bottle with the rope-tied case. They open on their own; click to open or close."></div><span class="dev-hint mono">Click to open</span></div>
+        <div class="card-media device"><span class="tag">PRODUCT DESIGN</span><div class="bottle3d" data-bottles="duo" role="img" aria-label="3D models of both HydraCap bottles side by side: the clear bottle with the flip-top pill cap and the steel bottle with the rope-tied case. They open on their own; click to open or close."></div></div>
         <div class="card-body">
           <h3>HydraCap</h3>
           <p>A bottle cap with an integrated medication compartment that makes carrying daily medication simpler.</p>
