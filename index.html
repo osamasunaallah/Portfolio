@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Osama Sunaallah | Industrial Engineer">
 <meta property="og:description" content="Supply chain & planning engineer building practical systems: procurement automation, supplier analytics, IoT and product design.">
-<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=4">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/">
@@ -104,11 +104,12 @@ svg.i{width:18px;height:18px;flex:none}
 .lead b{color:var(--fg);font-weight:500}
 .cta{display:flex;gap:12px;flex-wrap:wrap}
 .creds{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
-.cred{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);font-size:13.5px}
+.cred{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);font-size:13.5px;transition:transform .35s var(--ease),border-color .3s,box-shadow .35s}
+.cred:hover,.rv-st.in>.cred:hover{transform:scale(1.06);border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}
+.cert{position:relative}
 .cred b{display:block;font:600 14px Outfit}
 .cred small{color:var(--muted);font-size:12px}
 .cred .dot{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--a1) 14%,transparent);color:var(--a1)}
-.cred.soon .dot{background:color-mix(in srgb,var(--a3) 16%,transparent);color:var(--a3)}
 
 /* hero collage */
 .collage{position:relative;aspect-ratio:1/1;max-height:560px;width:100%}
@@ -231,7 +232,7 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 @media (max-width:980px){.certs{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.certs{grid-template-columns:1fr}}
 .cert{border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .45s var(--ease),box-shadow .4s,border-color .4s}
-.cert:hover{transform:translateY(-4px);box-shadow:var(--glow);border-color:color-mix(in srgb,var(--a1) 40%,var(--line))}
+.cert:hover,.rv-st.in>.cert:hover{transform:translateY(-4px) scale(1.03);box-shadow:var(--glow);border-color:color-mix(in srgb,var(--a1) 40%,var(--line));z-index:2}
 .cert-img{position:relative;display:block;width:100%;border:0;padding:0;cursor:zoom-in;background:#fff;aspect-ratio:4/3;overflow:hidden}
 .cert-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--ease)}
 .cert:hover .cert-img img{transform:scale(1.04)}
@@ -241,16 +242,8 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 .cert h3{font-size:21px;font-weight:600;line-height:1.2}
 .status{display:inline-flex;align-items:center;gap:6px;font:600 12px "JetBrains Mono";padding:5px 10px;border-radius:999px;width:max-content}
 .status.on{color:var(--a1);background:color-mix(in srgb,var(--a1) 14%,transparent)}
-.status.soon{color:var(--a3);background:color-mix(in srgb,var(--a3) 15%,transparent)}
 .meta{display:grid;grid-template-columns:repeat(3,auto);gap:4px 18px;justify-content:start;font-size:13px;color:var(--muted)}
 .meta b{display:block;color:var(--fg);font:500 13.5px "JetBrains Mono"}
-.cert.pmp{position:relative;background:linear-gradient(160deg,color-mix(in srgb,var(--a3) 10%,var(--card)),var(--card) 60%)}
-.pmp-visual{aspect-ratio:4/3;display:grid;place-items:center;position:relative;border-bottom:1px solid var(--line);overflow:hidden}
-.pmp-visual svg{width:58%;max-width:200px}
-.pmp-visual .track{fill:none;stroke:var(--line-2);stroke-width:10}
-.pmp-visual .prog{fill:none;stroke:var(--a3);stroke-width:10;stroke-linecap:round;stroke-dasharray:4 14;animation:dashspin 10s linear infinite;transform-origin:50% 50%}
-@keyframes dashspin{to{transform:rotate(360deg)}}
-.pmp-visual text{font:700 34px Outfit;fill:var(--fg)}
 .belt{display:flex;gap:4px;margin-top:2px}
 .belt i{flex:1;height:6px;border-radius:6px;background:var(--line-2)}
 .belt i.on{background:#EAB308}
@@ -379,9 +372,9 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
           <a class="btn" href="https://github.com/osamasunaallah" target="_blank" rel="noopener"><svg class="i"><use href="#i-gh"/></svg>GitHub</a>
         </div>
         <div class="creds rv-st" id="creds">
+          <div class="cred"><span class="dot"><svg class="i"><use href="#i-award"/></svg></span><div><b>PMP®</b><small>PMI certified</small></div></div>
           <div class="cred"><span class="dot"><svg class="i"><use href="#i-award"/></svg></span><div><b>CAPM®</b><small>PMI certified</small></div></div>
           <div class="cred"><span class="dot"><svg class="i"><use href="#i-award"/></svg></span><div><b>Lean Six Sigma</b><small>Yellow Belt</small></div></div>
-          <div class="cred soon"><span class="dot"><svg class="i"><use href="#i-clock"/></svg></span><div><b>PMP®</b><small>Coming soon</small></div></div>
         </div>
       </div>
       <div class="collage rv" aria-hidden="true">
@@ -536,9 +529,18 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
   <div class="wrap">
     <div class="sec-head rv">
       <div><span class="eyebrow">Credentials</span><h2>Certified, and<br><span class="grad-text">still climbing.</span></h2></div>
-      <p>Project management and process improvement foundations, with the PMP® next on the list.</p>
+      <p>Project management and process improvement credentials: PMP®, CAPM® and Lean Six Sigma.</p>
     </div>
     <div class="certs rv-st" id="certs">
+      <article class="cert">
+        <button class="cert-img" data-full="assets/cert-pmp.webp" data-cap="PMP® · Project Management Institute" aria-label="View PMP certificate full size"><img src="assets/cert-pmp.webp" alt="PMI Project Management Professional certificate for Osama Sunaallah" loading="lazy"><span class="zoom"><svg class="i" style="width:16px;height:16px"><use href="#i-zoom"/></svg></span></button>
+        <div class="cert-body">
+          <span class="cert-org">Project Management Institute</span>
+          <h3>Project Management Professional (PMP)®</h3>
+          <span class="status on">● Active</span>
+          <div class="meta"><span>ID<b>4563576</b></span><span>Issued<b>Nov 2026</b></span><span>Valid to<b>Nov 2029</b></span></div>
+        </div>
+      </article>
       <article class="cert">
         <button class="cert-img" data-full="assets/cert-capm.webp" data-cap="CAPM® · Project Management Institute" aria-label="View CAPM certificate full size"><img src="assets/cert-capm.webp" alt="PMI Certified Associate in Project Management certificate for Osama Sunaallah" loading="lazy"><span class="zoom"><svg class="i" style="width:16px;height:16px"><use href="#i-zoom"/></svg></span></button>
         <div class="cert-body">
@@ -555,16 +557,6 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
           <h3>Lean Six Sigma Yellow Belt</h3>
           <span class="status on">● Completed · Mar 2026</span>
           <div class="belt" aria-label="Belt progress: Yellow of White, Yellow, Green, Black, Master Black"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
-        </div>
-      </article>
-      <article class="cert pmp">
-        <div class="pmp-visual" aria-hidden="true">
-          <svg viewBox="0 0 200 200"><circle class="track" cx="100" cy="100" r="80"/><circle class="prog" cx="100" cy="100" r="80"/><text x="100" y="112" text-anchor="middle">PMP®</text></svg>
-        </div>
-        <div class="cert-body">
-          <span class="cert-org">Project Management Institute</span>
-          <h3>Project Management Professional (PMP)®</h3>
-          <span class="status soon">◔ Coming soon</span>
         </div>
       </article>
     </div>
