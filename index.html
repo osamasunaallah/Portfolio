@@ -8,12 +8,12 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Osama Sunaallah | Industrial Engineer">
 <meta property="og:description" content="Supply chain & planning engineer building practical systems: procurement automation, supplier analytics, IoT and product design.">
-<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=8">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=9">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -21,12 +21,13 @@
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
 <style>
 :root{
-  --bg:#07090D; --bg-2:#0C1016; --card:#10151D; --card-2:#151B25; --fg:#ECF1F7; --fg-soft:#C4CDD8; --muted:#8C98A8;
+  --bg:#0B0B0C; --bg-2:#111113; --card:#161618; --card-2:#1C1C1F; --fg:#F2F2F4; --fg-soft:#C9C9D1; --muted:#8E8E99;
   --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-  --a1:#6E8BFF; --a2:#A78BFA; --a3:#F5B547; --on-a:#0A0D1F;
+  --a1:#7C3AFF; --a2:#B48CFF; --a3:#F5B547; --on-a:#FFFFFF; --mint:#45E3B5;
   --fd:Outfit,system-ui,sans-serif; --hw:600; --aur:.28;
   --grad:linear-gradient(120deg,var(--a1),var(--a2));
-  --glow:0 0 0 1px rgba(110,139,255,.24),0 18px 44px -24px rgba(167,139,250,.26);
+  --grad-btn:linear-gradient(120deg,#6F00FF,#8B3DFF);
+  --glow:0 0 0 1px rgba(124,58,255,.30),0 18px 44px -24px rgba(124,58,255,.34);
   --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 24px 48px -24px rgba(0,0,0,.6);
   --r:20px; --ease:cubic-bezier(.22,1,.36,1);
   --grid:rgba(255,255,255,.035);
@@ -34,7 +35,7 @@
 :root[data-theme="light"]{
   --bg:#FFFFFF; --bg-2:#F8F4F2; --card:#FFFFFF; --card-2:#FBF8F6; --fg:#0A0A0A; --fg-soft:#2E2A2B; --muted:#6F6769;
   --line:rgba(10,10,10,.09); --line-2:rgba(10,10,10,.17);
-  --a1:#7A1F3D; --a2:#A3324F; --a3:#8A5A14; --on-a:#FFFFFF;
+  --a1:#7A1F3D; --a2:#A3324F; --a3:#8A5A14; --on-a:#FFFFFF; --grad-btn:var(--grad);
   --glow:0 0 0 1px rgba(122,31,61,.2),0 18px 40px -24px rgba(122,31,61,.28);
   --shadow:0 1px 2px rgba(10,10,10,.05),0 20px 40px -24px rgba(10,10,10,.16);
   --grid:rgba(10,10,10,.035);
@@ -44,7 +45,7 @@
   :root:not([data-theme="dark"]){
     --bg:#FFFFFF; --bg-2:#F8F4F2; --card:#FFFFFF; --card-2:#FBF8F6; --fg:#0A0A0A; --fg-soft:#2E2A2B; --muted:#6F6769;
     --line:rgba(10,10,10,.09); --line-2:rgba(10,10,10,.17);
-    --a1:#7A1F3D; --a2:#A3324F; --a3:#8A5A14; --on-a:#FFFFFF;
+    --a1:#7A1F3D; --a2:#A3324F; --a3:#8A5A14; --on-a:#FFFFFF; --grad-btn:var(--grad);
     --glow:0 0 0 1px rgba(122,31,61,.2),0 18px 40px -24px rgba(122,31,61,.28);
     --shadow:0 1px 2px rgba(10,10,10,.05),0 20px 40px -24px rgba(10,10,10,.16);
     --grid:rgba(10,10,10,.035);
@@ -81,7 +82,7 @@ svg.i{width:18px;height:18px;flex:none}
 .icon-btn:hover{background:var(--line)}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font:600 14.5px "Work Sans";text-decoration:none;border:1px solid var(--line-2);color:var(--fg);background:transparent;cursor:pointer;transition:transform .3s var(--ease),background .3s,border-color .3s,box-shadow .3s}
 .btn:hover{transform:translateY(-2px);border-color:var(--a1)}
-.btn-primary{background:var(--grad);color:var(--on-a);border-color:transparent;box-shadow:var(--glow)}
+.btn-primary{background:var(--grad-btn,var(--grad));color:var(--on-a);border-color:transparent;box-shadow:var(--glow)}
 .btn-primary:hover{box-shadow:var(--glow),0 20px 46px -24px color-mix(in srgb,var(--a2) 40%,transparent)}
 .nav .btn{min-height:40px}
 @media (max-width:900px){.nav-links{display:none}.nav .btn span{display:none}.nav .btn{padding:0 12px}.nav-right{margin-left:auto}}
@@ -147,10 +148,10 @@ svg.i{width:18px;height:18px;flex:none}
 @media (max-width:560px){.stage-tag{display:none}}
 
 /* 3D device card */
-.card-media.device,.glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#2a3546 0%,#141a24 55%,#0b0f15 100%)}
+.card-media.device,.glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#2c2c32 0%,#161618 55%,#0b0b0c 100%)}
 :root[data-theme="light"] .card-media.device,:root[data-theme="light"] .glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#ffffff 0%,#f1ebe8 60%,#e3d9d5 100%)}
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .card-media.device,:root:not([data-theme="dark"]) .glass.device{background:radial-gradient(ellipse 60% 70% at 50% 55%,#ffffff 0%,#f1ebe8 60%,#e3d9d5 100%)}}
-.glass.g3.device{background:radial-gradient(ellipse 70% 80% at 50% 52%,#a9bbd2 0%,#5d6f8a 42%,#273245 100%)}
+.glass.g3.device{background:radial-gradient(ellipse 70% 80% at 50% 52%,#b9bac3 0%,#62646f 42%,#26272d 100%)}
 .dev3d{position:absolute;inset:0;z-index:1}
 .card-media.device .dev3d,.card-media.device .bottle3d{top:46px;bottom:6px}
 @media (max-width:560px){.card-media.device{aspect-ratio:4/3}}
@@ -337,16 +338,24 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 .md-bars:hover .md-bar:not(:hover){opacity:.55}
 .md-bar{transition:opacity .3s}
 @media (max-width:560px){.card-media.live{aspect-ratio:5/4}.md{padding:44px 12px 12px;gap:9px}.md-kpi{padding:6px 8px}.md-kpi b{font-size:16px}.md-kpi small{font-size:9.5px}.md-rows li{grid-template-columns:62px 1fr auto}}
-/* Third accent, dark theme only: an ember orange (the complement of the blue) used as light, never as a fill.
-   It rims and under-lights the hero collage, the pill and the badges so every card separates from the navy. */
-:root[data-theme="dark"]{--ember:#FF7A3D}
+/* Accent rule 60-30-10 (dark theme): onyx black base 60 %, electric indigo 30 % (gradient text, buttons, highlights),
+   tropical mint 10 %, used only as light: rims and under-glow shadows that make every card read against the black. */
 :root[data-theme="dark"] .collage{isolation:isolate}
-:root[data-theme="dark"] .collage::after{content:"";position:absolute;left:6%;bottom:2%;width:66%;height:50%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,122,61,.22),transparent 72%);pointer-events:none;z-index:-1}
-:root[data-theme="dark"] .hero .glass{border-color:rgba(255,166,120,.30);box-shadow:0 0 0 1px rgba(255,122,61,.12),0 26px 52px -20px rgba(255,122,61,.56),0 34px 64px -28px rgba(0,0,0,.78)}
-:root[data-theme="dark"] .stage-tag{border-color:rgba(255,166,120,.26);box-shadow:0 18px 40px -18px rgba(255,122,61,.48),0 1px 0 rgba(255,255,255,.04) inset}
-:root[data-theme="dark"] .cred{border-color:rgba(255,166,120,.15);box-shadow:0 14px 30px -22px rgba(255,122,61,.6)}
-:root[data-theme="dark"] .cred .dot{background:rgba(255,122,61,.14);color:#FF9A62}
-:root[data-theme="dark"] .hero .eyebrow::before{background:linear-gradient(90deg,var(--a1),var(--ember))}
+:root[data-theme="dark"] .collage::after{content:"";position:absolute;left:6%;bottom:2%;width:66%;height:50%;border-radius:50%;background:radial-gradient(closest-side,rgba(69,227,181,.26),transparent 72%);pointer-events:none;z-index:-1}
+:root[data-theme="dark"] .hero .glass{border-color:rgba(120,240,200,.44);box-shadow:0 0 0 1px rgba(69,227,181,.16),0 0 34px -8px rgba(69,227,181,.30),0 28px 56px -18px rgba(69,227,181,.62),0 34px 64px -28px rgba(0,0,0,.8)}
+:root[data-theme="dark"] .stage-tag{border-color:rgba(120,240,200,.46);box-shadow:0 0 26px -8px rgba(69,227,181,.34),0 18px 40px -16px rgba(69,227,181,.6),0 1px 0 rgba(255,255,255,.04) inset}
+:root[data-theme="dark"] .cred{border-color:rgba(120,240,200,.32);box-shadow:0 0 22px -10px rgba(69,227,181,.4),0 14px 30px -18px rgba(69,227,181,.6)}
+:root[data-theme="dark"] .cred .dot{background:rgba(69,227,181,.18);color:var(--mint)}
+:root[data-theme="dark"] .hero .eyebrow::before{background:linear-gradient(90deg,var(--a1),var(--mint))}
+/* clickable pills carry the mint: filled for the main actions and the active filter, outlined for the rest */
+:root[data-theme="dark"] .btn-primary{background:linear-gradient(120deg,#45E3B5,#7CF2D0);color:#06120E;box-shadow:0 0 0 1px rgba(69,227,181,.35),0 0 26px -6px rgba(69,227,181,.45),0 18px 40px -18px rgba(69,227,181,.6)}
+:root[data-theme="dark"] .btn-primary:hover{box-shadow:0 0 0 1px rgba(69,227,181,.5),0 0 34px -4px rgba(69,227,181,.6),0 22px 46px -18px rgba(69,227,181,.7)}
+:root[data-theme="dark"] .btn:not(.btn-primary){border-color:rgba(69,227,181,.42)}
+:root[data-theme="dark"] .btn:not(.btn-primary):hover{border-color:var(--mint);box-shadow:0 0 22px -8px rgba(69,227,181,.55)}
+:root[data-theme="dark"] .filter[aria-pressed="true"]{background:var(--mint);color:#06120E;box-shadow:0 0 20px -6px rgba(69,227,181,.55)}
+:root[data-theme="dark"] .filter:not([aria-pressed="true"]):hover{color:var(--mint)}
+:root[data-theme="dark"] .md-tabs button[aria-pressed="true"]{background:var(--mint);color:#06120E;border-color:transparent}
+:root[data-theme="dark"] .md-tabs button:not([aria-pressed="true"]):hover{color:var(--mint);border-color:rgba(69,227,181,.45)}
 </style>
 </head>
 <body>
@@ -729,7 +738,7 @@ if(mounts.length){
     const key=new THREE.DirectionalLight(0xfff2dc,2.6);key.position.set(.5,.45,.45);scene.add(key);
     const fill=new THREE.DirectionalLight(0xcbd3ff,1);fill.position.set(-.45,.2,.3);scene.add(fill);
     const rim=new THREE.DirectionalLight(0x9fe8ff,1.8);rim.position.set(-.1,.35,-.5);scene.add(rim);
-    if(document.documentElement.dataset.theme!=='light'){const ember=new THREE.DirectionalLight(0xff7a3d,hero?2.4:1.8);ember.position.set(-.5,.12,-.35);scene.add(ember)}
+    if(document.documentElement.dataset.theme!=='light'){const mint=new THREE.DirectionalLight(0x45e3b5,hero?2.2:1.6);mint.position.set(-.5,.12,-.35);scene.add(mint)}
     const tex=new THREE.CanvasTexture(lc);
     tex.colorSpace=THREE.SRGBColorSpace;tex.flipY=true;tex.anisotropy=8;tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
 
@@ -756,7 +765,7 @@ if(mounts.length){
   });
 }
 </script>
-<script type="module" src="assets/hydracap3d.js?v=2"></script>
+<script type="module" src="assets/hydracap3d.js?v=3"></script>
 <script type="module" src="assets/verigate-explode.js"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
