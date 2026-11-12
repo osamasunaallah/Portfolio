@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Osama Sunaallah | Industrial Engineer">
 <meta property="og:description" content="Supply chain & planning engineer building practical systems: procurement automation, supplier analytics, IoT and product design.">
-<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=7">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=8">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/">
@@ -337,6 +337,16 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 .md-bars:hover .md-bar:not(:hover){opacity:.55}
 .md-bar{transition:opacity .3s}
 @media (max-width:560px){.card-media.live{aspect-ratio:5/4}.md{padding:44px 12px 12px;gap:9px}.md-kpi{padding:6px 8px}.md-kpi b{font-size:16px}.md-kpi small{font-size:9.5px}.md-rows li{grid-template-columns:62px 1fr auto}}
+/* Third accent, dark theme only: an ember orange (the complement of the blue) used as light, never as a fill.
+   It rims and under-lights the hero collage, the pill and the badges so every card separates from the navy. */
+:root[data-theme="dark"]{--ember:#FF7A3D}
+:root[data-theme="dark"] .collage{isolation:isolate}
+:root[data-theme="dark"] .collage::after{content:"";position:absolute;left:6%;bottom:2%;width:66%;height:50%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,122,61,.22),transparent 72%);pointer-events:none;z-index:-1}
+:root[data-theme="dark"] .hero .glass{border-color:rgba(255,166,120,.30);box-shadow:0 0 0 1px rgba(255,122,61,.12),0 26px 52px -20px rgba(255,122,61,.56),0 34px 64px -28px rgba(0,0,0,.78)}
+:root[data-theme="dark"] .stage-tag{border-color:rgba(255,166,120,.26);box-shadow:0 18px 40px -18px rgba(255,122,61,.48),0 1px 0 rgba(255,255,255,.04) inset}
+:root[data-theme="dark"] .cred{border-color:rgba(255,166,120,.15);box-shadow:0 14px 30px -22px rgba(255,122,61,.6)}
+:root[data-theme="dark"] .cred .dot{background:rgba(255,122,61,.14);color:#FF9A62}
+:root[data-theme="dark"] .hero .eyebrow::before{background:linear-gradient(90deg,var(--a1),var(--ember))}
 </style>
 </head>
 <body>
@@ -719,6 +729,7 @@ if(mounts.length){
     const key=new THREE.DirectionalLight(0xfff2dc,2.6);key.position.set(.5,.45,.45);scene.add(key);
     const fill=new THREE.DirectionalLight(0xcbd3ff,1);fill.position.set(-.45,.2,.3);scene.add(fill);
     const rim=new THREE.DirectionalLight(0x9fe8ff,1.8);rim.position.set(-.1,.35,-.5);scene.add(rim);
+    if(document.documentElement.dataset.theme!=='light'){const ember=new THREE.DirectionalLight(0xff7a3d,hero?2.4:1.8);ember.position.set(-.5,.12,-.35);scene.add(ember)}
     const tex=new THREE.CanvasTexture(lc);
     tex.colorSpace=THREE.SRGBColorSpace;tex.flipY=true;tex.anisotropy=8;tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
 
@@ -745,7 +756,7 @@ if(mounts.length){
   });
 }
 </script>
-<script type="module" src="assets/hydracap3d.js"></script>
+<script type="module" src="assets/hydracap3d.js?v=2"></script>
 <script type="module" src="assets/verigate-explode.js"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
