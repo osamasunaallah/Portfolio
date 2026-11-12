@@ -113,16 +113,21 @@ svg.i{width:18px;height:18px;flex:none}
 .lead{font-size:18.5px;color:var(--fg-soft);max-width:540px;margin:0 0 30px;font-weight:300}
 .lead b{color:var(--fg);font-weight:500}
 .cta{display:flex;gap:12px;flex-wrap:wrap}
-.creds{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+.creds{display:flex;gap:10px;flex-wrap:nowrap;margin-top:34px}
 .cred{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);font-size:13.5px;transition:transform .35s var(--ease),border-color .3s,box-shadow .35s}
 .cred:hover,.rv-st.in>.cred:hover{transform:scale(1.06);border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}
 .cert{position:relative}
 .cred b{display:block;font:600 14px Outfit}
 .cred small{color:var(--muted);font-size:12px}
-.cred .dot{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--a1) 14%,transparent);color:var(--a1)}
+.cred .dot{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--a1) 14%,transparent);color:var(--a1)}
+.cred b,.cred small{white-space:nowrap}
+.hero>.wrap{width:100%}
+@media (min-width:981px){.hero-grid{grid-template-columns:1fr 1.15fr}.hero .collage{max-height:660px}}
+@media (min-width:981px) and (max-width:1180px){.creds{gap:8px}.cred{padding:9px 11px;gap:8px}.cred .dot{display:none}}
+@media (max-width:560px){.creds{gap:6px}.cred{padding:8px 10px;flex:1 1 auto;justify-content:center}.cred .dot{display:none}.cred b{font-size:13px}.cred small{font-size:11px}}
 
 /* hero collage */
-.collage{position:relative;aspect-ratio:1/1;max-height:560px;width:100%}
+.collage{position:relative;aspect-ratio:1/1;max-height:560px;width:100%;justify-self:end}
 .collage::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--a2) 22%,transparent),transparent 62%)}
 .glass{position:absolute;border-radius:18px;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 30px 60px -24px rgba(0,0,0,.6);background:var(--card);transition:transform .8s var(--ease)}
 .glass img{display:block;width:100%;height:100%;object-fit:cover}
