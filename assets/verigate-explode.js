@@ -58,9 +58,9 @@ function start(host){
     x.shadowBlur = 0; x.fillStyle = bg; x.fillRect(0, 0, LW, LH);
     x.fillStyle = 'rgba(0,0,0,.1)'; for (let y = 0; y < LH; y += 8) x.fillRect(0, y, LW, 1); for (let xx = 0; xx < LW; xx += 8) x.fillRect(xx, 0, 1, LH);
     x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.font = '700 90px "JetBrains Mono", Consolas, monospace'; x.shadowColor = ok ? 'rgba(170,255,200,.9)' : 'rgba(170,210,255,.9)'; x.shadowBlur = 26;
+    x.font = '700 90px "IBM Plex Mono", Consolas, monospace'; x.shadowColor = ok ? 'rgba(170,255,200,.9)' : 'rgba(170,210,255,.9)'; x.shadowBlur = 26;
     x.fillStyle = ok ? '#E8FFEF' : '#E0EBFF'; x.fillText(l1 + (Math.floor(ms / 500) % 2 ? ' ' : '_'), LW / 2, LH * .36);
-    x.font = '600 56px "JetBrains Mono", Consolas, monospace'; x.shadowBlur = 18; x.fillStyle = ok ? '#C8F5DA' : '#B5CDFF'; x.fillText(l2, LW / 2, LH * .74);
+    x.font = '600 56px "IBM Plex Mono", Consolas, monospace'; x.shadowBlur = 18; x.fillStyle = ok ? '#C8F5DA' : '#B5CDFF'; x.fillText(l2, LW / 2, LH * .74);
     lcdTex.needsUpdate = true;
   }
   drawLCD(0);
