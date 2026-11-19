@@ -310,5 +310,8 @@ function start(host){
     });
   };
   // compile the shaders in the background first, so the first frame does not freeze the page
-  (R.compileAsync ? R.compileAsync(S, cam).catch(() => {}) : Promise.resolve()).then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '120px' }).observe(host));
+  (R.compileAsync ? R.compileAsync(S, cam).catch(() => {}) : Promise.resolve())
+    // one warm-up frame while the page is idle, so the first frame on screen does not freeze on the GPU upload
+    .then(() => new Promise(ok => (window.requestIdleCallback || setTimeout)(() => { R.render(S, cam); ok(); }, { timeout: 2000 })))
+    .then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '120px' }).observe(host));
 }

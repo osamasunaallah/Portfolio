@@ -351,6 +351,8 @@ function mountBottles(el){
   };
   // compile the shaders in the background first, so the first frame does not freeze the page
   // the hero bottle shows as soon as possible; other bottles compile their shaders in the background first
-  (el.closest('.hero') || !R.compileAsync ? Promise.resolve() : R.compileAsync(S, cam).catch(() => {})).then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); }, { rootMargin: '120px' }).observe(el));
+  (el.closest('.hero') || !R.compileAsync ? Promise.resolve() : R.compileAsync(S, cam).catch(() => {}).then(() => new Promise(ok => (window.requestIdleCallback || setTimeout)(() => { R.render(S, cam); ok(); }, { timeout: 2000 }))))
+    // ^ off-screen bottles also draw one warm-up frame while the page is idle, so scrolling to them never freezes on the GPU upload
+    .then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); }, { rootMargin: '120px' }).observe(el));
 }
 document.querySelectorAll('.bottle3d').forEach(el => (window.__q3d || ((e, f) => f(e)))(el, mountBottles));
