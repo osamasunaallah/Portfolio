@@ -1311,6 +1311,13 @@ if(mounts.length){
     order.forEach(function(c){track.appendChild(c)});
     area.classList.toggle('static',still);ui.hidden=still;track.style.transform=still?'none':'translate3d(0,0,0)';
   })});
+  // reveal the cards as soon as the row is on screen. The page-wide reveal watched the extra-wide track,
+  // which some phone browsers (notably Safari) never report as visible enough, so the cards stayed hidden.
+  function reveal(){if(!track.classList.contains('in')){track.classList.add('in');[].forEach.call(track.children,function(c,i){c.style.transitionDelay=Math.min(i,3)*90+'ms'})}}
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting}))reveal()},{threshold:0}).observe(area);
+  function chk(){var r=area.getBoundingClientRect();if(r.top<innerHeight*.92&&r.bottom>0){reveal();removeEventListener('scroll',chk)}}
+  addEventListener('scroll',chk,{passive:true});chk();
+  var rt=setInterval(function(){if(track.classList.contains('in')){clearInterval(rt);return}chk()},500);
   requestAnimationFrame(frame);
 })();
 </script>
