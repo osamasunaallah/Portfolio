@@ -632,6 +632,11 @@ main,footer{position:relative;z-index:1}
 .nav-word:hover{opacity:.8}
 :root[data-theme="light"] .nav-word{font-style:italic;font-weight:600;font-size:25px;letter-spacing:.01em;padding-top:0;background:var(--grad);-webkit-background-clip:text;background-clip:text;filter:none}
 @media (max-width:900px){.nav-right{order:2}.nav-word{order:1;font-size:29px;padding-left:6px}:root[data-theme="light"] .nav-word{font-size:22px}}
+/* mobile: native swipe row for the projects; normal section spacing (19.11.2026) */
+.work-loop.native{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.work-loop.native::-webkit-scrollbar{display:none}
+.work-loop.native .work.work-track{transform:none!important;will-change:auto;touch-action:auto}
+@media (max-width:760px){.sec{padding:64px 0}.contact{padding:72px 0 56px}.hero{padding:104px 0 36px}.sec-head{margin-bottom:28px}}
 </style>
 </head>
 <body>
@@ -1265,7 +1270,11 @@ if(mounts.length){
       var w=cw(f)+g; if(x<w)break; x-=w; track.appendChild(f); }
     while(x<0){ var l=track.lastElementChild; if(!l)break; track.insertBefore(l,track.firstElementChild); if(!l.classList.contains('hide'))x+=cw(l)+g; }
   }
-  function paused(){return reduce||still||!inView||document.hidden||moved}
+  // phones and tablets: a native swipe row (one huge moving layer with 3D inside can come out blank on mobile browsers)
+  var native=matchMedia('(max-width:860px),(pointer:coarse)').matches,touching=false,resumeAt=0;
+  if(native){area.classList.add('native');area.addEventListener('touchstart',function(){touching=true},{passive:true});
+    area.addEventListener('touchend',function(){touching=false;resumeAt=Date.now()+900},{passive:true})}
+  function paused(){return reduce||still||!inView||document.hidden||moved||(native&&(touching||Date.now()<resumeAt))}
   function ease(p){return 1-Math.pow(1-p,3)}
   function frame(t){
     var dt=Math.min(250,t-(last||t));last=t;
@@ -1273,7 +1282,8 @@ if(mounts.length){
     if(still){requestAnimationFrame(frame);return}
     if(tw){var p=Math.min(1,(t-tw.t0)/tw.d);x=tw.a+(tw.b-tw.a)*ease(p);if(p>=1)tw=null}
     else if(!paused())x+=speed()*k*dt/1000;
-    wrap();track.style.transform='translate3d('+(-x).toFixed(2)+'px,0,0)';
+    if(native){ if(touching||Date.now()<resumeAt){x=area.scrollLeft}else{wrap();area.scrollLeft=x} }
+    else{wrap();track.style.transform='translate3d('+(-x).toFixed(2)+'px,0,0)'}
     requestAnimationFrame(frame);
   }
   function step(dir){var c=vis()[0];if(!c)return;var w=c.offsetWidth+gap();
