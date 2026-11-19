@@ -364,6 +364,74 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
 .filter,.md-tabs button{transition:background .2s,color .2s,transform .16s var(--ease)}
 .btn:active,.icon-btn:active,.filter:active,.md-tabs button:active{transform:scale(.97);transition-duration:.1s}
 @media (hover:none){.btn:hover,.cred:hover,.rv-st.in>.cred:hover,.cert:hover,.rv-st.in>.cert:hover,.collage:hover .g1,.collage:hover .g2,.collage:hover .g3,.card:hover .card-media img,.cert:hover .cert-img img,.link:hover svg{transform:none}}
+/* Certificates: infinite slider (19.11.2026) */
+.cert-marquee{position:relative;padding:14px 0 26px;overflow:hidden;
+  -webkit-mask:linear-gradient(90deg,transparent,#000 7% 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7% 93%,transparent)}
+.cert-track{display:flex;gap:18px;width:max-content;padding-inline:9px;animation:certs-run 64s linear infinite}
+.cert-marquee:hover .cert-track,.cert-marquee:focus-within .cert-track,.cert-marquee.hold .cert-track,.cert-marquee.off .cert-track{animation-play-state:paused}
+@keyframes certs-run{to{transform:translateX(-50%)}}
+.cert-track .cert{--c:var(--a1);width:clamp(258px,27vw,330px);flex:none;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s,opacity .25s}
+.cert-track .cert::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,30%),color-mix(in srgb,var(--c) 20%,transparent),transparent 65%)}
+.cert-track:hover .cert:not(:hover){opacity:.55}
+.cert-track .cert:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--c) 70%,var(--line));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 26px 50px -26px color-mix(in srgb,var(--c) 70%,transparent);z-index:2}
+.cert-track .cert:hover::after{opacity:1}
+.cert-track .cert:hover .cert-org{color:var(--c)}
+.cert-track .cert:hover .cert-img img{transform:scale(1.05) rotate(-.6deg)}
+.cert-track .cert h3{font-size:18px}
+/* soon cards: shared face */
+.soon-face{position:relative;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center;isolation:isolate;
+  background:radial-gradient(120% 90% at 50% 0%,color-mix(in srgb,var(--c) 26%,var(--card)) 0%,var(--card) 70%);border-bottom:1px solid var(--line)}
+.sf-mono{position:relative;z-index:2;font:700 clamp(34px,4vw,46px)/1 var(--fd);letter-spacing:-.02em;color:var(--fg);
+  text-shadow:0 0 28px color-mix(in srgb,var(--c) 55%,transparent)}
+.soon-pill{color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 40%,transparent);
+  position:relative;overflow:hidden;letter-spacing:.14em;text-transform:uppercase}
+:root[data-theme="light"] .soon-pill{color:color-mix(in srgb,var(--c) 60%,#111)}
+/* CPMAI: neural dot grid + scan line, radar dot */
+.s-ai .sf-grid{position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(color-mix(in srgb,var(--c) 55%,transparent) 1.2px,transparent 1.6px);background-size:18px 18px;
+  -webkit-mask:radial-gradient(70% 70% at 50% 50%,#000,transparent);mask:radial-gradient(70% 70% at 50% 50%,#000,transparent)}
+.s-ai .sf-scan{position:absolute;left:0;right:0;top:0;height:38%;opacity:.55;
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--c) 30%,transparent) 85%,var(--c) 100%);
+  animation:sf-scan 3.2s cubic-bezier(.65,0,.35,1) infinite alternate}
+@keyframes sf-scan{from{transform:translateY(-100%)}to{transform:translateY(190%)}}
+.sp-radar{width:7px;height:7px;border-radius:50%;background:var(--c);position:relative}
+.sp-radar::after{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--c);animation:sp-radar 1.8s ease-out infinite}
+@keyframes sp-radar{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
+/* CCAR-P: spinning halo ring, shimmer pill */
+.s-claude .sf-ring{position:absolute;width:62%;aspect-ratio:1;border-radius:50%;z-index:1;
+  background:conic-gradient(from 0deg,transparent 0 55%,color-mix(in srgb,var(--c) 85%,transparent) 80%,transparent 100%);
+  -webkit-mask:radial-gradient(closest-side,transparent 86%,#000 88% 100%);mask:radial-gradient(closest-side,transparent 86%,#000 88% 100%);
+  animation:sf-spin 4.5s linear infinite}
+.s-claude .soon-face::before{content:"";position:absolute;width:74%;aspect-ratio:1;border-radius:50%;
+  border:1px dashed color-mix(in srgb,var(--c) 35%,transparent);animation:sf-spin 18s linear infinite reverse}
+@keyframes sf-spin{to{transform:rotate(1turn)}}
+.sp-shine::after{content:"";position:absolute;inset:0;transform:translateX(-120%);
+  background:linear-gradient(100deg,transparent 30%,color-mix(in srgb,#fff 55%,transparent) 50%,transparent 70%);animation:sp-shine 2.6s ease-in-out infinite}
+@keyframes sp-shine{55%,100%{transform:translateX(120%)}}
+/* CSCP: conveyor belt with parcels, loading-bar pill */
+.s-scm .sf-belt{position:absolute;left:0;right:0;bottom:22%;height:2px;
+  background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--c) 60%,transparent) 0 10px,transparent 10px 18px);background-size:18px 2px;
+  animation:sf-belt .9s linear infinite}
+.s-scm .sf-belt i{position:absolute;bottom:3px;left:0;width:16px;height:12px;border-radius:3px;border:1.5px solid var(--c);
+  background:color-mix(in srgb,var(--c) 18%,transparent);animation:sf-parcel 6s linear infinite}
+.s-scm .sf-belt i:nth-child(2){animation-delay:-1.5s}.s-scm .sf-belt i:nth-child(3){animation-delay:-3s}.s-scm .sf-belt i:nth-child(4){animation-delay:-4.5s}
+@keyframes sf-belt{to{background-position:18px 0}}
+@keyframes sf-parcel{from{transform:translateX(-30px)}to{transform:translateX(360px)}}
+.sp-bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--c);transform-origin:left;
+  animation:sp-bar 2.4s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes sp-bar{0%{transform:scaleX(0)}70%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+/* soon effects speed up on hover */
+.cert-track .soon:hover .sf-ring{animation-duration:2.2s}
+.cert-track .soon:hover .sf-scan{animation-duration:1.6s}
+.cert-track .soon:hover .sf-belt{animation-duration:.45s}
+@media (max-width:640px){.cert-track{animation-duration:46s;gap:14px}.cert-track .cert{width:76vw;max-width:300px}}
+@media (hover:none){.cert-track .cert:hover{transform:none}.cert-track:hover .cert:not(:hover){opacity:1}}
+@media (prefers-reduced-motion: reduce){
+  .cert-marquee{overflow-x:auto;-webkit-mask:none;mask:none;scroll-snap-type:x mandatory}
+  .cert-track{animation:none}.cert-track .clone{display:none}.cert-track .cert{scroll-snap-align:start}
+  .sf-scan,.sf-ring,.s-claude .soon-face::before,.sf-belt,.sf-belt i,.sp-radar::after,.sp-shine::after,.sp-bar{animation:none!important}}
 </style>
 </head>
 <body>
@@ -575,8 +643,9 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
     <div class="sec-head rv">
       <div><span class="eyebrow">Credentials</span><h2>Certifications<br><span class="grad-text">&amp; Licenses.</span></h2></div>
     </div>
-    <div class="certs rv-st" id="certs">
-      <article class="cert">
+    <div class="cert-marquee rv" id="certMarquee">
+      <div class="cert-track" id="certs">
+      <article class="cert" style="--c:#8B5CF6">
         <button class="cert-img" data-full="assets/cert-pmp.webp" data-cap="PMP® · Project Management Institute" aria-label="View PMP certificate full size"><img src="assets/cert-pmp.webp" alt="PMI Project Management Professional certificate for Osama Sunaallah" loading="lazy"><span class="zoom"><svg class="i" style="width:16px;height:16px"><use href="#i-zoom"/></svg></span></button>
         <div class="cert-body">
           <span class="cert-org">Project Management Institute</span>
@@ -585,7 +654,7 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
           <div class="meta"><span>ID<b>4563576</b></span><span>Issued<b>Nov 2026</b></span><span>Valid to<b>Nov 2029</b></span></div>
         </div>
       </article>
-      <article class="cert">
+      <article class="cert" style="--c:#60A5FA">
         <button class="cert-img" data-full="assets/cert-capm.webp?v=2" data-cap="CAPM® · Project Management Institute" aria-label="View CAPM certificate full size"><img src="assets/cert-capm.webp?v=2" alt="PMI Certified Associate in Project Management certificate for Osama Sunaallah" loading="lazy"><span class="zoom"><svg class="i" style="width:16px;height:16px"><use href="#i-zoom"/></svg></span></button>
         <div class="cert-body">
           <span class="cert-org">Project Management Institute</span>
@@ -594,7 +663,7 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
           <div class="meta"><span>ID<b>4503012</b></span><span>Issued<b>Aug 2026</b></span><span>Valid to<b>Aug 2029</b></span></div>
         </div>
       </article>
-      <article class="cert">
+      <article class="cert" style="--c:#EAB308">
         <button class="cert-img" data-full="assets/cert-lss-yellow.webp" data-cap="Lean Six Sigma Yellow Belt · KnowWare International" aria-label="View Lean Six Sigma Yellow Belt certificate full size"><img src="assets/cert-lss-yellow.webp" alt="Lean Six Sigma Yellow Belt certificate for Osama Sunaallah" loading="lazy"><span class="zoom"><svg class="i" style="width:16px;height:16px"><use href="#i-zoom"/></svg></span></button>
         <div class="cert-body">
           <span class="cert-org">KnowWare International</span>
@@ -603,7 +672,37 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
           <div class="belt" aria-label="Belt progress: Yellow of White, Yellow, Green, Black, Master Black"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
         </div>
       </article>
+      <article class="cert soon s-ai" style="--c:#22D3EE">
+        <div class="soon-face" aria-hidden="true"><span class="sf-grid"></span><span class="sf-scan"></span><b class="sf-mono">CPMAI</b></div>
+        <div class="cert-body">
+          <span class="cert-org">Project Management Institute</span>
+          <h3>PMI Certified Professional in Managing AI (PMI-CPMAI)™</h3>
+          <span class="status soon-pill"><i class="sp-radar"></i>Soon</span>
+        </div>
+      </article>
+      <article class="cert soon s-claude" style="--c:#E0805F">
+        <div class="soon-face" aria-hidden="true"><span class="sf-ring"></span><b class="sf-mono">CCAR-P</b></div>
+        <div class="cert-body">
+          <span class="cert-org">Anthropic</span>
+          <h3>Claude Certified Architect – Professional (CCAR-P)</h3>
+          <span class="status soon-pill sp-shine">Soon</span>
+        </div>
+      </article>
+      <article class="cert soon s-scm" style="--c:#A3E635">
+        <div class="soon-face" aria-hidden="true"><span class="sf-belt"><i></i><i></i><i></i><i></i></span><b class="sf-mono">CSCP</b></div>
+        <div class="cert-body">
+          <span class="cert-org">ASCM (APICS)</span>
+          <h3>Certified Supply Chain Professional (CSCP)</h3>
+          <span class="status soon-pill">Soon<i class="sp-bar"></i></span>
+        </div>
+      </article>
+      </div>
     </div>
+    <script>
+    (function(){var t=document.getElementById('certs');if(!t)return;
+      [].slice.call(t.children).forEach(function(c){var k=c.cloneNode(true);k.setAttribute('aria-hidden','true');k.classList.add('clone');
+        k.querySelectorAll('button').forEach(function(b){b.tabIndex=-1});t.appendChild(k)});})();
+    </script>
     <div class="also rv-st" id="also">
       <span><b>Saudi Council of Engineers</b> · Member, 2026</span>
       <span><b>Mastering Financial Management</b> · Coursera, 2025</span>
@@ -690,6 +789,14 @@ document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{
 
 /* lightbox */
 const lb=document.getElementById('lb'),li=document.getElementById('lbImg'),lc=document.getElementById('lbCap');
+// certificates slider: spotlight follows the cursor, a touch holds the slider, pause when off screen
+(function(){var m=document.getElementById('certMarquee');if(!m)return;
+  m.addEventListener('pointermove',function(e){var c=e.target.closest('.cert');if(!c)return;var r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')});
+  var t;m.addEventListener('touchstart',function(){clearTimeout(t);m.classList.add('hold')},{passive:true});
+  m.addEventListener('touchend',function(){clearTimeout(t);t=setTimeout(function(){m.classList.remove('hold')},2500)});
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){m.classList.toggle('off',!es[0].isIntersecting)}).observe(m);
+})();
 document.querySelectorAll('.cert-img').forEach(b=>b.addEventListener('click',()=>{li.src=b.dataset.full;li.alt=b.dataset.cap;lc.textContent=b.dataset.cap;lb.showModal()}));
 document.getElementById('lbClose').addEventListener('click',()=>lb.close());
 lb.addEventListener('click',e=>{if(e.target===lb)lb.close()});
