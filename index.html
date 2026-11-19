@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Osama Sunaallah | Industrial Engineer">
 <meta property="og:description" content="Supply chain & planning engineer building practical systems: procurement automation, supplier analytics, IoT and product design.">
-<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=9">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=10">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/">
@@ -23,17 +23,21 @@
 <script>
 /* 3D start-up queue: hero scenes build first, right after the first paint (the HydraCap bottle before the VeriGate device);
    scenes further down build only when they come near the screen, one at a time in idle moments, so first open stays smooth */
-(function(){var q=[],busy=false,started=false,seq=0,idle=window.requestIdleCallback||function(f){return setTimeout(f,60)};
-  function prio(el){return el.closest&&el.closest('.hero')?(el.classList.contains('bottle3d')?0:1):2}
-  function pump(){if(busy||!q.length)return;q.sort(function(a,b){return a.p-b.p||a.s-b.s});if(!started&&q[0].p!==0)return;busy=true;q.sort(function(a,b){return a.p-b.p||a.s-b.s});var job=q.shift();
+(function(){var q=[],busy=false,started=false,first=false,seq=0,idle=window.requestIdleCallback||function(f){return setTimeout(f,60)};
+  function prio(el){if(el.dataset&&el.dataset.q3d)return +el.dataset.q3d;return el.closest&&el.closest('.hero')?(el.classList.contains('bottle3d')?0:1):2}
+  function pump(){if(busy||!q.length)return;q.sort(function(a,b){return a.p-b.p||a.s-b.s});if(!started&&q[0].p!==0)return;
+    // nothing jumps ahead of the hero bottle (its module may arrive a little later); safety release after 2.5 s
+    if(!first&&q[0].p!==0&&document.querySelector('.hero .bottle3d'))return;busy=true;var job=q.shift();if(job.p===0)first=true;
     // after a hero scene, let the browser draw a frame (its first picture) before the next build starts
     var run=function(){try{job.fn()}catch(e){console.error(e)}var next=function(){busy=false;pump()};if(job.p<2)requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(next,0)})});else setTimeout(next,40)};
     if(job.p<2)setTimeout(run,0);else idle(run,{timeout:700})}
-  window.__q3d=function(el,fn){var go=function(){q.push({p:prio(el),s:seq++,fn:function(){fn(el)}});pump()};
+  window.__q3d=function(el,fn){var done=false,go=function(){if(done)return;done=true;q.push({p:prio(el),s:seq++,fn:function(){fn(el)}});pump()};
     if(!el||!('IntersectionObserver' in window))return go();
-    var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();go()}},{rootMargin:'350px 0px'});io.observe(el)};
+    var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();go()}},{rootMargin:'350px 0px'});io.observe(el);
+    // also build it in the quiet moment after the page has loaded, so scrolling down later never waits for a 3D build
+    var pre=function(){setTimeout(function(){io.disconnect();go()},2500)};if(document.readyState==='complete')pre();else addEventListener('load',pre,{once:true})};
   // start once the page has painted, so every visible hero scene is queued and sorted before the first build
-  function begin(){requestAnimationFrame(function(){requestAnimationFrame(function(){started=true;pump()})})}
+  function begin(){requestAnimationFrame(function(){requestAnimationFrame(function(){started=true;pump()})});setTimeout(function(){first=true;pump()},2500)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',begin);else begin();
 })();
 </script>
@@ -233,7 +237,7 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}}
 
 /* verigate spotlight */
-.spot{background:var(--bg-2);border-block:1px solid var(--line);overflow:hidden}
+.spot{background:transparent;border-block:1px solid var(--line);overflow:hidden}
 .spot-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
 @media (max-width:980px){.spot-grid{grid-template-columns:1fr}}
 .spot-grid>*{min-width:0}
@@ -304,7 +308,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 
 /* lightbox */
 dialog{border:0;padding:0;background:transparent;max-width:min(1100px,94vw);max-height:92vh}
-dialog::backdrop{background:rgba(3,5,8,.82);backdrop-filter:blur(6px)}
+dialog::backdrop{background:rgba(3,5,8,.9)}
 dialog[open]{animation:pop .4s var(--ease)}
 @keyframes pop{from{opacity:0;transform:scale(.96)}}
 dialog img{display:block;max-width:100%;max-height:84vh;border-radius:14px}
@@ -469,24 +473,24 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
 .fx .fx-words.fx-wait .fxw{opacity:0}
 .fx .fx-words.fx-go .fxw{animation:fx-word 1.05s var(--ease) calc(var(--fxd,0s) + var(--i,0) * 55ms) backwards}
 @keyframes fx-word{
-  0%{opacity:0;transform:translateY(.55em) rotate(1.5deg);filter:blur(10px) drop-shadow(0 0 0 transparent)}
-  45%{opacity:1;filter:blur(0) drop-shadow(0 0 16px var(--fx-glow))}
-  100%{opacity:1;transform:none;filter:blur(0) drop-shadow(0 0 0 transparent)}}
+  0%{opacity:0;transform:translateY(.55em) rotate(1.5deg)}
+  45%{opacity:1;text-shadow:0 0 16px var(--fx-glow)}
+  100%{opacity:1;transform:none;text-shadow:0 0 0 transparent}}
 /* hero name: glows once after it rises */
 .fx .hero h1 .ln>span{animation:rise 1.1s var(--ease) forwards,fx-glow 1.6s ease-out 1s}
 .fx .hero h1 .ln:nth-child(2)>span{animation-delay:.12s,1.15s}
-@keyframes fx-glow{0%{filter:drop-shadow(0 0 0 transparent)}35%{filter:drop-shadow(0 0 26px var(--fx-glow))}100%{filter:drop-shadow(0 0 0 transparent)}}
+@keyframes fx-glow{0%{text-shadow:0 0 0 transparent}35%{text-shadow:0 0 26px var(--fx-glow)}100%{text-shadow:0 0 0 transparent}}
+@media (hover:none),(pointer:coarse){.fx .hero h1 .ln>span{animation:rise 1.1s var(--ease) forwards}}
 /* lines: paragraphs, steps, eyebrows, small blocks float up into focus */
 .fx .fx-line.fx-wait{opacity:0}
 .fx .fx-line.fx-go{animation:fx-line .85s var(--ease) var(--fxd,0s) backwards}
-@keyframes fx-line{0%{opacity:0;transform:translateY(16px);filter:blur(6px)}100%{opacity:1;transform:none;filter:blur(0)}}
+@keyframes fx-line{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:none}}
 .fx .eyebrow.fx-go{animation-name:fx-line,fx-track;animation-duration:.85s,1s;animation-timing-function:var(--ease);animation-delay:var(--fxd,0s);animation-fill-mode:backwards}
 @keyframes fx-track{0%{letter-spacing:.42em}100%{letter-spacing:.14em}}
 .fx .eyebrow.fx-go::before{transform-origin:left;animation:fx-dash .7s var(--ease) calc(var(--fxd,0s) + .25s) backwards}
 @keyframes fx-dash{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
 /* objects (cards, 3D panes, stats, badges, buttons): soft blur-in plus a beam of light across */
-.fx .rv-st>*{filter:blur(6px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease),border-color .4s,box-shadow .4s}
-.fx .rv-st.in>*{filter:none}
+.fx .rv-st>*{transition:opacity .8s var(--ease),transform .8s var(--ease),border-color .4s,box-shadow .4s}
 .fx-shine{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:3}
 .fx-shine::before{content:"";position:absolute;top:-30%;bottom:-30%;left:0;width:42%;opacity:0;
   background:linear-gradient(100deg,transparent,var(--fx-sheen) 45%,color-mix(in srgb,var(--fx-sheen) 60%,#fff 12%) 50%,var(--fx-sheen) 55%,transparent);
@@ -570,27 +574,12 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
 .ws-btn svg{width:18px;height:18px}
 .ws-btn.prev svg{transform:rotate(180deg)}
 @media (prefers-reduced-motion: reduce){.work-loop{overflow-x:auto;-webkit-mask:none;mask:none}}
-/* Background: a quiet supply-route network instead of the grid (19.11.2026, v2: still routes, only the parcels move) */
-:root{--route:rgba(255,255,255,.075);--route-dash:rgba(255,255,255,.11);--route-a:#45E3B5;--route-b:#8B5CF6;--route-c:#ffffff;--sec-2:color-mix(in srgb,var(--bg-2) 72%,transparent)}
-:root[data-theme="light"]{--route:rgba(10,10,10,.07);--route-dash:rgba(10,10,10,.1);--route-a:#7A1F3D;--route-b:#A3324F;--route-c:#8A5A14}
-.bg-routes{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.br-stage{position:absolute;left:50%;top:50%;width:1440px;height:900px;transform:translate(-50%,-50%) scale(var(--brs,1));transform-origin:50% 50%}
-.br-stage svg{position:absolute;inset:0;display:block}
-.bg-routes .rt{fill:none;stroke:var(--route);stroke-width:1.1}
-.bg-routes .rt.dash{stroke:var(--route-dash);stroke-dasharray:2 9;stroke-linecap:round}
-.bg-routes .rn{fill:none;stroke:var(--route-dash);stroke-width:1}
-.bg-routes .rn-core{fill:var(--route-dash)}
-.rp{position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;will-change:offset-distance;
-  offset-rotate:0deg;animation-name:rp-run;animation-timing-function:linear;animation-iteration-count:infinite;opacity:.9}
-.rp::after{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff}
-.rp-a{background:radial-gradient(circle,color-mix(in srgb,var(--route-a) 70%,transparent) 0,color-mix(in srgb,var(--route-a) 22%,transparent) 35%,transparent 70%)}
-.rp-b{background:radial-gradient(circle,color-mix(in srgb,var(--route-b) 70%,transparent) 0,color-mix(in srgb,var(--route-b) 22%,transparent) 35%,transparent 70%)}
-.rp-c{background:radial-gradient(circle,color-mix(in srgb,var(--route-c) 55%,transparent) 0,color-mix(in srgb,var(--route-c) 16%,transparent) 35%,transparent 70%)}
-:root[data-theme="light"] .rp::after{background:var(--route-a)}
-@keyframes rp-run{from{offset-distance:0%}to{offset-distance:100%}}
-@media (prefers-reduced-motion: reduce){.rp{display:none}}
+/* Background stream v6 (19.11.2026): one live WebGL stream along the whole page, a parallax layer behind the content */
 main,footer{position:relative;z-index:1}
 .hero::before{display:none}
+.stream-gl,.stream-pre{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.stream-gl{opacity:0}.stream-gl.on{opacity:1}.stream-gl.fade{transition:opacity .5s ease}
+.stream-pre{will-change:transform}
 /* Light theme: one typeface for all text, unlike the dark theme (19.11.2026) */
 :root[data-theme="light"]{--fd:"EB Garamond",Georgia,serif}
 :root[data-theme="light"] body,:root[data-theme="light"] body *:not(svg):not(svg *){font-family:"EB Garamond",Georgia,serif!important;font-variant-numeric:lining-nums}
@@ -640,30 +629,51 @@ main,footer{position:relative;z-index:1}
 </style>
 </head>
 <body>
-<div class="bg-routes" aria-hidden="true"><div class="br-stage">
-  <svg width="1440" height="900" viewBox="0 0 1440 900" focusable="false">
-    <path class="rt" d="M -60 170 C 240 110 430 300 720 250 S 1180 110 1500 200"/>
-    <path class="rt" d="M -60 650 C 220 560 380 730 640 660 S 1060 470 1500 560"/>
-    <path class="rt" d="M 210 -60 C 270 200 110 420 300 560 S 520 860 460 960"/>
-    <path class="rt" d="M 1190 -60 C 1120 180 1330 360 1180 520 S 980 820 1090 960"/>
-    <path class="rt dash" d="M -60 430 C 300 405 520 475 760 430 S 1220 330 1500 380"/>
-    <path class="rt dash" d="M 560 -60 C 640 180 880 220 940 420 S 860 760 980 960"/>
-    <circle class="rn" cx="720" cy="250" r="4.5"/><circle class="rn-core" cx="720" cy="250" r="1.6"/>
-    <circle class="rn" cx="640" cy="660" r="4.5"/><circle class="rn-core" cx="640" cy="660" r="1.6"/>
-    <circle class="rn" cx="300" cy="560" r="4.5"/><circle class="rn-core" cx="300" cy="560" r="1.6"/>
-    <circle class="rn" cx="1180" cy="520" r="4.5"/><circle class="rn-core" cx="1180" cy="520" r="1.6"/>
-    <circle class="rn" cx="760" cy="430" r="4.5"/><circle class="rn-core" cx="760" cy="430" r="1.6"/>
-    <circle class="rn" cx="940" cy="420" r="4.5"/><circle class="rn-core" cx="940" cy="420" r="1.6"/>
-  </svg>
-  <i class="rp rp-a" style="offset-path:path('M -60 170 C 240 110 430 300 720 250 S 1180 110 1500 200');animation-duration:26s;animation-delay:0s"></i>
-  <i class="rp rp-b" style="offset-path:path('M -60 650 C 220 560 380 730 640 660 S 1060 470 1500 560');animation-duration:31s;animation-delay:-9s"></i>
-  <i class="rp rp-c" style="offset-path:path('M 210 -60 C 270 200 110 420 300 560 S 520 860 460 960');animation-duration:22s;animation-delay:-4s"></i>
-  <i class="rp rp-a" style="offset-path:path('M 1190 -60 C 1120 180 1330 360 1180 520 S 980 820 1090 960');animation-duration:28s;animation-delay:-15s"></i>
-  <i class="rp rp-b" style="offset-path:path('M -60 430 C 300 405 520 475 760 430 S 1220 330 1500 380');animation-duration:34s;animation-delay:-20s"></i>
-  <i class="rp rp-c" style="offset-path:path('M 560 -60 C 640 180 880 220 940 420 S 860 760 980 960');animation-duration:24s;animation-delay:-11s"></i>
-  <i class="rp rp-c" style="offset-path:path('M -60 170 C 240 110 430 300 720 250 S 1180 110 1500 200');animation-duration:26s;animation-delay:-13s"></i>
-  <i class="rp rp-a" style="offset-path:path('M -60 650 C 220 560 380 730 640 660 S 1060 470 1500 560');animation-duration:31s;animation-delay:-24s"></i>
-</div></div>
+<canvas class="stream-pre" aria-hidden="true"></canvas>
+<script>
+/* Stream first frame (20.11.2026): drawn instantly with a plain 2D canvas, using the same maths, strands and seeds as the
+   live WebGL stream at its first frame. The live stream replaces it in the same frame it starts, so the stream is there the
+   moment the page opens. Until then it follows the scroll at the same 60% speed. */
+(function(){
+  var c=document.querySelector('.stream-pre'),g=c&&c.getContext('2d');if(!g||!window.WebGLRenderingContext){if(c)c.remove();return}
+  var W=innerWidth,H=innerHeight,m=W<760,pr=Math.min(devicePixelRatio||1,m?1.25:1.5),L=m?48:120,light=document.documentElement.dataset.theme==='light';
+  c.width=Math.round(W*pr);c.height=Math.round(H*pr);g.setTransform(pr,0,0,pr,0,0);
+  var P=[[W*1.12,-H*.08,50,1],[W*.8,H*.2,150,1],[W*(m?.42:.46),H*(m?.8:.72),22,1],[W*.7,H*.98,160,.95],[W*(m?.93:.87),H*1.25,140,.75],[W*(m?.8:.66),H*2.1,(m?90:130)+30,.2]];
+  function cr(a,b,c2,d,u){var u2=u*u,u3=u2*u;return .5*(2*b+(-a+c2)*u+(2*a-5*b+4*c2-d)*u2+(-a+3*b-3*c2+d)*u3)}
+  var S=[],Q=[P[0]].concat(P,[P[P.length-1]]),step=m?18:13;
+  for(var i=1;i<Q.length-2;i++){var n=Math.max(2,Math.ceil(Math.hypot(Q[i+1][0]-Q[i][0],Q[i+1][1]-Q[i][1])/step));
+    for(var k=0;k<n;k++){var u=k/n;S.push([cr(Q[i-1][0],Q[i][0],Q[i+1][0],Q[i+2][0],u),cr(Q[i-1][1],Q[i][1],Q[i+1][1],Q[i+2][1],u),Q[i][2]+(Q[i+1][2]-Q[i][2])*u,Q[i][3]+(Q[i+1][3]-Q[i][3])*u])}
+    if(S[S.length-1][1]>H*1.3)break}
+  var N=S.length,len=0,AS=[],NX=[],NY=[];
+  for(i=0;i<N;i++){var a=S[Math.max(0,i-1)],b=S[Math.min(N-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
+    if(i)len+=Math.hypot(S[i][0]-S[i-1][0],S[i][1]-S[i-1][1]);AS[i]=len;NX[i]=-dy/l;NY[i]=dx/l}
+  function hex(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)]}
+  var C1=hex(light?'#3CCFA4':'#45E3B5'),HOT=hex(light?'#1FB088':'#D2FFF0'),ALT=hex(light?'#2FB8C4':'#4FD6E6');
+  function mix(x,y,t){return [x[0]+(y[0]-x[0])*t,x[1]+(y[1]-x[1])*t,x[2]+(y[2]-x[2])*t]}
+  function sm(e0,e1,x){var t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t)}
+  g.globalCompositeOperation=light?'source-over':'lighter';g.lineCap='butt';g.lineJoin='round';var K2=light?.85:.33; // 2D strokes read brighter than the soft-edged GL strips
+  function pass(width,alpha,blur,glint){
+    for(var s2=0;s2<L;s2++){var j=s2/(L-1),sd=(Math.sin((s2+1)*12.9898)*43758.5453)%1;if(sd<0)sd+=1;
+      var core=1-Math.abs(j-.5)*2,col=mix(mix(C1,ALT,((sd*7.31)%1)>=.8?.55:0),HOT,Math.min(1,sm(.78,1,core)*.65)),base=(.09+.8*Math.pow(core,1.5))*alpha*.67*K2,
+        pts=[];
+      for(i=0;i<N;i++){var p=S[i],ph=AS[i]*.0017,o=p[2]*((j-.5)*Math.cos(ph)+.16*Math.sin(ph*1.3+j*6.2831+sd*3))+Math.sin(AS[i]*.011+j*9)*(2.5+(1-p[3])*5);
+        pts.push([p[0]+NX[i]*o,p[1]+NY[i]*o])}
+      for(i=0;i<N-1;i+=4){var e=Math.min(N-1,i+4),f=S[i][3],sh=.72+.28*Math.sin(AS[i]*.021+sd*19),gl=Math.pow(Math.max(0,Math.sin(AS[i]*.006+sd*6.2831)),22)*glint,
+          aa=(base*sh+gl*(.6+.8*f)*alpha*.67*K2)/(1+(1-f)*blur*.9),cc=gl>.02?mix(col,HOT,Math.min(1,gl)):col;
+        g.lineWidth=width*(1+(1-f)*blur);g.strokeStyle='rgba('+cc.map(Math.round).join(',')+','+Math.min(1,aa).toFixed(4)+')';
+        g.beginPath();g.moveTo(pts[i][0],pts[i][1]);for(var q=i+1;q<=e;q++)g.lineTo(pts[q][0],pts[q][1]);g.stroke()}
+    }
+  }
+  pass(14,light?.05:.1,1.6,.4);pass(1.9,light?.34:1,4,1);
+  // the soft bloom at the hook's apex
+  var ax=P[2][0],ay=P[2][1],r=(m?220:320)/2,ba=light?.16:.55,gr=g.createRadialGradient(ax,ay,0,ax,ay,r),
+    st=[[0,1,1],[.25,.335/.55,.5],[.5,.124/.55,0],[.75,.039/.55,0],[1,0,0]];
+  st.forEach(function(z){var cc=mix(C1,HOT,z[2]);gr.addColorStop(z[0],'rgba('+cc.map(Math.round).join(',')+','+(z[1]*ba).toFixed(3)+')')});
+  g.fillStyle=gr;g.fillRect(ax-r,ay-r,r*2,r*2);
+  var mv=function(){c.style.transform='translate3d(0,'+(-scrollY*.6).toFixed(1)+'px,0)'};addEventListener('scroll',mv,{passive:true});mv();
+  window.__streamPre=function(){removeEventListener('scroll',mv);c.remove()};
+})();
+</script>
 <a class="skip" href="#main">Skip to content</a>
 <div id="prog" aria-hidden="true"></div>
 
@@ -763,7 +773,7 @@ main,footer{position:relative;z-index:1}
         <div class="xp-when"><span class="xp-big">2024</span><small>Jun – Jul 2024</small></div>
         <div class="xp-rail" aria-hidden="true"><i class="xp-line"><i class="xp-fill"></i></i><i class="xp-dot"></i></div>
         <div class="xp-role">
-          <span class="xp-logo"><img src="assets/logo-alfaisal.webp" alt="Alfaisal University logo" width="360" height="360" decoding="async"></span>
+          <span class="xp-logo"><img src="assets/logo-alfaisal.webp" alt="Alfaisal University logo" width="360" height="360" loading="lazy" decoding="async"></span>
           <div><h3 class="xp-co">Alfaisal University</h3><span class="xp-title">Teaching &amp; Academic Coordinator</span><small>Riyadh, Saudi Arabia</small></div>
         </div>
       </li>
@@ -771,7 +781,7 @@ main,footer{position:relative;z-index:1}
         <div class="xp-when"><span class="xp-big">2025</span><small>Jun – Aug 2025</small></div>
         <div class="xp-rail" aria-hidden="true"><i class="xp-line"><i class="xp-fill"></i></i><i class="xp-dot"></i></div>
         <div class="xp-role">
-          <span class="xp-logo"><img src="assets/logo-danone.webp" alt="Al Safi Danone logo" width="360" height="360" decoding="async"></span>
+          <span class="xp-logo"><img src="assets/logo-danone.webp" alt="Al Safi Danone logo" width="360" height="360" loading="lazy" decoding="async"></span>
           <div><h3 class="xp-co">Al Safi Danone</h3><span class="xp-title">Industrial Engineering Intern</span><small>Al Kharj, Saudi Arabia</small></div>
         </div>
       </li>
@@ -779,7 +789,7 @@ main,footer{position:relative;z-index:1}
         <div class="xp-when"><span class="xp-big">NOW</span><small>Jul 2026 – Present</small></div>
         <div class="xp-rail" aria-hidden="true"><i class="xp-line"><i class="xp-fill"></i></i><i class="xp-dot"></i></div>
         <div class="xp-role">
-          <span class="xp-logo"><img src="assets/logo-et.webp" alt="Energy Tracks logo" width="360" height="360" decoding="async"></span>
+          <span class="xp-logo"><img src="assets/logo-et.webp" alt="Energy Tracks logo" width="360" height="360" loading="lazy" decoding="async"></span>
           <div><h3 class="xp-co">Energy Tracks</h3><span class="xp-title">Supply Chain &amp; Planning Engineer</span><small>Riyadh, Saudi Arabia</small></div>
         </div>
       </li>
@@ -787,7 +797,7 @@ main,footer{position:relative;z-index:1}
   </div>
 </section>
 
-<section class="sec" id="work" style="background:var(--sec-2);border-block:1px solid var(--line)">
+<section class="sec" id="work" style="border-block:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head rv">
       <div><span class="eyebrow">Selected work</span><h2>Projects that solve<br><span class="grad-text">real operations problems.</span></h2></div>
@@ -901,7 +911,7 @@ main,footer{position:relative;z-index:1}
   </div>
 </section>
 
-<section class="sec" id="credentials" style="background:var(--sec-2);border-block:1px solid var(--line)">
+<section class="sec" id="credentials" style="border-block:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head rv">
       <div><span class="eyebrow">Credentials</span><h2>Certifications<br><span class="grad-text">&amp; Licenses.</span></h2></div>
@@ -1026,8 +1036,11 @@ tb.addEventListener('click',()=>{root.dataset.theme=isLight()?'dark':'light';try
 
 /* nav + progress */
 const nav=document.getElementById('nav'),prog=document.getElementById('prog');
-const onScroll=()=>{nav.classList.toggle('scrolled',scrollY>20);const h=document.documentElement.scrollHeight-innerHeight;prog.style.transform=`scaleX(${h>0?scrollY/h:0})`};
-addEventListener('scroll',onScroll,{passive:true});requestAnimationFrame(onScroll);
+// one update per frame; the page height is cached (re-read on resize), so scrolling never forces a layout
+let maxY=1,navOn=null,sTick=false;const measure=()=>{maxY=Math.max(1,document.documentElement.scrollHeight-innerHeight)};
+const onScroll=()=>{sTick=false;const on=scrollY>20;if(on!==navOn){navOn=on;nav.classList.toggle('scrolled',on)}prog.style.transform=`scaleX(${Math.min(1,scrollY/maxY)})`};
+addEventListener('scroll',()=>{if(!sTick){sTick=true;requestAnimationFrame(onScroll)}},{passive:true});
+addEventListener('resize',measure);if('ResizeObserver' in window)new ResizeObserver(measure).observe(document.body);measure();requestAnimationFrame(onScroll);
 const links=[...document.querySelectorAll('.nav-links a')];
 const spy=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
 links.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)spy.observe(s)});
@@ -1160,8 +1173,8 @@ if(mounts.length){
   }));
 }
 </script>
-<script type="module" src="assets/hydracap3d.js?v=6"></script>
-<script type="module" src="assets/verigate-explode.js?v=4"></script>
+<script type="module" src="assets/hydracap3d.js?v=7"></script>
+<script type="module" src="assets/verigate-explode.js?v=5"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
 (() => {
@@ -1237,12 +1250,15 @@ if(mounts.length){
 (function(){
   var rows=[].slice.call(document.querySelectorAll('.xp-row'));if(!rows.length)return;
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,ticking=false;
+  // read every box first, then write (no read-write-read layout thrash), and only while the timeline is near the screen
+  var dots=rows.map(function(r){return r.querySelector('.xp-dot')}),last=rows.map(function(){return ''}),near=true;
+  if('IntersectionObserver' in window)new IntersectionObserver(function(es){near=es[0].isIntersecting;if(near)onScroll()},{rootMargin:'200px 0px'}).observe(rows[0].parentNode);
   function update(){
-    ticking=false;var mark=innerHeight*0.62;
-    rows.forEach(function(r){
-      var b=r.getBoundingClientRect(),p=reduce?1:Math.max(0,Math.min(1,(mark-b.top)/Math.max(1,b.height)));
-      r.style.setProperty('--p',p.toFixed(3));
-      var dot=r.querySelector('.xp-dot'),d=dot.getBoundingClientRect();
+    ticking=false;if(!near)return;var mark=innerHeight*0.62;
+    var m=rows.map(function(r,i){return [r.getBoundingClientRect(),dots[i].getBoundingClientRect()]});
+    rows.forEach(function(r,i){
+      var b=m[i][0],d=m[i][1],p=(reduce?1:Math.max(0,Math.min(1,(mark-b.top)/Math.max(1,b.height)))).toFixed(3);
+      if(p!==last[i]){last[i]=p;r.style.setProperty('--p',p)}
       r.classList.toggle('lit',reduce||d.top+d.height/2<=mark);
     });
   }
@@ -1280,8 +1296,10 @@ if(mounts.length){
     var dt=Math.min(250,t-(last||t));last=t;
     k+=((hover?.4:1)-k)*Math.min(1,dt/220); // smooth slow-down on hover, never a full stop
     if(still){requestAnimationFrame(frame);return}
+    var x0=x;
     if(tw){var p=Math.min(1,(t-tw.t0)/tw.d);x=tw.a+(tw.b-tw.a)*ease(p);if(p>=1)tw=null}
     else if(!paused())x+=speed()*k*dt/1000;
+    if(x===x0&&!drag&&!(native&&(touching||Date.now()<resumeAt))){requestAnimationFrame(frame);return}
     if(native){ if(touching||Date.now()<resumeAt){x=area.scrollLeft}else{wrap();area.scrollLeft=x} }
     else{wrap();track.style.transform='translate3d('+(-x).toFixed(2)+'px,0,0)'}
     requestAnimationFrame(frame);
@@ -1387,9 +1405,159 @@ if(mounts.length){
   targets.forEach(function(t){io.observe(t)});
 })();
 </script>
-<script>/* background routes: scale the 1440x900 stage to cover the window */
-(function(){var st=document.querySelector('.br-stage');if(!st)return;
-  function fit(){st.style.setProperty('--brs',Math.max(innerWidth/1440,innerHeight/900).toFixed(4))}
-  fit();addEventListener('resize',fit);})();</script>
+<script type="module">
+/* Background stream v6 (19.11.2026): one long stream of mint light laid along the whole page, studied from the motion of
+   Osama's reference (a bright hook in the hero, then a softer, out-of-focus band drifting down the sections). It is drawn
+   live with WebGL in a fixed canvas: the stream lives in its own "stream space" and travels at 60% of the scroll speed
+   (a parallax layer behind the page), eased by a fast spring so it glides. ~140 fine strands twist around one spine;
+   glints run along them, sparkles drift around them, and they go soft (thicker, dimmer) where the stream is out of focus. */
+import * as THREE from 'three';
+function startStream(cv){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let R;try{R=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:innerWidth>=760,powerPreference:'high-performance'})}catch(e){cv.remove();return}
+  R.setClearColor(0x000000,0);
+  const scene=new THREE.Scene(),cam=new THREE.Camera(),K=.6;
+  const cr=(a,b,c,d,u)=>{const u2=u*u,u3=u2*u;return .5*(2*b+(-a+c)*u+(2*a-5*b+4*c-d)*u2+(-a+3*b-3*c+d)*u3)};
+  // control points [x, y, width, focus] in stream space (y in px from the top of the stream)
+  function points(W,H,Hs,m){
+    const P=[[W*1.12,-H*.08,50,1],[W*.8,H*.2,150,1],[W*(m?.42:.46),H*(m?.8:.72),22,1],[W*.7,H*.98,160,.95],[W*(m?.93:.87),H*1.25,140,.75]];
+    const y0=H*1.25,y1=Hs-H*.75,n=Math.max(1,Math.round((y1-y0)/(H*.85)));
+    for(let i=1;i<n;i++){const odd=i%2;P.push([W*(odd?(m?.8:.66):(m?.95:.9)),y0+(y1-y0)*i/n,(m?90:130)+(odd?30:0),odd?.2:.3])}
+    // the end: down the right side, then one low sweep out to the bottom-left under the contact text
+    P.push([W*(m?.92:.86),y1,m?100:140,.35],[W*(m?.9:.84),Hs-H*.4,m?100:150,.55],[W*.62,Hs-(m?170:190),m?90:130,.75],[W*.25,Hs-(m?140:150),m?70:110,.8],[-W*.2,Hs-(m?120:130),60,.8]);
+    return P;
+  }
+  function sample(pts,step){
+    const out=[],P=[pts[0],...pts,pts[pts.length-1]];
+    for(let i=1;i<P.length-2;i++){const n=Math.max(2,Math.ceil(Math.hypot(P[i+1][0]-P[i][0],P[i+1][1]-P[i][1])/step));
+      for(let k=0;k<n;k++){const u=k/n;out.push([cr(P[i-1][0],P[i][0],P[i+1][0],P[i+2][0],u),cr(P[i-1][1],P[i][1],P[i+1][1],P[i+2][1],u),
+        P[i][2]+(P[i+1][2]-P[i][2])*u,P[i][3]+(P[i+1][3]-P[i][3])*u])}}
+    out.push(pts[pts.length-1].slice());return out;
+  }
+  const vert=`
+    attribute vec2 aP,aN;attribute float aW,aF,aS,aU,aSide,aJ,aSeed;
+    uniform vec2 uRes;uniform float uScroll,uTime,uThick,uBlur;
+    varying float vU,vJ,vSide,vF,vS,vSeed;
+    void main(){
+      float s=aJ-.5,ph=aS*.0017+uTime*.16;
+      float o=aW*(s*cos(ph)+.16*sin(ph*1.3+aJ*6.2831+aSeed*3.))+sin(aS*.011+aJ*9.+uTime*.55)*(2.5+(1.-aF)*5.);
+      float th=uThick*(1.+(1.-aF)*uBlur);
+      vec2 p=aP+aN*(o+aSide*th*.5);p.y-=uScroll;
+      vU=aU;vJ=aJ;vSide=aSide;vF=aF;vS=aS;vSeed=aSeed;
+      gl_Position=vec4(p.x/uRes.x*2.-1.,1.-p.y/uRes.y*2.,0.,1.);
+    }`;
+  // the stream passes behind the sliders and the footer: it fades out inside their boxes (uM, screen px, soft edges)
+  const MASK=`uniform vec4 uM[6];uniform float uPR;uniform vec2 uRes;
+    float hide(){vec2 f=vec2(gl_FragCoord.x/uPR,uRes.y-gl_FragCoord.y/uPR);float h=0.;
+      for(int i=0;i<6;i++){vec4 r=uM[i];h=max(h,smoothstep(r.x-30.,r.x+4.,f.x)*smoothstep(r.z+30.,r.z-4.,f.x)*smoothstep(r.y-30.,r.y+4.,f.y)*smoothstep(r.w+30.,r.w-4.,f.y));}
+      return 1.-h;}`;
+  const frag=MASK+`
+    uniform vec3 uColor,uHot,uAlt;uniform float uFlow,uAlpha,uLight,uBlur,uGlint;
+    varying float vU,vJ,vSide,vF,vS,vSeed;
+    void main(){
+      float core=1.-abs(vJ-.5)*2.;
+      float ends=smoothstep(0.,.025,vU)*smoothstep(1.,.975,vU);
+      float edge=1.-vSide*vSide;
+      float glint=pow(max(0.,sin(vS*.006-uFlow*1.8+vSeed*6.2831)),22.)*uGlint;
+      float shim=.72+.28*sin(vS*.021-uFlow*.9+vSeed*19.);
+      float a=((.09+.8*pow(core,1.5))*shim+glint*(.6+.8*vF))*ends*edge*uAlpha/(1.+(1.-vF)*uBlur*.9);
+      vec3 c=mix(uColor,uAlt,step(.8,fract(vSeed*7.31))*.55);
+      c=mix(c,uHot,clamp(smoothstep(.78,1.,core)*.65+glint,0.,1.));
+      a*=hide();gl_FragColor=uLight>.5?vec4(c,min(a,1.)):vec4(c*a,a);
+    }`;
+  const pvert=`
+    attribute vec2 aP;attribute float aSeed,aSize;uniform float uScroll,uTime,uPR;uniform vec2 uRes;varying float vA;
+    void main(){
+      vec2 p=aP+vec2(sin(uTime*.25+aSeed*40.),cos(uTime*.21+aSeed*27.))*9.;p.y-=uScroll;
+      vA=.25+.75*pow(.5+.5*sin(uTime*(.6+aSeed)+aSeed*60.),3.);
+      gl_PointSize=aSize*uPR;gl_Position=vec4(p.x/uRes.x*2.-1.,1.-p.y/uRes.y*2.,0.,1.);
+    }`;
+  const pfrag=MASK+`
+    uniform vec3 uHot;uniform float uAlpha,uLight;varying float vA;
+    void main(){float d=length(gl_PointCoord-.5);float a=smoothstep(.5,.05,d)*vA*uAlpha*hide();
+      gl_FragColor=uLight>.5?vec4(uHot,a):vec4(uHot*a,a);}`;
+  const U=(o)=>Object.assign({uRes:{value:new THREE.Vector2()},uScroll:{value:0},uTime:{value:0},uFlow:{value:0},uThick:{value:1.6},
+    uBlur:{value:4},uGlint:{value:1},uAlpha:{value:1},uLight:{value:0},uPR:{value:1},uM:{value:[0,1,2,3,4,5].map(()=>new THREE.Vector4(-9e3,-9e3,-9e3,-9e3))},
+    uColor:{value:new THREE.Color('#45E3B5')},uHot:{value:new THREE.Color('#D2FFF0')},uAlt:{value:new THREE.Color('#4FD6E6')}},o);
+  const mat=(u,v,f)=>new THREE.ShaderMaterial({uniforms:u,vertexShader:v,fragmentShader:f,transparent:true,depthTest:false,depthWrite:false,blending:THREE.AdditiveBlending});
+  const glow=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:14},uAlpha:{value:.1},uBlur:{value:1.6},uGlint:{value:.4}}),vert,frag));
+  const lines=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:1.9}}),vert,frag));
+  const sparks=new THREE.Points(new THREE.BufferGeometry(),mat(U({uAlpha:{value:.9}}),pvert,pfrag));
+  // the soft bloom at the hook's apex: one big point with a radial falloff
+  // a real quad (points can be capped in size by the GPU, a quad is exact)
+  const bvert=`attribute vec2 aP,aC;uniform float uScroll,uSize;uniform vec2 uRes;varying vec2 vC;
+    void main(){vC=aC;vec2 p=aP+aC*uSize*.5;p.y-=uScroll;gl_Position=vec4(p.x/uRes.x*2.-1.,1.-p.y/uRes.y*2.,0.,1.);}`;
+  const bfrag=MASK+`uniform vec3 uHot,uColor;uniform float uAlpha,uLight;
+    varying vec2 vC;void main(){float d=length(vC);float a=(smoothstep(1.,0.,d)*.45+smoothstep(.45,0.,d)*.55)*uAlpha*hide();
+      vec3 c=mix(uColor,uHot,smoothstep(.5,0.,d));gl_FragColor=uLight>.5?vec4(c,a):vec4(c*a,a);}`;
+  const bloomG=new THREE.BufferGeometry();bloomG.setAttribute('position',new THREE.BufferAttribute(new Float32Array(12),3));bloomG.setAttribute('aP',new THREE.BufferAttribute(new Float32Array(8),2));
+  bloomG.setAttribute('aC',new THREE.BufferAttribute(new Float32Array([-1,-1,1,-1,1,1,-1,1]),2));bloomG.setIndex([0,1,2,0,2,3]);
+  const bloom=new THREE.Mesh(bloomG,mat(U({uAlpha:{value:.55},uSize:{value:320}}),bvert,bfrag));
+  const all=[glow,lines,sparks,bloom];all.forEach(o=>{o.frustumCulled=false;scene.add(o)});
+  let apex=[0,0],key='',boxes=[];
+  // page-space boxes of the skills, the sliders and the footer (re-read on every rebuild)
+  const readBoxes=()=>{boxes=[...document.querySelectorAll('#skills,.cert-marquee,.work-loop,footer')].slice(0,6).map(e=>{const r=e.getBoundingClientRect();return [r.left,r.top+scrollY,r.right,r.bottom+scrollY]})};
+  function build(){
+    const W=innerWidth,H=innerHeight,m=W<760,max=Math.max(0,document.documentElement.scrollHeight-H),Hs=max*K+H,k=W+'x'+H+'x'+Math.round(Hs);
+    readBoxes();if(k===key)return;key=k;
+    const P=points(W,H,Hs,m),S=sample(P,m?18:13),n=S.length;apex=[P[2][0],P[2][1]];bloomG.attributes.aP.array.set([...apex,...apex,...apex,...apex]);bloomG.attributes.aP.needsUpdate=true;bloom.material.uniforms.uSize.value=m?220:320;
+    const aP=new Float32Array(n*4),aN=new Float32Array(n*4),aW=new Float32Array(n*2),aF=new Float32Array(n*2),aS=new Float32Array(n*2),aU=new Float32Array(n*2),aSide=new Float32Array(n*2),idx=[];
+    let len=0;
+    for(let i=0;i<n;i++){
+      const a=S[Math.max(0,i-1)],b=S[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
+      if(i)len+=Math.hypot(S[i][0]-S[i-1][0],S[i][1]-S[i-1][1]);
+      for(let sd=0;sd<2;sd++){const v=i*2+sd;aP[v*2]=S[i][0];aP[v*2+1]=S[i][1];aN[v*2]=-dy/l;aN[v*2+1]=dx/l;aW[v]=S[i][2];aF[v]=S[i][3];aS[v]=len;aSide[v]=sd?1:-1}
+      if(i<n-1){const b0=i*2;idx.push(b0,b0+1,b0+2,b0+1,b0+3,b0+2)}
+    }
+    for(let v=0;v<n*2;v++)aU[v]=aS[v]/len;
+    const L=m?48:120,aJ=new Float32Array(L),aSeed=new Float32Array(L);for(let i=0;i<L;i++){aJ[i]=i/(L-1);aSeed[i]=((Math.sin((i+1)*12.9898)*43758.5453)%1+1)%1}
+    const g=new THREE.InstancedBufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*2*3),3));
+    [['aP',aP,2],['aN',aN,2],['aW',aW,1],['aF',aF,1],['aS',aS,1],['aU',aU,1],['aSide',aSide,1]].forEach(([nm,arr,sz])=>g.setAttribute(nm,new THREE.BufferAttribute(arr,sz)));
+    g.setAttribute('aJ',new THREE.InstancedBufferAttribute(aJ,1));g.setAttribute('aSeed',new THREE.InstancedBufferAttribute(aSeed,1));
+    g.setIndex(idx);g.instanceCount=L;
+    // sparkles: scattered around the spine, denser where the stream is in focus
+    const NP=m?90:220,pp=new Float32Array(NP*2),ps=new Float32Array(NP),pz=new Float32Array(NP);let c=0;
+    while(c<NP){const s=S[Math.floor(Math.random()*n)];if(Math.random()>.25+.75*s[3])continue;
+      const i=S.indexOf(s),a=S[Math.max(0,i-1)],b=S[Math.min(n-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,o=(Math.random()-.5)*s[2]*1.6;
+      pp[c*2]=s[0]-dy/l*o;pp[c*2+1]=s[1]+dx/l*o;ps[c]=Math.random();pz[c]=(m?1.5:2)+Math.random()*Math.random()*(m?3:4.5);c++}
+    const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(new Float32Array(NP*3),3));
+    pg.setAttribute('aP',new THREE.BufferAttribute(pp,2));pg.setAttribute('aSeed',new THREE.BufferAttribute(ps,1));pg.setAttribute('aSize',new THREE.BufferAttribute(pz,1));
+    glow.geometry.dispose();lines.geometry.dispose();sparks.geometry.dispose();
+    glow.geometry=g;lines.geometry=g;sparks.geometry=pg;
+  }
+  function theme(){
+    const L=document.documentElement.dataset.theme==='light';
+    for(const o of all){const u=o.material.uniforms;u.uLight.value=L?1:0;u.uColor.value.set(L?'#3CCFA4':'#45E3B5');u.uHot.value.set(L?'#1FB088':'#D2FFF0');u.uAlt.value.set(L?'#2FB8C4':'#4FD6E6');
+      o.material.blending=L?THREE.NormalBlending:THREE.AdditiveBlending;o.material.needsUpdate=true}
+    glow.material.uniforms.uAlpha.value=L?.05:.09;lines.material.uniforms.uAlpha.value=L?.34:1;sparks.material.uniforms.uAlpha.value=L?.5:.9;bloom.material.uniforms.uAlpha.value=L?.16:.55;
+  }
+  let W=0,H=0,sp=scrollY*K,vel=0,flow=0,time=0,last=0,lastY=scrollY;
+  function size(){W=innerWidth;H=innerHeight;const pr=Math.min(devicePixelRatio||1,W<760?1.25:1.5);R.setPixelRatio(pr);R.setSize(W,H,false);for(const o of all)o.material.uniforms.uPR.value=pr;build()}
+  function frame(now){
+    const dt=Math.min(.05,(now-(last||now))/1000);last=now;
+    if(!document.hidden){
+      const target=scrollY*K;sp=reduce?target:sp+(target-sp)*Math.min(1,dt*10); // fast spring: the stream glides with the scroll
+      const dy=Math.abs(scrollY-lastY);lastY=scrollY;vel+=(Math.min(1,dy/30)-vel)*Math.min(1,dt*6);
+      if(!reduce){time+=dt;flow+=dt*(1+vel*4)}
+      for(const o of all){const u=o.material.uniforms;u.uRes.value.set(W,H);u.uScroll.value=sp;u.uTime.value=time;u.uFlow.value=flow}
+      for(const o of all){const M=o.material.uniforms.uM.value;for(let i=0;i<6;i++){const b=boxes[i];if(b)M[i].set(b[0],b[1]-scrollY,b[2],b[3]-scrollY);else M[i].set(-9e3,-9e3,-9e3,-9e3)}}
+      R.render(scene,cam);
+      if(first){first=false;cv.classList.add('on');if(window.__streamPre){window.__streamPre();window.__streamPre=null}}
+    }
+    requestAnimationFrame(frame);
+  }
+  size();theme();
+  let rt;const soon=()=>{clearTimeout(rt);rt=setTimeout(size,200)};
+  // the first frame is drawn already (2D, at page open): swap to the live stream in the same frame, no fade; otherwise fade in
+  let first=true;const go=()=>{if(!window.__streamPre)cv.classList.add('fade');requestAnimationFrame(frame)};
+  addEventListener('resize',soon);if('ResizeObserver' in window)new ResizeObserver(soon).observe(document.body);
+  new MutationObserver(theme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  (R.compileAsync?R.compileAsync(scene,cam).catch(()=>{}):Promise.resolve()).then(go);
+}
+// starts in the 3D queue right after the hero objects (priority 0.5: right after the hero bottle, before the device), then fades in
+if(window.WebGLRenderingContext){const cv=document.createElement('canvas');cv.className='stream-gl';cv.setAttribute('aria-hidden','true');cv.dataset.q3d='0.5';
+  document.body.insertBefore(cv,document.body.firstChild);(window.__q3d||((e,f)=>f(e)))(cv,startStream)}
+</script>
 </body>
 </html>
