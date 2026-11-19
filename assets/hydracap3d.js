@@ -349,6 +349,8 @@ function mountBottles(el){
     R.render(S, cam);
     if (!el.classList.contains('ready')) el.classList.add('ready');
   };
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); }, { rootMargin: '120px' }).observe(el);
+  // compile the shaders in the background first, so the first frame does not freeze the page
+  // the hero bottle shows as soon as possible; other bottles compile their shaders in the background first
+  (el.closest('.hero') || !R.compileAsync ? Promise.resolve() : R.compileAsync(S, cam).catch(() => {})).then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); }, { rootMargin: '120px' }).observe(el));
 }
-document.querySelectorAll('.bottle3d').forEach(mountBottles);
+document.querySelectorAll('.bottle3d').forEach(el => (window.__q3d || ((e, f) => f(e)))(el, mountBottles));

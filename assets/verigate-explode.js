@@ -10,7 +10,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 const host = document.querySelector('.vg-xp');
-if (host) start(host);
+if (host) (window.__q3d || ((e, f) => f(e)))(host, start);
 
 function start(host){
   const V3 = THREE.Vector3;
@@ -22,7 +22,7 @@ function start(host){
 
   /* ---------- renderer, scene, light ---------- */
   const R = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  R.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
   R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
   host.prepend(R.domElement);
   const S = new THREE.Scene();
@@ -309,5 +309,6 @@ function start(host){
       p.el.style.opacity = show; p.el.style.transform = `translate(${(tmp.x + 1) / 2 * w}px, ${(1 - tmp.y) / 2 * h}px) translate(-50%, -50%) scale(${.9 + show * .1})`;
     });
   };
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '120px' }).observe(host);
+  // compile the shaders in the background first, so the first frame does not freeze the page
+  (R.compileAsync ? R.compileAsync(S, cam).catch(() => {}) : Promise.resolve()).then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '120px' }).observe(host));
 }
