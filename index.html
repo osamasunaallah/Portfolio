@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Osama Sunaallah | Industrial Engineer">
 <meta property="og:description" content="Supply chain & planning engineer building practical systems: procurement automation, supplier analytics, IoT and product design.">
-<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=11">
+<meta property="og:image" content="https://osamasunaallah.github.io/Portfolio/assets/og.png?v=12">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:url" content="https://osamasunaallah.github.io/Portfolio/">
@@ -50,14 +50,14 @@
 <link rel="preload" href="assets/verigate-device.glb" as="fetch" type="model/gltf-binary" crossorigin>
 <style>
 :root{
-  --bg:#0B0B0C; --bg-2:#111113; --card:#161618; --card-2:#1C1C1F; --fg:#F2F2F4; --fg-soft:#C9C9D1; --muted:#8E8E99;
+  --bg:#151517; --bg-2:#1A1A1D; --card:#212124; --card-2:#28282B; --fg:#F4F4F6; --fg-soft:#D6D6DC; --muted:#A3A3AD;
   --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-  --a1:#A6E22E; --a2:#E4FF8A; --a3:#F5B547; --on-a:#101703; --mint:#C6FF3A; --mint-2:#E4FF8A; --sig:198,255,58; --sig-2:220,255,140; --sig-3:238,255,200; --on-sig:#101703;
+  --a1:#FF4F9A; --a2:#FFA6CF; --a3:#F5B547; --on-a:#2B0717; --mint:#FF6FB0; --mint-2:#FFB0D3; --sig:255,111,176; --sig-2:255,160,205; --sig-3:255,210,230; --on-sig:#2B0717;
   --fd:"EB Garamond",Georgia,serif; --hw:600; --aur:.28;
   --grad:linear-gradient(120deg,var(--a1),var(--a2));
   --grad-btn:linear-gradient(120deg,var(--mint),var(--mint-2));
-  --glow:0 0 0 1px rgba(166,226,46,.30),0 18px 44px -24px rgba(166,226,46,.34);
-  --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 24px 48px -24px rgba(0,0,0,.6);
+  --glow:0 0 0 1px rgba(255,79,154,.30),0 18px 44px -24px rgba(255,79,154,.34);
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 24px 48px -24px rgba(255,79,154,.38);
   --r:20px; --ease:cubic-bezier(.22,1,.36,1);
   --grid:rgba(255,255,255,.035);
 }
@@ -622,7 +622,7 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
   for(i=0;i<N;i++){var a=S[Math.max(0,i-1)],b=S[Math.min(N-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
     if(i)len+=Math.hypot(S[i][0]-S[i-1][0],S[i][1]-S[i-1][1]);AS[i]=len;NX[i]=-dy/l;NY[i]=dx/l}
   function hex(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)]}
-  var C1=hex(light?'#D2042D':'#C6FF3A'),HOT=hex(light?'#9C0020':'#F4FFD6'),ALT=hex(light?'#FF4D6D':'#FFE45C');
+  var C1=hex(light?'#D2042D':'#FF6FB0'),HOT=hex(light?'#9C0020':'#FFE6F1'),ALT=hex(light?'#FF4D6D':'#FFB0D3');
   function mix(x,y,t){return [x[0]+(y[0]-x[0])*t,x[1]+(y[1]-x[1])*t,x[2]+(y[2]-x[2])*t]}
   function sm(e0,e1,x){var t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t)}
   g.globalCompositeOperation=light?'source-over':'lighter';g.lineCap='butt';g.lineJoin='round';var K2=light?.85:.33; // 2D strokes read brighter than the soft-edged GL strips
@@ -754,7 +754,7 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
           <div><h3 class="xp-co">Al Safi Danone</h3><span class="xp-title">Industrial Engineering Intern</span><small>Al Kharj, Saudi Arabia</small></div>
         </div>
       </li>
-      <li class="xp-row" style="--c:#7CC21A">
+      <li class="xp-row" style="--c:#E0457F">
         <div class="xp-when"><span class="xp-big">NOW</span><small>Jul 2026 – Present</small></div>
         <div class="xp-rail" aria-hidden="true"><i class="xp-line"><i class="xp-fill"></i></i><i class="xp-dot"></i></div>
         <div class="xp-role">
@@ -1114,7 +1114,7 @@ if(mounts.length){
     const key=new THREE.DirectionalLight(0xfff2dc,2.6);key.position.set(.5,.45,.45);scene.add(key);
     const fill=new THREE.DirectionalLight(0xcbd3ff,1);fill.position.set(-.45,.2,.3);scene.add(fill);
     const rim=new THREE.DirectionalLight(0x9fe8ff,1.8);rim.position.set(-.1,.35,-.5);scene.add(rim);
-    if(document.documentElement.dataset.theme!=='light'){const mint=new THREE.DirectionalLight(0xc6ff3a,hero?2.2:1.6);mint.position.set(-.5,.12,-.35);scene.add(mint)}
+    if(document.documentElement.dataset.theme!=='light'){const mint=new THREE.DirectionalLight(0xff6fb0,hero?2.2:1.6);mint.position.set(-.5,.12,-.35);scene.add(mint)}
     const tex=new THREE.CanvasTexture(lc);
     tex.colorSpace=THREE.SRGBColorSpace;tex.flipY=true;tex.anisotropy=8;tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
 
@@ -1142,7 +1142,7 @@ if(mounts.length){
   }));
 }
 </script>
-<script type="module" src="assets/hydracap3d.js?v=8"></script>
+<script type="module" src="assets/hydracap3d.js?v=9"></script>
 <script type="module" src="assets/verigate-explode.js?v=5"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
@@ -1429,7 +1429,7 @@ function startStream(cv){
       gl_FragColor=uLight>.5?vec4(uHot,a):vec4(uHot*a,a);}`;
   const U=(o)=>Object.assign({uRes:{value:new THREE.Vector2()},uScroll:{value:0},uTime:{value:0},uFlow:{value:0},uThick:{value:1.6},
     uBlur:{value:4},uGlint:{value:1},uAlpha:{value:1},uLight:{value:0},uPR:{value:1},uM:{value:[0,1,2,3,4,5].map(()=>new THREE.Vector4(-9e3,-9e3,-9e3,-9e3))},
-    uColor:{value:new THREE.Color('#C6FF3A')},uHot:{value:new THREE.Color('#F4FFD6')},uAlt:{value:new THREE.Color('#FFE45C')}},o);
+    uColor:{value:new THREE.Color('#FF6FB0')},uHot:{value:new THREE.Color('#FFE6F1')},uAlt:{value:new THREE.Color('#FFB0D3')}},o);
   const mat=(u,v,f)=>new THREE.ShaderMaterial({uniforms:u,vertexShader:v,fragmentShader:f,transparent:true,depthTest:false,depthWrite:false,blending:THREE.AdditiveBlending});
   const glow=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:14},uAlpha:{value:.1},uBlur:{value:1.6},uGlint:{value:.4}}),vert,frag));
   const lines=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:1.9}}),vert,frag));
@@ -1479,7 +1479,7 @@ function startStream(cv){
   }
   function theme(){
     const L=document.documentElement.dataset.theme==='light';
-    for(const o of all){const u=o.material.uniforms;u.uLight.value=L?1:0;u.uColor.value.set(L?'#D2042D':'#C6FF3A');u.uHot.value.set(L?'#9C0020':'#F4FFD6');u.uAlt.value.set(L?'#FF4D6D':'#FFE45C');
+    for(const o of all){const u=o.material.uniforms;u.uLight.value=L?1:0;u.uColor.value.set(L?'#D2042D':'#FF6FB0');u.uHot.value.set(L?'#9C0020':'#FFE6F1');u.uAlt.value.set(L?'#FF4D6D':'#FFB0D3');
       o.material.blending=L?THREE.NormalBlending:THREE.AdditiveBlending;o.material.needsUpdate=true}
     glow.material.uniforms.uAlpha.value=L?.07:.09;lines.material.uniforms.uAlpha.value=L?.5:1;sparks.material.uniforms.uAlpha.value=L?.5:.9;bloom.material.uniforms.uAlpha.value=L?.16:.55;
   }
