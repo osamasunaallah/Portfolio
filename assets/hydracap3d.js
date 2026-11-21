@@ -313,8 +313,8 @@ function mountBottles(el){
   S.add(new THREE.HemisphereLight(0xf2f9ff, 0x6f8aa3, .8));
   const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(3, 5, 4); S.add(key);
   const rim = new THREE.DirectionalLight(0xd8efff, 1.8); rim.position.set(-4, 3, -3); S.add(rim);
-  // dark theme: a tropical-mint back-light picks out the bottle's silhouette against the onyx
-  if (document.documentElement.dataset.theme !== 'light'){ const mint = new THREE.DirectionalLight(0x45e3b5, 2.0); mint.position.set(-3.5, 1.2, -4); S.add(mint); }
+  // dark theme: a acid-lime back-light picks out the bottle's silhouette against the onyx
+  if (document.documentElement.dataset.theme !== 'light'){ const mint = new THREE.DirectionalLight(0xc6ff3a, 2.0); mint.position.set(-3.5, 1.2, -4); S.add(mint); }
   const cam = new THREE.PerspectiveCamera(30, 1, .05, 60); cam.position.copy(C.pos); cam.lookAt(C.target);
 
   const models = kind === 'duo' ? [buildCapBottle(), buildSteelBottle()] : [buildCapBottle()];
