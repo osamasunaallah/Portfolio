@@ -641,7 +641,9 @@ function open(){if(opened)return;opened=true;d.classList.add('intro-busy');el.cl
 // wait until the hero's 3D scenes are built (or 3.2 s at most), at least 1.8 s on screen
 function ready(){var h=document.querySelectorAll('.hero .bottle3d,.hero .dev3d'),r=document.querySelectorAll('.hero .bottle3d.ready,.hero .dev3d.ready');
   return r.length>=h.length&&(!document.querySelector('.stream-gl')||document.querySelector('.stream-gl.on'))&&(!window.__q3dHeroIdle||window.__q3dHeroIdle())}
-function check(){var t=performance.now()-t0;if(t>4200||(t>1800&&ready()))open();else setTimeout(check,100)}
+// and only once the page's main thread has been quiet for 0.35 s, so no other work lands during the opening
+var lastBusy=0;try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){lastBusy=Math.max(lastBusy,e.startTime+e.duration)})}).observe({entryTypes:['longtask']})}catch(e){}
+function check(){var t=performance.now()-t0,quiet=performance.now()-lastBusy>350;if(t>5000||(t>1800&&ready()&&quiet))open();else setTimeout(check,100)}
 el.addEventListener('click',open);
 // no scrolling under the screen, without hiding the scrollbar (that would resize the page and every 3D canvas)
 var stop=function(e){if(!opened)e.preventDefault()};addEventListener('wheel',stop,{passive:false});addEventListener('touchmove',stop,{passive:false});
