@@ -16,7 +16,8 @@
 <link rel="icon" href="assets/favicon.svg?v=2" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=EB+Garamond:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"></noscript>
+<link rel="preload" href="assets/eb-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('os-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
 <script>/* always open at the top, even from a #section link or a reload */try{if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);}catch(e){}</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
@@ -25,12 +26,15 @@
    scenes further down build only when they come near the screen, one at a time in idle moments, so first open stays smooth */
 (function(){var q=[],busy=false,started=false,first=false,seq=0,idle=window.requestIdleCallback||function(f){return setTimeout(f,60)};
   function prio(el){if(el.dataset&&el.dataset.q3d)return +el.dataset.q3d;return el.closest&&el.closest('.hero')?(el.classList.contains('bottle3d')?0:1):2}
-  function pump(){if(busy||!q.length)return;q.sort(function(a,b){return a.p-b.p||a.s-b.s});if(!started&&q[0].p!==0)return;
+  // 3D builds wait while the opening screen draws the name, then build during its hold
+  function pump(){if(busy||!q.length||document.documentElement.classList.contains('intro-busy'))return;q.sort(function(a,b){return a.p-b.p||a.s-b.s});if(!started&&q[0].p!==0)return;
     // nothing jumps ahead of the hero bottle (its module may arrive a little later); safety release after 2.5 s
     if(!first&&q[0].p!==0&&document.querySelector('.hero .bottle3d'))return;busy=true;var job=q.shift();if(job.p===0)first=true;
     // after a hero scene, let the browser draw a frame (its first picture) before the next build starts
     var run=function(){try{job.fn()}catch(e){console.error(e)}var next=function(){busy=false;pump()};if(job.p<2)requestAnimationFrame(function(){requestAnimationFrame(function(){setTimeout(next,0)})});else setTimeout(next,40)};
     if(job.p<2)setTimeout(run,0);else idle(run,{timeout:700})}
+  window.__q3dPump=function(){pump()};
+  window.__q3dHeroIdle=function(){return started&&first&&!busy&&!q.some(function(j){return j.p<2})};
   window.__q3d=function(el,fn){var done=false,go=function(){if(done)return;done=true;q.push({p:prio(el),s:seq++,fn:function(){fn(el)}});pump()};
     if(!el||!('IntersectionObserver' in window))return go();
     var io=new IntersectionObserver(function(es){if(es[0].isIntersecting){io.disconnect();go()}},{rootMargin:'350px 0px'});io.observe(el);
@@ -49,6 +53,9 @@
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js" crossorigin>
 <link rel="preload" href="assets/verigate-device.glb" as="fetch" type="model/gltf-binary" crossorigin>
 <style>
+/* EB Garamond, self-hosted (Latin subset, variable 400-800, OFL) so it is ready at once: no swap from a fallback font */
+@font-face{font-family:'EB Garamond';font-style:normal;font-weight:400 800;font-display:swap;src:url(assets/eb-garamond-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 :root{
   --bg:#151517; --bg-2:#1A1A1D; --card:#212124; --card-2:#28282B; --fg:#F4F4F6; --fg-soft:#D6D6DC; --muted:#A3A3AD;
   --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
@@ -600,15 +607,65 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
 .work-loop.native::-webkit-scrollbar{display:none}
 .work-loop.native .work.work-track{transform:none!important;will-change:auto;touch-action:auto}
 @media (max-width:760px){.sec{padding:64px 0}.contact{padding:72px 0 56px}.hero{padding:104px 0 36px}.sec-head{margin-bottom:28px}}
+/* (the halves are 99.6% opaque on purpose: the page underneath is then drawn during the hold, not in the opening frame) */
+/* Opening screen (22.11.2026), after the "headline reveal" video Osama sent: the name and "Portfolio" sit small on black,
+   then the black opens from a slit in the middle (two halves sliding apart) and the site is behind it. Only transform and
+   opacity move (GPU). It opens only once the hero's 3D scenes are built, and nothing builds while it opens. Once per session. */
+#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;contain:strict}
+#intro.out{pointer-events:none}
+.intro-half{position:absolute;left:0;right:0;height:50.5%;background:rgba(5,5,5,.996);will-change:transform;transform:translate3d(0,0,0);transition:transform .95s cubic-bezier(.76,0,.24,1)}
+.intro-half.top{top:0}.intro-half.bot{bottom:0}
+#intro.out .intro-half.top{transform:translate3d(0,-100%,0)}
+#intro.out .intro-half.bot{transform:translate3d(0,100%,0)}
+.intro-mark{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:calc(var(--fs,64px)*.2);color:#F4F4F6;will-change:opacity;transition:opacity .3s ease}
+#intro.out .intro-mark{opacity:0}
+/* sized by script to fill the screen (one line on desktop, two on phones), and shown only once EB Garamond has loaded */
+.intro-name{font:600 var(--fs,64px)/.95 "EB Garamond",Georgia,serif;letter-spacing:-.015em;white-space:nowrap;text-align:center;opacity:0;transform:translate3d(0,14px,0)}
+.intro-sub{font:500 max(12px,calc(var(--fs,64px)*.15))/1 "EB Garamond",Georgia,serif;letter-spacing:.42em;text-transform:uppercase;color:#9A9AA2;padding-left:.42em;opacity:0;transform:translate3d(0,10px,0)}
+#intro.go .intro-name{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .05s forwards}
+#intro.go .intro-sub{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .32s forwards}
+@keyframes intro-in{to{opacity:1;transform:translate3d(0,0,0)}}
+/* the 3D collage is already in place under the screen (fading live 3D canvases in is what stuttered);
+   only the name in the hero rises in once the screen opens, like the headline in the reference */
+.intro-on .hero h1 .ln>span{animation-play-state:paused!important}
 </style>
 </head>
 <body>
+<div id="intro" aria-hidden="true"><i class="intro-half top"></i><i class="intro-half bot"></i><div class="intro-mark"><div class="intro-name"><span>Osama</span> <span>Sunaallah</span></div><div class="intro-sub">Portfolio</div></div></div>
+<script>(function(){var d=document.documentElement,el=document.getElementById('intro');
+try{if(sessionStorage.getItem('os-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}sessionStorage.setItem('os-intro','1')}catch(e){}
+d.classList.add('intro-on','intro-busy');var t0=0,opened=false,pump=function(){window.__q3dPump&&window.__q3dPump()};
+// the slit opens with nothing else running: 3D builds pause while it moves, and restart when it is done
+function open(){if(opened)return;opened=true;d.classList.add('intro-busy');el.classList.add('out');d.classList.remove('intro-on');
+  setTimeout(function(){el.remove();d.classList.remove('intro-busy');pump()},1000)}
+// wait until the hero's 3D scenes are built (or 3.2 s at most), at least 1.8 s on screen
+function ready(){var h=document.querySelectorAll('.hero .bottle3d,.hero .dev3d'),r=document.querySelectorAll('.hero .bottle3d.ready,.hero .dev3d.ready');
+  return r.length>=h.length&&(!document.querySelector('.stream-gl')||document.querySelector('.stream-gl.on'))&&(!window.__q3dHeroIdle||window.__q3dHeroIdle())}
+function check(){var t=performance.now()-t0;if(t>4200||(t>1800&&ready()))open();else setTimeout(check,100)}
+el.addEventListener('click',open);
+// no scrolling under the screen, without hiding the scrollbar (that would resize the page and every 3D canvas)
+var stop=function(e){if(!opened)e.preventDefault()};addEventListener('wheel',stop,{passive:false});addEventListener('touchmove',stop,{passive:false});
+addEventListener('keydown',function(e){if(!opened&&/^(ArrowDown|ArrowUp|PageDown|PageUp|Space|Home|End)$/.test(e.code))e.preventDefault()});
+var nm=el.querySelector('.intro-name');
+// fit the name on one line: half the width on desktop, most of the width on phones
+function fit(){nm.style.fontSize='100px';
+  var r=nm.getBoundingClientRect(),fs=Math.min(100*innerWidth*(innerWidth<700?.82:.5)/r.width,100*innerHeight*.16/r.height,110);
+  nm.style.fontSize='';el.style.setProperty('--fs',fs.toFixed(1)+'px')}
+addEventListener('resize',function(){if(el.isConnected)fit()});
+// show the name only in its real font (no swap from the fallback font mid-animation); 1.6 s at most
+function whenFont(cb){var t=performance.now(),done=false,go=function(){if(!done){done=true;cb()}};
+  (function poll(){var ok=false;try{var fs=[].slice.call(document.fonts||[]).filter(function(f){return /EB Garamond/.test(f.family)});
+    if(fs.length){document.fonts.load('600 40px "EB Garamond"');ok=fs.some(function(f){return f.status==='loaded'})}}catch(e){ok=true}
+    if(ok||performance.now()-t>1600)go();else setTimeout(poll,40)})()}
+whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go');requestAnimationFrame(function(){t0=performance.now();
+  setTimeout(function(){d.classList.remove('intro-busy');pump()},450);setTimeout(check,1800)})})})})();</script>
 <canvas class="stream-pre" aria-hidden="true"></canvas>
 <script>
 /* Stream first frame (20.11.2026): drawn instantly with a plain 2D canvas, using the same maths, strands and seeds as the
    live WebGL stream at its first frame. The live stream replaces it in the same frame it starts, so the stream is there the
-   moment the page opens. Until then it follows the scroll at the same 60% speed. */
-(function(){
+   moment the page opens. Until then it follows the scroll at the same 60% speed.
+   With the opening screen up it is drawn just after the first paint instead (the screen covers it anyway). */
+(function(){var draw=function(){
   var c=document.querySelector('.stream-pre'),g=c&&c.getContext('2d');if(!g||!window.WebGLRenderingContext){if(c)c.remove();return}
   var W=innerWidth,H=innerHeight,m=W<760,pr=Math.min(devicePixelRatio||1,m?1.25:1.5),L=m?48:120,light=document.documentElement.dataset.theme==='light';
   c.width=Math.round(W*pr);c.height=Math.round(H*pr);g.setTransform(pr,0,0,pr,0,0);
@@ -646,7 +703,7 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
   g.fillStyle=gr;g.fillRect(ax-r,ay-r,r*2,r*2);
   var mv=function(){c.style.transform='translate3d(0,'+(-scrollY*.6).toFixed(1)+'px,0)'};addEventListener('scroll',mv,{passive:true});mv();
   window.__streamPre=function(){removeEventListener('scroll',mv);c.remove()};
-})();
+};if(document.getElementById('intro'))requestAnimationFrame(function(){setTimeout(draw,0)});else draw()})();
 </script>
 <a class="skip" href="#main">Skip to content</a>
 <div id="prog" aria-hidden="true"></div>
