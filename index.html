@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#151517">
+<meta name="color-scheme" content="dark light">
 <title>Osama Sunaallah | Industrial Engineer</title>
 <meta name="description" content="Portfolio of Osama Sunaallah, Industrial Engineer in supply chain and planning. Projects in procurement automation, supplier analytics, IoT and product design.">
 <meta property="og:type" content="website">
@@ -18,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"></noscript>
 <link rel="preload" href="assets/eb-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
-<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('os-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<script>document.documentElement.classList.add('js');try{var t=localStorage.getItem('os-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}try{window.__osBar=function(){var c=document.documentElement.dataset.theme==='light'?'#FFFFFF':'#151517';document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=c})};__osBar()}catch(e){}</script>
 <script>/* always open at the top, even from a #section link or a reload */try{if('scrollRestoration' in history)history.scrollRestoration='manual';if(location.hash)history.replaceState(null,'',location.pathname+location.search);}catch(e){}</script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script>
@@ -104,33 +107,33 @@ svg.i{width:18px;height:18px;flex:none}
 
 /* progress + nav */
 #prog{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--grad);transform:scaleX(0);transform-origin:left;z-index:60}
-.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;width:min(1160px,calc(100% - 24px));display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 90%,transparent);transition:box-shadow .3s,border-color .3s}
+.nav{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:50;width:min(1160px,calc(100% - 24px - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px)));display:flex;align-items:center;gap:8px;padding:8px 8px 8px 16px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--bg) 90%,transparent);transition:box-shadow .3s,border-color .3s}
 .nav.scrolled{border-color:var(--line-2);box-shadow:0 12px 30px -16px rgba(0,0,0,.5)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:700 17px var(--fd);letter-spacing:-.01em}
 .nav-links{display:flex;gap:2px;margin-left:auto}
 .nav-links a{position:relative;text-decoration:none;font:500 14px "EB Garamond";color:var(--fg-soft);padding:9px 14px;border-radius:999px;transition:color .25s,background .25s}
-.nav-links a:hover{color:var(--fg);background:var(--line)}
+@media (hover:hover) and (pointer:fine){.nav-links a:hover{color:var(--fg);background:var(--line)}}
 .nav-links a.active{color:var(--fg);background:var(--line-2)}
 .icon-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line-2);background:transparent;color:var(--fg);display:grid;place-items:center;cursor:pointer;transition:transform .2s var(--ease),background .2s}
-.icon-btn:hover{background:var(--line)}
+@media (hover:hover) and (pointer:fine){.icon-btn:hover{background:var(--line)}}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font:600 14.5px "EB Garamond";text-decoration:none;border:1px solid var(--line-2);color:var(--fg);background:transparent;cursor:pointer;transition:transform .16s var(--ease),background .2s,border-color .2s,box-shadow .2s}
-.btn:hover{transform:translateY(-2px);border-color:var(--a1)}
+@media (hover:hover) and (pointer:fine){.btn:hover{transform:translateY(-2px);border-color:var(--a1)}}
 .btn-primary{background:var(--grad-btn,var(--grad));color:var(--on-a);border-color:transparent;box-shadow:var(--glow)}
-.btn-primary:hover{box-shadow:var(--glow),0 20px 46px -24px color-mix(in srgb,var(--a2) 40%,transparent)}
+@media (hover:hover) and (pointer:fine){.btn-primary:hover{box-shadow:var(--glow),0 20px 46px -24px color-mix(in srgb,var(--a2) 40%,transparent)}}
 .nav .btn{min-height:40px}
 @media (max-width:900px){.nav-links{display:none}.nav .btn span{display:none}.nav .btn{padding:0 12px}.nav-right{margin-left:auto}}
 .nav-right{display:flex;gap:6px;align-items:center}
 .menu-btn{display:none}
 @media (max-width:900px){
   .menu-btn{display:grid;order:3;margin-left:-2px}
-  .menu-btn:hover{transform:none}
+  @media (hover:hover) and (pointer:fine){.menu-btn:hover{transform:none}}
   .nav-links{position:absolute;top:calc(100% + 8px);left:0;right:0;margin:0;display:flex;flex-direction:column;gap:2px;padding:8px;border-radius:22px;border:1px solid var(--line-2);background:var(--card);box-shadow:0 24px 48px -20px rgba(0,0,0,.55);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .25s var(--ease),visibility 0s .25s}
   .nav.open .nav-links{opacity:1;visibility:visible;transform:none;transition-delay:0s}
   .nav-links a{padding:12px 16px;font-size:16px;border-radius:14px}
 }
 
 /* hero */
-.hero{position:relative;min-height:100svh;min-height:100dvh;padding:120px 0 60px;display:flex;align-items:center;overflow:hidden}
+.hero{position:relative;min-height:100svh;padding:120px 0 60px;display:flex;align-items:center;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 80% 70% at 60% 40%,#000 25%,transparent 75%);pointer-events:none}
 .aurora{position:absolute;border-radius:50%;pointer-events:none;opacity:var(--aur);will-change:transform}
 .aurora.a{width:620px;height:620px;right:-140px;top:-120px;background:radial-gradient(circle,color-mix(in srgb,var(--a2) 85%,transparent) 0%,color-mix(in srgb,var(--a2) 35%,transparent) 32%,transparent 70%);animation:drift 18s ease-in-out infinite}
@@ -149,7 +152,7 @@ svg.i{width:18px;height:18px;flex:none}
 .cta{display:flex;gap:12px;flex-wrap:wrap}
 .creds{display:flex;gap:10px;flex-wrap:nowrap;margin-top:34px}
 .cred{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 70%,transparent);font-size:13.5px;transition:transform .25s var(--ease),border-color .2s,box-shadow .25s}
-.cred:hover,.rv-st.in>.cred:hover{transform:scale(1.06);border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}
+@media (hover:hover) and (pointer:fine){.cred:hover,.rv-st.in>.cred:hover{transform:scale(1.06);border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}}
 .cert{position:relative}
 .cred b{display:block;font:600 14px "EB Garamond"}
 .cred small{color:var(--muted);font-size:12px}
@@ -170,7 +173,7 @@ svg.i{width:18px;height:18px;flex:none}
 .g3{width:46%;aspect-ratio:928/565;right:4%;bottom:6%;transform:rotate(4deg);animation:fl 8s ease-in-out infinite -5s;z-index:3}
 .g4{width:28%;aspect-ratio:4/5;left:9%;top:0;transform:rotate(-6deg);animation:fl 11s ease-in-out infinite -2s;z-index:1}
 @keyframes fl{50%{translate:0 -12px}}
-.collage:hover .g1{transform:rotate(1deg) translateY(-6px)}.collage:hover .g2{transform:rotate(-2deg)}.collage:hover .g3{transform:rotate(2deg)}
+@media (hover:hover) and (pointer:fine){.collage:hover .g1{transform:rotate(1deg) translateY(-6px)}}@media (hover:hover) and (pointer:fine){.collage:hover .g2{transform:rotate(-2deg)}}@media (hover:hover) and (pointer:fine){.collage:hover .g3{transform:rotate(2deg)}}
 .stage-tag{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line-2);background:color-mix(in srgb,var(--card) 94%,transparent);box-shadow:var(--shadow);font-size:13px;animation:bob 6s ease-in-out infinite}
 .stage-tag b{display:block;font:600 14px "EB Garamond"}
 .stage-tag small{color:var(--muted)}
@@ -210,12 +213,12 @@ section{position:relative}
 .filter[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
 .work{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
 .card{position:relative;grid-column:span 6;border-radius:var(--r);border:1px solid var(--line);background:var(--card);overflow:hidden;box-shadow:var(--shadow);transition:transform .3s var(--ease),border-color .25s,box-shadow .25s,opacity .45s var(--ease);transform-style:preserve-3d;display:flex;flex-direction:column}
-.card:hover{border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}
+@media (hover:hover) and (pointer:fine){.card:hover{border-color:color-mix(in srgb,var(--a1) 45%,var(--line));box-shadow:var(--glow)}}
 .card.hide{opacity:0;transform:scale(.96);pointer-events:none;position:absolute;visibility:hidden}
 @media (max-width:860px){.card{grid-column:span 12}}
 .card-media{position:relative;aspect-ratio:1200/627;overflow:hidden;background:var(--card-2)}
 .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
-.card:hover .card-media img{transform:scale(1.05)}
+@media (hover:hover) and (pointer:fine){.card:hover .card-media img{transform:scale(1.05)}}
 .card-media .tag{position:absolute;left:14px;top:14px;font:600 12.5px "EB Garamond",Georgia,serif;padding:6px 10px;border-radius:999px;background:rgba(7,9,13,.82);color:#ECF1F7}
 .card-body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
 .card h3{font-size:24px;font-weight:600}
@@ -225,9 +228,9 @@ section{position:relative}
 .card-foot{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
 .link{display:inline-flex;align-items:center;gap:6px;font:600 14px "EB Garamond";text-decoration:none;color:var(--a1);padding:6px 0;position:relative}
 .link::after{content:"";position:absolute;left:0;right:22px;bottom:2px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
-.link:hover::after{transform:scaleX(1)}
+@media (hover:hover) and (pointer:fine){.link:hover::after{transform:scaleX(1)}}
 .link svg{transition:transform .35s var(--ease)}
-.link:hover svg{transform:translate(3px,-3px)}
+@media (hover:hover) and (pointer:fine){.link:hover svg{transform:translate(3px,-3px)}}
 details.more{border-top:1px solid var(--line);padding-top:10px}
 details.more summary{cursor:pointer;list-style:none;font:600 14px "EB Garamond";color:var(--fg-soft);display:flex;align-items:center;gap:8px;min-height:36px}
 details.more summary::-webkit-details-marker{display:none}
@@ -267,7 +270,7 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 .skill-groups{display:grid;gap:22px}
 .sg h4{font:600 14px "EB Garamond",Georgia,serif;color:var(--muted);margin-bottom:10px}
 .sg .chips .chip{font:500 13.5px "EB Garamond";padding:8px 14px;transition:border-color .25s,color .25s,transform .25s var(--ease)}
-.sg .chips .chip:hover{border-color:var(--a1);color:var(--fg)}
+@media (hover:hover) and (pointer:fine){.sg .chips .chip:hover{border-color:var(--a1);color:var(--fg)}}
 .edu{margin-top:26px;display:flex;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
 .edu .dot{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--grad);color:var(--on-a);flex:none}
 .edu b{display:block;font:600 17px "EB Garamond"}
@@ -278,10 +281,10 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 @media (max-width:980px){.certs{grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.certs{grid-template-columns:1fr}}
 .cert{border:1px solid var(--line);border-radius:var(--r);background:var(--card);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);transition:transform .25s var(--ease),box-shadow .25s,border-color .25s}
-.cert:hover,.rv-st.in>.cert:hover{transform:translateY(-4px) scale(1.03);box-shadow:var(--glow);border-color:color-mix(in srgb,var(--a1) 40%,var(--line));z-index:2}
+@media (hover:hover) and (pointer:fine){.cert:hover,.rv-st.in>.cert:hover{transform:translateY(-4px) scale(1.03);box-shadow:var(--glow);border-color:color-mix(in srgb,var(--a1) 40%,var(--line));z-index:2}}
 .cert-img{position:relative;display:block;width:100%;border:0;padding:0;cursor:zoom-in;background:#fff;aspect-ratio:4/3;overflow:hidden}
 .cert-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease)}
-.cert:hover .cert-img img{transform:scale(1.04)}
+@media (hover:hover) and (pointer:fine){.cert:hover .cert-img img{transform:scale(1.04)}}
 .cert-img .zoom{position:absolute;right:12px;bottom:12px;width:36px;height:36px;border-radius:50%;background:rgba(7,9,13,.75);color:#fff;display:grid;place-items:center}
 .cert-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
 .cert-org{font:500 13.5px "EB Garamond",Georgia,serif;color:var(--muted)}
@@ -304,14 +307,14 @@ details.more .inner{color:var(--fg-soft);font-size:14.5px;display:grid;gap:8px;p
 .contact .cta{justify-content:center}
 footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
-.foot a{text-decoration:none;color:var(--fg-soft)}.foot a:hover{color:var(--a1)}
+.foot a{text-decoration:none;color:var(--fg-soft)}@media (hover:hover) and (pointer:fine){.foot a:hover{color:var(--a1)}}
 
 /* lightbox */
-dialog{border:0;padding:0;background:transparent;max-width:min(1100px,94vw);max-height:92vh}
+dialog{border:0;padding:0;background:transparent;max-width:min(1100px,94vw);max-height:92dvh}
 dialog::backdrop{background:rgba(3,5,8,.9)}
 dialog[open]{animation:pop .4s var(--ease)}
 @keyframes pop{from{opacity:0;transform:scale(.96)}}
-dialog img{display:block;max-width:100%;max-height:84vh;border-radius:14px}
+dialog img{display:block;max-width:100%;max-height:84dvh;border-radius:14px}
 dialog .close{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(7,9,13,.8);color:#fff;cursor:pointer;display:grid;place-items:center}
 dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 
@@ -363,8 +366,8 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 .md-fill.bad{background:linear-gradient(180deg,#F87171,color-mix(in srgb,#F87171 60%,transparent))}
 .md-bar em{font-style:normal;font:700 11px "IBM Plex Mono";color:var(--fg);font-variant-numeric:tabular-nums;transition:opacity .3s}
 .md-bar small{font:600 10.5px "IBM Plex Mono";color:var(--muted)}
-.md-bar:hover .md-fill{filter:brightness(1.18)}
-.md-bars:hover .md-bar:not(:hover){opacity:.55}
+@media (hover:hover) and (pointer:fine){.md-bar:hover .md-fill{filter:brightness(1.18)}}
+@media (hover:hover) and (pointer:fine){.md-bars:hover .md-bar:not(:hover){opacity:.55}}
 .md-bar{transition:opacity .3s}
 @media (max-width:560px){.card-media.live{aspect-ratio:5/4}.md{padding:44px 12px 12px;gap:9px}.md-kpi{padding:6px 8px}.md-kpi b{font-size:16px}.md-kpi small{font-size:9.5px}.md-rows li{grid-template-columns:62px 1fr auto}}
 /* Accent rule 60-30-10 (dark theme): onyx black base 60 %, electric indigo 30 % (gradient text, buttons, highlights),
@@ -378,13 +381,13 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 :root[data-theme="dark"] .hero .eyebrow::before{background:linear-gradient(90deg,var(--a1),var(--mint))}
 /* clickable pills carry the mint: filled for the main actions and the active filter, outlined for the rest */
 :root[data-theme="dark"] .btn-primary{background:linear-gradient(120deg,var(--mint),var(--mint-2));color:var(--on-sig);box-shadow:0 0 0 1px rgba(var(--sig),.35),0 0 26px -6px rgba(var(--sig),.45),0 18px 40px -18px rgba(var(--sig),.6)}
-:root[data-theme="dark"] .btn-primary:hover{box-shadow:0 0 0 1px rgba(var(--sig),.5),0 0 34px -4px rgba(var(--sig),.6),0 22px 46px -18px rgba(var(--sig),.7)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .btn-primary:hover{box-shadow:0 0 0 1px rgba(var(--sig),.5),0 0 34px -4px rgba(var(--sig),.6),0 22px 46px -18px rgba(var(--sig),.7)}}
 :root[data-theme="dark"] .btn:not(.btn-primary){border-color:rgba(var(--sig),.42)}
-:root[data-theme="dark"] .btn:not(.btn-primary):hover{border-color:var(--mint);box-shadow:0 0 22px -8px rgba(var(--sig),.55)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .btn:not(.btn-primary):hover{border-color:var(--mint);box-shadow:0 0 22px -8px rgba(var(--sig),.55)}}
 :root[data-theme="dark"] .filter[aria-pressed="true"]{background:var(--mint);color:var(--on-sig);box-shadow:0 0 20px -6px rgba(var(--sig),.55)}
-:root[data-theme="dark"] .filter:not([aria-pressed="true"]):hover{color:var(--mint)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .filter:not([aria-pressed="true"]):hover{color:var(--mint)}}
 :root[data-theme="dark"] .md-tabs button[aria-pressed="true"]{background:var(--mint);color:var(--on-sig);border-color:transparent}
-:root[data-theme="dark"] .md-tabs button:not([aria-pressed="true"]):hover{color:var(--mint);border-color:rgba(var(--sig),.45)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .md-tabs button:not([aria-pressed="true"]):hover{color:var(--mint);border-color:rgba(var(--sig),.45)}}
 /* Polish 18.11.2026: Charles Liu's UI rules + Emil Kowalski motion rules */
 a{text-underline-offset:.2em}
 h1,h2,h3{text-wrap:balance}
@@ -392,22 +395,23 @@ p{text-wrap:pretty}
 sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
 .filter,.md-tabs button{transition:background .2s,color .2s,transform .16s var(--ease)}
 .btn:active,.icon-btn:active,.filter:active,.md-tabs button:active{transform:scale(.97);transition-duration:.1s}
-@media (hover:none){.btn:hover,.cred:hover,.rv-st.in>.cred:hover,.cert:hover,.rv-st.in>.cert:hover,.collage:hover .g1,.collage:hover .g2,.collage:hover .g3,.card:hover .card-media img,.cert:hover .cert-img img,.link:hover svg{transform:none}}
+
 /* Certificates: infinite slider (19.11.2026) */
 .cert-marquee{position:relative;padding:14px 0 26px;overflow:hidden;
   -webkit-mask:linear-gradient(90deg,transparent,#000 7% 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7% 93%,transparent)}
 .cert-track{display:flex;gap:18px;width:max-content;padding-inline:9px;animation:certs-run 68s linear infinite}
-.cert-marquee:hover .cert-track,.cert-marquee:has(:focus-visible) .cert-track,.cert-marquee.hold .cert-track,.cert-marquee.off .cert-track{animation-play-state:paused}
+.cert-marquee:has(:focus-visible) .cert-track, .cert-marquee.hold .cert-track, .cert-marquee.off .cert-track{animation-play-state:paused}
+@media (hover:hover) and (pointer:fine){.cert-marquee:hover .cert-track{animation-play-state:paused}}
 @keyframes certs-run{to{transform:translateX(-50%)}}
 .cert-track .cert{--c:var(--a1);width:clamp(258px,27vw,330px);flex:none;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s,opacity .25s}
 .cert-track .cert::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s;
   background:radial-gradient(260px circle at var(--mx,50%) var(--my,30%),color-mix(in srgb,var(--c) 20%,transparent),transparent 65%)}
-.cert-track:hover .cert:not(:hover){opacity:.55}
-.cert-track .cert:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--c) 70%,var(--line));
-  box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 26px 50px -26px color-mix(in srgb,var(--c) 70%,transparent);z-index:2}
-.cert-track .cert:hover::after{opacity:1}
-.cert-track .cert:hover .cert-org{color:var(--c)}
-.cert-track .cert:hover .cert-img img{transform:scale(1.05) rotate(-.6deg)}
+@media (hover:hover) and (pointer:fine){.cert-track:hover .cert:not(:hover){opacity:.55}}
+@media (hover:hover) and (pointer:fine){.cert-track .cert:hover{transform:translateY(-8px);border-color:color-mix(in srgb,var(--c) 70%,var(--line));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent),0 26px 50px -26px color-mix(in srgb,var(--c) 70%,transparent);z-index:2}}
+@media (hover:hover) and (pointer:fine){.cert-track .cert:hover::after{opacity:1}}
+@media (hover:hover) and (pointer:fine){.cert-track .cert:hover .cert-org{color:var(--c)}}
+@media (hover:hover) and (pointer:fine){.cert-track .cert:hover .cert-img img{transform:scale(1.05) rotate(-.6deg)}}
 .cert-track .cert h3{font-size:18px}
 /* soon cards: shared face */
 .soon-face{position:relative;aspect-ratio:4/3;overflow:hidden;display:grid;place-items:center;isolation:isolate;
@@ -452,11 +456,11 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
   animation:sp-bar 2.4s cubic-bezier(.65,0,.35,1) infinite}
 @keyframes sp-bar{0%{transform:scaleX(0)}70%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
 /* soon effects speed up on hover */
-.cert-track .soon:hover .sf-ring{animation-duration:2.2s}
-.cert-track .soon:hover .sf-scan{animation-duration:1.6s}
-.cert-track .soon:hover .sf-belt{animation-duration:.45s}
+@media (hover:hover) and (pointer:fine){.cert-track .soon:hover .sf-ring{animation-duration:2.2s}}
+@media (hover:hover) and (pointer:fine){.cert-track .soon:hover .sf-scan{animation-duration:1.6s}}
+@media (hover:hover) and (pointer:fine){.cert-track .soon:hover .sf-belt{animation-duration:.45s}}
 @media (max-width:640px){.cert-track{animation-duration:49s;gap:14px}.cert-track .cert{width:76vw;max-width:300px}}
-@media (hover:none){.cert-track .cert:hover{transform:none}.cert-track:hover .cert:not(:hover){opacity:1}}
+
 @media (prefers-reduced-motion: reduce){
   .cert-marquee{overflow-x:auto;-webkit-mask:none;mask:none;scroll-snap-type:x mandatory}
   .cert-track{animation:none}.cert-track .clone{display:none}.cert-track .cert{scroll-snap-align:start}
@@ -547,11 +551,11 @@ sup{line-height:0;position:relative;vertical-align:baseline;top:-.5em}
 .card-foot .link{padding:10px 18px;border-radius:999px;font:600 14px "EB Garamond";border:1px solid transparent;
   background:var(--grad-btn);color:var(--on-a);transition:transform .16s var(--ease),box-shadow .2s,background .2s}
 .card-foot .link::after{display:none}
-.card-foot .link:hover{transform:translateY(-1px)}
+@media (hover:hover) and (pointer:fine){.card-foot .link:hover{transform:translateY(-1px)}}
 .card-foot .link:active{transform:scale(.97)}
 .card-foot .link[href^="#"]{background:transparent;color:var(--a1);border-color:color-mix(in srgb,var(--a1) 45%,transparent)}
 :root[data-theme="dark"] .card-foot .link{background:linear-gradient(135deg,var(--mint),var(--mint-2));color:var(--on-sig);box-shadow:0 10px 24px -12px rgba(var(--sig),.75)}
-:root[data-theme="dark"] .card-foot .link:hover{box-shadow:0 14px 30px -12px rgba(var(--sig),.9)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .card-foot .link:hover{box-shadow:0 14px 30px -12px rgba(var(--sig),.9)}}
 :root[data-theme="dark"] .card-foot .link[href^="#"]{background:transparent;color:var(--mint);border-color:rgba(var(--sig),.55);box-shadow:none}
 .work-loop.static{-webkit-mask:none;mask:none;overflow:visible}
 .work-loop.static .work.work-track{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:auto;transform:none!important}
@@ -603,7 +607,7 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
 .hero .bottle3d canvas,.hero .dev3d canvas{position:relative;z-index:1}
 @media (max-width:900px){.nav-right{order:2}}
 /* mobile: native swipe row for the projects; normal section spacing (19.11.2026) */
-.work-loop.native{overflow:hidden;touch-action:pan-y;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.work-loop.native{overflow:hidden;touch-action:pan-y;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .work-loop.native::-webkit-scrollbar{display:none}
 .work-loop.native .work.work-track{transform:none!important;will-change:auto;touch-action:auto}
 @media (max-width:760px){.sec{padding:64px 0}.contact{padding:72px 0 56px}.hero{padding:104px 0 36px}.sec-head{margin-bottom:28px}}
@@ -628,6 +632,14 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
 /* the 3D collage is already in place under the screen (fading live 3D canvases in is what stuttered);
    only the name in the hero rises in once the screen opens, like the headline in the reference */
 .intro-on .hero h1 .ln>span{animation-play-state:paused!important}
+
+/* mobile-native (Emil Kowalski skill, 23.11.2026): native feel on phones */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,[role="button"],summary,label{touch-action:manipulation}
+button,[role="button"],.btn,.filter,.md-tabs button,.icon-btn,.menu-btn,.link,.card-foot .link{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.cred:active,.cert:active,.nav-links a:active,.foot a:active{opacity:.75}
+dialog{overscroll-behavior:contain}
+footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body>
@@ -1060,7 +1072,7 @@ const isLight=()=>root.dataset.theme?root.dataset.theme==='light':matchMedia('(p
 const icon=()=>tb.innerHTML=`<svg class="i" aria-hidden="true"><use href="#i-${isLight()?'moon':'sun'}"/></svg>`;
 try{const t=localStorage.getItem('os-theme');if(t)root.dataset.theme=t}catch(e){}
 icon();
-tb.addEventListener('click',()=>{root.dataset.theme=isLight()?'dark':'light';try{localStorage.setItem('os-theme',root.dataset.theme)}catch(e){};icon()});
+tb.addEventListener('click',()=>{root.dataset.theme=isLight()?'dark':'light';try{localStorage.setItem('os-theme',root.dataset.theme)}catch(e){};icon();window.__osBar&&__osBar()});
 
 /* nav + progress */
 const nav=document.getElementById('nav'),prog=document.getElementById('prog');
