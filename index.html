@@ -62,12 +62,13 @@
 :root{
   --bg:#151517; --bg-2:#1A1A1D; --card:#212124; --card-2:#28282B; --fg:#F4F4F6; --fg-soft:#D6D6DC; --muted:#A3A3AD;
   --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
-  --a1:#FF4F9A; --a2:#FFA6CF; --a3:#F5B547; --on-a:#2B0717; --mint:#FF6FB0; --mint-2:#FFB0D3; --sig:255,111,176; --sig-2:255,160,205; --sig-3:255,210,230; --on-sig:#2B0717;
+  --a1:#E5D3B3; --a2:#F2E6D0; --a3:#F5B547; --on-a:#1C1710; --mint:#E5D3B3; --mint-2:#F2E6D0; --sig:229,211,179; --sig-2:242,230,208; --sig-3:250,244,234; --on-sig:#1C1710;
+  --cobalt:#2F5BEA; --cobalt-2:#1E44C6; --cob:47,91,234;
   --fd:"EB Garamond",Georgia,serif; --hw:600; --aur:.28;
   --grad:linear-gradient(120deg,var(--a1),var(--a2));
   --grad-btn:linear-gradient(120deg,var(--mint),var(--mint-2));
-  --glow:0 0 0 1px rgba(255,79,154,.30),0 18px 44px -24px rgba(255,79,154,.34);
-  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 24px 48px -24px rgba(255,79,154,.38);
+  --glow:0 0 0 1px rgba(229,211,179,.30),0 18px 44px -24px rgba(229,211,179,.34);
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 24px 48px -24px rgba(229,211,179,.38);
   --r:20px; --ease:cubic-bezier(.22,1,.36,1);
   --grid:rgba(255,255,255,.035);
 }
@@ -765,6 +766,35 @@ footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
   .shelf-note{font-size:12.5px}
 }
 @media (prefers-reduced-motion:reduce){.tome-book,.tome-cover,.book{transition:none!important}.book.wrapped.nudge{animation:none}}
+
+/* ===== 24.11.2026 (Osama): beige second colour, cobalt for the main buttons (about 10%),
+   deeper shadows round the project cards, and a darker grey-wood bookcase with a small 3D turn ===== */
+:root[data-theme="dark"] .btn-primary{background:linear-gradient(120deg,var(--cobalt),var(--cobalt-2));color:#fff;border-color:transparent;
+  box-shadow:0 0 0 1px rgba(var(--cob),.55),0 14px 32px -12px rgba(var(--cob),.75)}
+@media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .btn-primary:hover{box-shadow:0 0 0 1px rgba(var(--cob),.7),0 18px 40px -12px rgba(var(--cob),.9)}}
+:root[data-theme="dark"] .hero .glass{box-shadow:0 0 0 1px rgba(var(--sig),.2),0 1px 0 rgba(255,255,255,.05) inset,0 44px 80px -30px rgba(0,0,0,.95),0 20px 40px -22px rgba(0,0,0,.85),0 0 44px -16px rgba(var(--sig),.28)}
+:root[data-theme="dark"] .card{box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 40px 70px -32px rgba(0,0,0,.95),0 16px 30px -20px rgba(0,0,0,.75)}
+:root[data-theme="light"] .hero .glass{box-shadow:0 34px 64px -30px rgba(10,10,10,.32),0 12px 24px -16px rgba(10,10,10,.18)}
+:root[data-theme="light"] .card{box-shadow:0 30px 60px -32px rgba(10,10,10,.3),0 10px 22px -16px rgba(10,10,10,.16)}
+/* grey wood, both themes */
+.bookcase{--wood:#3A3734;--wood-2:#292725;--wood-3:#1B1A19;--grain:rgba(225,220,210,.05);--inner:#100F0E;--lip:#4A4642}
+:root[data-theme="light"] .bookcase{--wood:#6E6862;--wood-2:#5A554F;--wood-3:#46423E;--grain:rgba(255,255,255,.07);--inner:#34312E;--lip:#837C74;--glow:rgba(255,248,235,.16)}
+:root[data-theme="light"] .shelf{background:
+    radial-gradient(ellipse 70% 60% at 50% 100%,var(--glow),transparent 70%),
+    linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.12) 30%,rgba(0,0,0,.22)),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 11px),
+    var(--inner)}
+/* 24.11.2026: the bookcase stands straight again (Osama), with real wood grain in the same grey:
+   stretched fractal noise as light and dark streaks, vertical on the frame and back, horizontal on the planks */
+.bookcase{--gv:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.16 0.006' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.9 0 0 0 -0.47'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23g)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.12 0.005' numOctaves='4' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.9 0 0 0 0.5'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23g)'/%3E%3C/svg%3E");--gh:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.16' numOctaves='4' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.9 0 0 0 -0.47'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23g)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.005 0.12' numOctaves='4' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.9 0 0 0 0.5'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23g)'/%3E%3C/svg%3E");
+  background:var(--gv),linear-gradient(180deg,var(--wood),var(--wood-2));background-size:600px 600px,600px 600px,auto;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
+.shelf{background-image:var(--gv),radial-gradient(ellipse 70% 60% at 50% 100%,var(--glow),transparent 70%),linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.15) 30%,rgba(0,0,0,.25));
+  background-size:600px 600px,600px 600px,auto,auto;background-color:var(--inner);background-blend-mode:soft-light,normal,normal,normal}
+.shelf::after{background:var(--gh),linear-gradient(180deg,var(--lip),var(--wood-2) 60%,var(--wood-3));background-size:1400px 600px,1400px 600px,auto}
+:root[data-theme="light"] .bookcase{box-shadow:0 30px 60px -32px rgba(60,55,50,.5),inset 0 1px 0 rgba(255,255,255,.25)}
+:root[data-theme="light"] .shelf{background-image:var(--gv),radial-gradient(ellipse 70% 60% at 50% 100%,var(--glow),transparent 70%),linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.12) 30%,rgba(0,0,0,.22));
+  background-size:600px 600px,600px 600px,auto,auto;background-color:var(--inner);background-blend-mode:soft-light,normal,normal,normal}
 </style>
 </head>
 <body>
@@ -818,7 +848,7 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
   for(i=0;i<N;i++){var a=S[Math.max(0,i-1)],b=S[Math.min(N-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;
     if(i)len+=Math.hypot(S[i][0]-S[i-1][0],S[i][1]-S[i-1][1]);AS[i]=len;NX[i]=-dy/l;NY[i]=dx/l}
   function hex(h){return [parseInt(h.substr(1,2),16),parseInt(h.substr(3,2),16),parseInt(h.substr(5,2),16)]}
-  var C1=hex(light?'#D2042D':'#FF6FB0'),HOT=hex(light?'#9C0020':'#FFE6F1'),ALT=hex(light?'#FF4D6D':'#FFB0D3');
+  var C1=hex(light?'#D2042D':'#E5D3B3'),HOT=hex(light?'#9C0020':'#FFF8EC'),ALT=hex(light?'#FF4D6D':'#F2E6D0');
   function mix(x,y,t){return [x[0]+(y[0]-x[0])*t,x[1]+(y[1]-x[1])*t,x[2]+(y[2]-x[2])*t]}
   function sm(e0,e1,x){var t=Math.max(0,Math.min(1,(x-e0)/(e1-e0)));return t*t*(3-2*t)}
   g.globalCompositeOperation=light?'source-over':'lighter';g.lineCap='butt';g.lineJoin='round';var K2=light?.85:.33; // 2D strokes read brighter than the soft-edged GL strips
@@ -1084,7 +1114,8 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
     <!-- 24.11.2026 (Osama): the certificates live on a wooden bookshelf. Earned ones are leather
          books (name on the spine); a tap opens the book: certificate on the left page, details on the
          right. The ones in progress are wrapped and sealed. -->
-    <div class="bookcase rv" id="bookcase">
+    <div class="bookcase-wrap rv">
+    <div class="bookcase" id="bookcase">
       <div class="shelf">
         <span class="bookend l" aria-hidden="true"></span>
         <button type="button" class="book" style="--lea:#3E2A72;--bh:92%;--bw:70px;--i:0" data-title="Project Management Professional (PMP)®" data-org="Project Management Institute" data-status="Active" data-img="assets/cert-pmp.webp" data-alt="PMI Project Management Professional certificate for Osama Sunaallah" data-meta="Credential ID::4563576|Issued::Nov 2026|Valid to::Nov 2029" data-short="PMP®" aria-haspopup="dialog" aria-label="Open Project Management Professional (PMP)®"><span class="book-spine"><i class="band t"></i><b>Project Management Professional</b><i class="band b"></i></span></button>
@@ -1101,6 +1132,7 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
         <button type="button" class="book wrapped" style="--bh:92%;--bw:66px;--i:2" data-title="Certified Supply Chain Professional (CSCP)" data-org="ASCM (APICS)" aria-label="Certified Supply Chain Professional (CSCP), in progress"><span class="book-spine"><i class="twine"></i><b>CSCP</b><i class="seal" aria-hidden="true"></i><em>Soon</em></span></button>
         <span class="bookend" aria-hidden="true"></span>
       </div>
+    </div>
     </div>
     <p class="shelf-note" id="shelfNote" role="status" aria-live="polite"></p>
     <dialog class="tome" id="tome" aria-label="Certificate">
@@ -1308,7 +1340,7 @@ if(mounts.length){
     const key=new THREE.DirectionalLight(0xfff2dc,2.6);key.position.set(.5,.45,.45);scene.add(key);
     const fill=new THREE.DirectionalLight(0xcbd3ff,1);fill.position.set(-.45,.2,.3);scene.add(fill);
     const rim=new THREE.DirectionalLight(0x9fe8ff,1.8);rim.position.set(-.1,.35,-.5);scene.add(rim);
-    if(document.documentElement.dataset.theme!=='light'){const mint=new THREE.DirectionalLight(0xff6fb0,hero?2.2:1.6);mint.position.set(-.5,.12,-.35);scene.add(mint)}
+    if(document.documentElement.dataset.theme!=='light'){const mint=new THREE.DirectionalLight(0xe5d3b3,hero?2.2:1.6);mint.position.set(-.5,.12,-.35);scene.add(mint)}
     const tex=new THREE.CanvasTexture(lc);
     tex.colorSpace=THREE.SRGBColorSpace;tex.flipY=true;tex.anisotropy=8;tex.minFilter=THREE.LinearFilter;tex.magFilter=THREE.LinearFilter;
 
@@ -1336,7 +1368,7 @@ if(mounts.length){
   }));
 }
 </script>
-<script type="module" src="assets/hydracap3d.js?v=9"></script>
+<script type="module" src="assets/hydracap3d.js?v=10"></script>
 <script type="module" src="assets/verigate-explode.js?v=5"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
@@ -1623,7 +1655,7 @@ function startStream(cv){
       gl_FragColor=uLight>.5?vec4(uHot,a):vec4(uHot*a,a);}`;
   const U=(o)=>Object.assign({uRes:{value:new THREE.Vector2()},uScroll:{value:0},uTime:{value:0},uFlow:{value:0},uThick:{value:1.6},
     uBlur:{value:4},uGlint:{value:1},uAlpha:{value:1},uLight:{value:0},uPR:{value:1},uM:{value:[0,1,2,3,4,5].map(()=>new THREE.Vector4(-9e3,-9e3,-9e3,-9e3))},
-    uColor:{value:new THREE.Color('#FF6FB0')},uHot:{value:new THREE.Color('#FFE6F1')},uAlt:{value:new THREE.Color('#FFB0D3')}},o);
+    uColor:{value:new THREE.Color('#E5D3B3')},uHot:{value:new THREE.Color('#FFF8EC')},uAlt:{value:new THREE.Color('#F2E6D0')}},o);
   const mat=(u,v,f)=>new THREE.ShaderMaterial({uniforms:u,vertexShader:v,fragmentShader:f,transparent:true,depthTest:false,depthWrite:false,blending:THREE.AdditiveBlending});
   const glow=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:14},uAlpha:{value:.1},uBlur:{value:1.6},uGlint:{value:.4}}),vert,frag));
   const lines=new THREE.Mesh(new THREE.BufferGeometry(),mat(U({uThick:{value:1.9}}),vert,frag));
@@ -1673,7 +1705,7 @@ function startStream(cv){
   }
   function theme(){
     const L=document.documentElement.dataset.theme==='light';
-    for(const o of all){const u=o.material.uniforms;u.uLight.value=L?1:0;u.uColor.value.set(L?'#D2042D':'#FF6FB0');u.uHot.value.set(L?'#9C0020':'#FFE6F1');u.uAlt.value.set(L?'#FF4D6D':'#FFB0D3');
+    for(const o of all){const u=o.material.uniforms;u.uLight.value=L?1:0;u.uColor.value.set(L?'#D2042D':'#E5D3B3');u.uHot.value.set(L?'#9C0020':'#FFF8EC');u.uAlt.value.set(L?'#FF4D6D':'#F2E6D0');
       o.material.blending=L?THREE.NormalBlending:THREE.AdditiveBlending;o.material.needsUpdate=true}
     glow.material.uniforms.uAlpha.value=L?.07:.09;lines.material.uniforms.uAlpha.value=L?.5:1;sparks.material.uniforms.uAlpha.value=L?.5:.9;bloom.material.uniforms.uAlpha.value=L?.16:.55;
   }
