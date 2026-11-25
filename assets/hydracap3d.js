@@ -305,7 +305,7 @@ const CAMS = {
 function mountBottles(el){
   const kind = el.dataset.bottles === 'duo' ? 'duo' : 'cap', C = CAMS[kind];
   const R = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+  R.setPixelRatio(Math.min(devicePixelRatio || 1, el.closest('.hero') ? 1.5 : 1.25));   // the wide Work-card scene draws at 1.25x
   R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.1;
   el.appendChild(R.domElement);
   const S = new THREE.Scene();
