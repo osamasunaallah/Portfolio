@@ -375,8 +375,8 @@ dialog p{color:#ECF1F7;text-align:center;font-size:14px;margin:12px 0 0}
 :root[data-theme="dark"] .collage{isolation:isolate}
 :root[data-theme="dark"] .collage::after{content:"";position:absolute;left:6%;bottom:2%;width:66%;height:50%;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--sig),.26),transparent 72%);pointer-events:none;z-index:-1}
 :root[data-theme="dark"] .hero .glass{border-color:rgba(var(--sig-2),.44);box-shadow:0 0 0 1px rgba(var(--sig),.16),0 0 34px -8px rgba(var(--sig),.30),0 28px 56px -18px rgba(var(--sig),.62),0 34px 64px -28px rgba(0,0,0,.8)}
-:root[data-theme="dark"] .stage-tag{border-color:rgba(var(--sig-2),.46);box-shadow:0 0 26px -8px rgba(var(--sig),.34),0 18px 40px -16px rgba(var(--sig),.6),0 1px 0 rgba(255,255,255,.04) inset}
-:root[data-theme="dark"] .cred{border-color:rgba(var(--sig-2),.32);box-shadow:0 0 22px -10px rgba(var(--sig),.4),0 14px 30px -18px rgba(var(--sig),.6)}
+:root[data-theme="dark"] .stage-tag{border-color:rgba(var(--sig-2),.46);box-shadow:0 0 30px -8px rgba(var(--cob),.45),0 20px 44px -16px rgba(var(--cob),.62),0 1px 0 rgba(255,255,255,.04) inset}
+:root[data-theme="dark"] .cred{border-color:rgba(var(--sig-2),.32);box-shadow:0 0 26px -10px rgba(var(--cob),.5),0 16px 34px -18px rgba(var(--cob),.65)}
 :root[data-theme="dark"] .cred .dot{background:rgba(var(--sig),.18);color:var(--mint)}
 :root[data-theme="dark"] .hero .eyebrow::before{background:linear-gradient(90deg,var(--a1),var(--mint))}
 /* clickable pills carry the mint: filled for the main actions and the active filter, outlined for the rest */
@@ -793,7 +793,8 @@ footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 :root[data-theme="dark"] .btn-primary{background:linear-gradient(120deg,var(--cobalt),var(--cobalt-2));color:#fff;border-color:transparent;
   box-shadow:0 0 0 1px rgba(var(--cob),.55),0 14px 32px -12px rgba(var(--cob),.75)}
 @media (hover:hover) and (pointer:fine){:root[data-theme="dark"] .btn-primary:hover{box-shadow:0 0 0 1px rgba(var(--cob),.7),0 18px 40px -12px rgba(var(--cob),.9)}}
-:root[data-theme="dark"] .hero .glass{box-shadow:0 0 0 1px rgba(var(--sig),.2),0 1px 0 rgba(255,255,255,.05) inset,0 44px 80px -30px rgba(0,0,0,.95),0 20px 40px -22px rgba(0,0,0,.85),0 0 44px -16px rgba(var(--sig),.28)}
+/* 25.11.2026 (Osama): the hero cards' shadow glow is cobalt and a little stronger (was beige) */
+:root[data-theme="dark"] .hero .glass{box-shadow:0 0 0 1px rgba(var(--cob),.32),0 1px 0 rgba(255,255,255,.05) inset,0 44px 80px -30px rgba(0,0,0,.95),0 26px 56px -24px rgba(var(--cob),.55),0 0 60px -14px rgba(var(--cob),.42)}
 :root[data-theme="dark"] .card{box-shadow:0 1px 0 rgba(255,255,255,.05) inset,0 40px 70px -32px rgba(0,0,0,.95),0 16px 30px -20px rgba(0,0,0,.75)}
 :root[data-theme="light"] .hero .glass{box-shadow:0 34px 64px -30px rgba(10,10,10,.32),0 12px 24px -16px rgba(10,10,10,.18)}
 :root[data-theme="light"] .card{box-shadow:0 30px 60px -32px rgba(10,10,10,.3),0 10px 22px -16px rgba(10,10,10,.16)}
@@ -1351,7 +1352,7 @@ if(mounts.length){
     const hero=mount.dataset.dev==='hero';
     camera.position.set(0,hero?0.024:0.03,hero?0.275:0.36);camera.lookAt(0,0.002,0);
     const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
-    renderer.setSize(W(),H());renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+    renderer.setSize(W(),H());renderer.setPixelRatio(Math.min(devicePixelRatio||1,mount.dataset.dev==='hero'?1.5:1.25));
     renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=hero?1.45:1.1;
     mount.appendChild(renderer.domElement);
     scene.add(new THREE.AmbientLight(0xffffff,hero?1.3:.6));
@@ -1389,9 +1390,9 @@ if(mounts.length){
   }));
 }
 </script>
-<script type="module" src="assets/hydracap3d.js?v=10"></script>
-<script type="module" src="assets/verigate-big.js?v=3"></script>
-<script type="module" src="assets/verigate-explode.js?v=7"></script>
+<script type="module" src="assets/hydracap3d.js?v=11"></script>
+<script type="module" src="assets/verigate-big.js?v=4"></script>
+<script type="module" src="assets/vg-explode.js?v=8"></script>
 <script>
 /* live mini dashboards in the supply-chain cards. Placeholder data only. */
 (() => {
@@ -1731,8 +1732,8 @@ function startStream(cv){
       o.material.blending=L?THREE.NormalBlending:THREE.AdditiveBlending;o.material.needsUpdate=true}
     glow.material.uniforms.uAlpha.value=L?.07:.09;lines.material.uniforms.uAlpha.value=L?.5:1;sparks.material.uniforms.uAlpha.value=L?.5:.9;bloom.material.uniforms.uAlpha.value=L?.16:.55;
   }
-  let W=0,H=0,sp=scrollY*K,vel=0,flow=0,time=0,last=0,lastY=scrollY;
-  function size(){W=innerWidth;H=innerHeight;const pr=Math.min(devicePixelRatio||1,W<760?1.25:1.5);R.setPixelRatio(pr);R.setSize(W,H,false);for(const o of all)o.material.uniforms.uPR.value=pr;build()}
+  let W=0,H=0,sp=scrollY*K,vel=0,flow=0,time=0,last=0,lastY=scrollY,skip=false;
+  function size(){W=innerWidth;H=innerHeight;const pr=Math.min(devicePixelRatio||1,1);/* 25.11.2026: soft glowing lines, so 1x is enough; full-screen at 1.5x was the heaviest layer */R.setPixelRatio(pr);R.setSize(W,H,false);for(const o of all)o.material.uniforms.uPR.value=pr;build()}
   function frame(now){
     const dt=Math.min(.05,(now-(last||now))/1000);last=now;
     if(!document.hidden){
@@ -1741,7 +1742,9 @@ function startStream(cv){
       if(!reduce){time+=dt;flow+=dt*(1+vel*4)}
       for(const o of all){const u=o.material.uniforms;u.uRes.value.set(W,H);u.uScroll.value=sp;u.uTime.value=time;u.uFlow.value=flow}
       for(const o of all){const M=o.material.uniforms.uM.value;for(let i=0;i<6;i++){const b=boxes[i];if(b)M[i].set(b[0],b[1]-scrollY,b[2],b[3]-scrollY);else M[i].set(-9e3,-9e3,-9e3,-9e3)}}
-      R.render(scene,cam);
+      // while the page is not scrolling the stream only drifts slowly: draw every other frame (30 fps) to halve the GPU work
+      const calm=!reduce&&vel<.03&&Math.abs(target-sp)<.5;skip=calm&&!skip;
+      if(!skip||first)R.render(scene,cam);
       if(first){first=false;cv.classList.add('on');if(window.__streamPre){window.__streamPre();window.__streamPre=null}}
     }
     requestAnimationFrame(frame);
