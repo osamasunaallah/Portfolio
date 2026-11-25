@@ -38,7 +38,7 @@ function start(host){
 
   /* renderer, camera, light */
   const R = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+  R.setPixelRatio(Math.min(devicePixelRatio || 1, 1.25));   // a big canvas: 1.25 keeps it sharp without the GPU cost of 1.5
   R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.3;
   host.appendChild(R.domElement);
   const S = new THREE.Scene();
@@ -128,13 +128,15 @@ function start(host){
     const e = easeOut(p), narrow = host.clientWidth < 560;
     const restX = halfW - (narrow ? .05 : .052);                  // the right part of the device stays past the edge
     holder.position.x = lerp(halfW + .11, restX, e);
-    holder.position.y = (reduced ? 0 : Math.sin(t * .9) * .0018) * e;
     holder.rotation.z = lerp(.95, 0, e);                          // the roll, settling as it arrives
     holder.rotation.x = lerp(.4, .06, e);                         // the tilt
     holder.rotation.y = lerp(1.15, -.5, e);                       // ends facing the title, on its left
   }
 
-  let p = reduced ? 1 : 0, visible = false, raf = 0, lastLcd = -1e9;
+  // it only redraws when something on it changes (the slide-in, the screen text, the theme), not every frame
+  let p = reduced ? 1 : 0, visible = false, raf = 0, lastKey = '', sized = 0;
+  const lcdKey = ms => Math.floor(ms / 2600) % 3 + ':' + Math.floor(ms / 500) % 2;
+  new ResizeObserver(() => { sized++; }).observe(host);
   const frame = ms => {
     raf = requestAnimationFrame(frame);
     if (!visible || document.hidden) return;
@@ -144,8 +146,11 @@ function start(host){
       const target = clamp01((vh - r.top) / (vh * .7));
       p += (target - p) * .12; if (Math.abs(target - p) < .0005) p = target;
     }
+    const lk = lcdKey(ms), key = p.toFixed(4) + '|' + lk + '|' + dark() + '|' + sized;
+    if (key === lastKey) return;
+    if (!lastKey.includes('|' + lk + '|')) drawLCD(ms);
+    lastKey = key;
     pose(p, ms / 1000);
-    if (ms - lastLcd > 66){ lastLcd = ms; drawLCD(ms); }
     warm.intensity = dark() ? 1.6 : .6;
     R.render(S, cam);
   };
