@@ -217,7 +217,7 @@ function start(host){
   }
 
   // soft floor shadow
-  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(.34, .34), new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false,
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), new THREE.MeshBasicMaterial({ transparent: true, depthWrite: false,
     map: canvasTex(128, 128, (x) => { const g = x.createRadialGradient(64, 64, 2, 64, 64, 64); g.addColorStop(0, 'rgba(20,30,45,.38)'); g.addColorStop(1, 'rgba(20,30,45,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); }) }));
   shadow.rotation.x = -Math.PI / 2; shadow.position.y = -.061; S.add(shadow);
 
@@ -229,7 +229,10 @@ function start(host){
   const layer = host.querySelector('.vg-xp-labels');
   // a pseudo part so the harness gets a label too
   const harness = { label: 'Wiring', labelOff: new V3(), k: 0, g: new THREE.Group() }; root.add(harness.g);
-  [...parts, harness].forEach(p => { const el = document.createElement('span'); el.className = 'vg-xp-label'; el.innerHTML = '<i></i>' + p.label; layer.appendChild(el); p.el = el; });
+  // phones get short names so the labels do not run into each other
+  const SHORT = { '16×2 LCD': 'LCD', 'Arduino Uno R4': 'Arduino', '9 V battery': 'Battery', 'RFID card': 'Card', 'Key fob': 'Fob', 'RC522 RFID': 'RC522' };
+  [...parts, harness].forEach(p => { const el = document.createElement('span'); el.className = 'vg-xp-label';
+    el.innerHTML = '<i></i><span class="lf">' + p.label + '</span><span class="ls">' + (SHORT[p.label] || p.label) + '</span>'; layer.appendChild(el); p.el = el; });
 
   /* ---------- timeline: assembled -> explode -> hold -> implode -> hold ---------- */
   const LOOP = 11, A0 = 1.6, A1 = 3.0, B0 = 7.4, B1 = 8.8;   // seconds
@@ -237,6 +240,7 @@ function start(host){
   const autoS = t => { const u = t % LOOP; return u < A0 ? 0 : u < A1 ? (u - A0) / (A1 - A0) : u < B0 ? 1 : u < B1 ? 1 - (u - B0) / (B1 - B0) : 0; };
   const autoDir = t => { const u = t % LOOP; return u < B0 ? 1 : -1; };
   host.addEventListener('click', () => {
+    if (arrivedAt === null) return;
     const now = performance.now() / 1000, cur = lastS;
     manual = cur > .5 ? 0 : 1; manualFrom = cur; manualT = now;
   });
@@ -250,19 +254,33 @@ function start(host){
     roomK = aspect < 1.4 ? 1.35 : 1; sideK = Math.min(1, (.118 * roomK * aspect) / (.118 * 1.78)); setFrustum(); };
   new ResizeObserver(size).observe(host); size();
 
-  let lastS = 0, visible = false, raf = 0;
+  let lastS = 0, visible = false, raf = 0, ep = reduced ? 1 : 0, entryRoll = 0, arrivedAt = reduced ? 0 : null;
+  const wrapEl = host.parentElement;
   const t0 = performance.now() / 1000, tmp = new V3();
   const frame = nowMs => {
     raf = requestAnimationFrame(frame);
     if (!visible || document.hidden) return;
     const now = nowMs / 1000, t = now - t0;
     // explode amount s (0 assembled .. 1 apart) and direction
+    // 25.11.2026: it slides in from the left of the screen with a roll, following the scroll,
+    // and only starts coming apart once it has arrived
+    if (!reduced){
+      const r = wrapEl.getBoundingClientRect(), vh = innerHeight;
+      const target = clamp01((vh - r.top) / (vh * .45));   // arrives when its top is a little past the middle of the screen
+      ep += (target - ep) * .12; if (Math.abs(target - ep) < .0005) ep = target;
+      const ee = easeInOut(ep);
+      host.style.transform = ee < 1 ? `translate3d(${(-(1 - ee) * Math.max(innerWidth * .75, 420)).toFixed(1)}px,0,0)` : '';
+      entryRoll = (1 - ee);
+      if (ep < .995){ arrivedAt = null; manual = null; }
+      else if (arrivedAt === null) arrivedAt = now;
+    }
     let s, dir;
     if (reduced){ s = 1; dir = 1; }
+    else if (arrivedAt === null){ s = lastS * .88; if (s < .002) s = 0; dir = -1; }
     else if (manual !== null){
       const k = clamp01((now - manualT) / 1.3); s = lerp(manualFrom, manual, k); dir = manual > manualFrom ? 1 : -1;
       if (now - manualT > 7){ manual = null; }                 // back to the loop after a while
-    } else { s = autoS(t); dir = autoDir(t); }
+    } else { s = autoS(now - arrivedAt); dir = autoDir(now - arrivedAt); }
     lastS = s;
 
     parts.forEach(p => {
@@ -287,8 +305,9 @@ function start(host){
     // the whole assembly turns gently and follows the pointer a little
     const es = easeInOut(clamp01(Math.max(...parts.map(p => p.k)))); // zoom follows the part that is furthest out
     px += (tx - px) * .06; py += (ty - py) * .06;
-    root.rotation.y = ((reduced ? 0 : Math.sin(t * .35) * .3) + px * .4) * (1 - es);
+    root.rotation.y = ((reduced ? 0 : Math.sin(t * .35) * .3) + px * .4) * (1 - es) - entryRoll * 1.6;
     root.rotation.x = py * .12 * (1 - es);
+    root.rotation.z = -entryRoll * .55;
     // camera pulls back to fit the exploded view
     halfH = lerp(.092 * roomK, .118 * roomK, es); setFrustum();
     shadow.material.opacity = lerp(1, .2, es);
@@ -313,5 +332,5 @@ function start(host){
   (R.compileAsync ? R.compileAsync(S, cam).catch(() => {}) : Promise.resolve())
     // one warm-up frame while the page is idle, so the first frame on screen does not freeze on the GPU upload
     .then(() => new Promise(ok => (window.requestIdleCallback || setTimeout)(() => { R.render(S, cam); ok(); }, { timeout: 2000 })))
-    .then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '120px' }).observe(host));
+    .then(() => new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(frame); }, { rootMargin: '160px' }).observe(wrapEl));
 }
