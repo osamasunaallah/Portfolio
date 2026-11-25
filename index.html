@@ -766,6 +766,28 @@ footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
   .shelf-note{font-size:12.5px}
 }
 @media (prefers-reduced-motion:reduce){.tome-book,.tome-cover,.book{transition:none!important}.book.wrapped.nudge{animation:none}}
+/* 25.11.2026: the Lean Six Sigma book carries its belt path on the spine, bottom to top:
+   Yellow filled (earned), then Green, Black and Master Black as empty dashed outlines still to go */
+.book.lss .book-spine{justify-content:flex-start;padding-top:30px}
+.book.lss .book-spine b{max-height:56%}
+.belt-path{position:absolute;left:9px;right:9px;bottom:14px;display:flex;flex-direction:column;align-items:stretch;gap:7px}
+.belt-path::before{content:"";position:absolute;left:50%;top:-10px;bottom:4px;border-left:1.5px dotted rgba(235,217,166,.45);transform:translateX(-50%)}
+.bp{position:relative;height:6px;border-radius:1px;border:1.3px dashed rgba(235,217,166,.55);background:rgba(20,16,12,.55)}
+.bp.on{border:0;background:linear-gradient(180deg,#F1C93A,#C99A12);box-shadow:0 0 8px rgba(241,201,58,.45)}
+.bp.on::after{content:"";position:absolute;left:50%;top:-3px;width:8px;height:12px;margin-left:-4px;border-radius:1.5px;background:#D9AA1C;box-shadow:0 1px 2px rgba(0,0,0,.5)}
+.bp.g{border-color:rgba(92,190,122,.8)}
+.bp.master{border-style:double;border-width:3px;height:8px}
+.tome-belts{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px solid #DCCFB6;display:grid;gap:7px}
+.tome-belts li{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:10px;font-size:14px;color:#1F1710}
+.tome-belts i{height:8px;border-radius:2px;background:var(--belt);position:relative}
+.tome-belts i::after{content:"";position:absolute;left:50%;top:-3px;width:7px;height:14px;margin-left:-3.5px;border-radius:2px;background:inherit}
+.tome-belts li.todo i{background:none;border:1.5px dashed #B5A68A;height:6px}
+.tome-belts li.todo i::after{display:none}
+.tome-belts li.todo{color:#8B7A62}
+.tome-belts small{font:600 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#8B7A62}
+.tome-belts li.done small{color:#2E6B4A}
+.tome-belts li.next small{color:#9A7414}
+@media (max-width:720px){.belt-path{left:6px;right:6px;bottom:10px;gap:5px}.book.lss .book-spine{padding-top:22px}.tome-belts{margin-top:6px;padding-top:8px;gap:4px}.tome-belts li{font-size:13px}}
 
 /* ===== 24.11.2026 (Osama): beige second colour, cobalt for the main buttons (about 10%),
    deeper shadows round the project cards, and a darker grey-wood bookcase with a small 3D turn ===== */
@@ -925,8 +947,8 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
         </div>
       </div>
       <div class="collage rv" aria-hidden="true">
-        <div class="glass g1"><img src="assets/proj-supply-chain.webp" alt=""></div>
-        <div class="glass g2"><img src="assets/proj-supplier-scorecard.webp" alt=""></div>
+        <div class="glass g1"><img src="assets/proj-supply-chain.webp?v=2" alt=""></div>
+        <div class="glass g2"><img src="assets/proj-supplier-scorecard.webp?v=2" alt=""></div>
         <div class="glass g3 device"><div class="dev3d" data-dev="hero"></div></div>
         <div class="glass g4 device"><div class="bottle3d" data-bottles="cap"></div></div>
         <div class="stage-tag t1"><span class="sq"><svg class="i" aria-hidden="true"><use href="#i-cube"/></svg></span><div><b>4 projects</b><small>Supply chain, IoT, Product</small></div></div>
@@ -1120,7 +1142,9 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
         <span class="bookend l" aria-hidden="true"></span>
         <button type="button" class="book" style="--lea:#3E2A72;--bh:92%;--bw:70px;--i:0" data-title="Project Management Professional (PMP)®" data-org="Project Management Institute" data-status="Active" data-img="assets/cert-pmp.webp" data-alt="PMI Project Management Professional certificate for Osama Sunaallah" data-meta="Credential ID::4563576|Issued::Nov 2026|Valid to::Nov 2029" data-short="PMP®" aria-haspopup="dialog" aria-label="Open Project Management Professional (PMP)®"><span class="book-spine"><i class="band t"></i><b>Project Management Professional</b><i class="band b"></i></span></button>
         <button type="button" class="book" style="--lea:#1E4A86;--bh:86%;--bw:64px;--i:1" data-title="Certified Associate in Project Management (CAPM)®" data-org="Project Management Institute" data-status="Active" data-img="assets/cert-capm.webp?v=2" data-alt="PMI Certified Associate in Project Management certificate for Osama Sunaallah" data-meta="Credential ID::4503012|Issued::Aug 2026|Valid to::Aug 2029" data-short="CAPM®" aria-haspopup="dialog" aria-label="Open Certified Associate in Project Management (CAPM)®"><span class="book-spine"><i class="band t"></i><b>Certified Associate in Project Management</b><i class="band b"></i></span></button>
-        <button type="button" class="book" style="--lea:#9A7414;--bh:78%;--bw:58px;--i:2" data-title="Lean Six Sigma Yellow Belt" data-org="KnowWare International" data-status="Completed, Mar 2026" data-img="assets/cert-lss-yellow.webp" data-alt="Lean Six Sigma Yellow Belt certificate for Osama Sunaallah" data-meta="Belt::Yellow (2 of 5)|Completed::Mar 2026" data-short="LSS" aria-haspopup="dialog" aria-label="Open Lean Six Sigma Yellow Belt"><span class="book-spine"><i class="band t"></i><b>Lean Six Sigma Yellow Belt</b><i class="band b"></i></span></button>
+        <!-- 25.11.2026 (Osama): one book called "Lean Six Sigma". The belt path runs up the spine:
+             Yellow is filled (earned); Green, Black and Master Black are empty outlines still to go. -->
+        <button type="button" class="book lss" style="--lea:#2C2824;--bh:86%;--bw:62px;--i:2" data-title="Lean Six Sigma" data-org="KnowWare International" data-status="In progress · Yellow Belt earned, Mar 2026" data-img="assets/cert-lss-yellow.webp" data-alt="Lean Six Sigma Yellow Belt certificate for Osama Sunaallah" data-meta="Current belt::Yellow|Path::1 of 4 belts" data-path="Yellow::Earned, Mar 2026|Green::Next|Black::To go|Master Black::To go" data-short="LSS" aria-haspopup="dialog" aria-label="Open Lean Six Sigma: Yellow Belt earned; Green, Black and Master Black still to go"><span class="book-spine"><i class="band t"></i><b>Lean Six Sigma</b><span class="belt-path" aria-hidden="true"><i class="bp master"></i><i class="bp"></i><i class="bp g"></i><i class="bp on"></i></span></span></button>
         <button type="button" class="book" style="--lea:#1C5E46;--bh:95%;--bw:74px;--i:3" data-title="Professional Accreditation, Engineer (Industrial Engineering)" data-org="Saudi Council of Engineers" data-status="Active" data-img="assets/cert-sce.webp" data-alt="Saudi Council of Engineers professional accreditation certificate for Osama Sunaallah, Engineer, Industrial Engineering" data-meta="Membership ID::1265151|Issued::Jul 2026|Valid to::Jul 2027" data-short="SCE" aria-haspopup="dialog" aria-label="Open Professional Accreditation, Engineer (Industrial Engineering)"><span class="book-spine"><i class="band t"></i><b>Professional Engineer, SCE</b><i class="band b"></i></span></button>
         <button type="button" class="book" style="--lea:#7E2A4C;--bh:84%;--bw:60px;--i:4" data-title="Mastering Financial Management" data-org="Coursera, Alfaisal University &amp; KLD" data-status="Completed, Aug 2025" data-img="assets/cert-coursera-fm.webp" data-alt="Coursera Mastering Financial Management course certificate for Osama Sunaallah, by Alfaisal University and KLD" data-meta="Credential ID::E6BLT8IO1QVN|Issued::Aug 2025" data-short="Finance" aria-haspopup="dialog" aria-label="Open Mastering Financial Management"><span class="book-spine"><i class="band t"></i><b>Mastering Financial Management</b><i class="band b"></i></span></button>
         <span class="bookend" aria-hidden="true"></span>
@@ -1143,6 +1167,7 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
             <h3 class="tome-title" id="tomeTitle"></h3>
             <span class="tome-status" id="tomeStatus"></span>
             <dl class="tome-meta" id="tomeMeta"></dl>
+            <ol class="tome-belts" id="tomeBelts" hidden></ol>
             <span class="tome-mark" aria-hidden="true"></span>
           </div>
           <div class="tome-cover" id="tomeCover">
@@ -1266,6 +1291,9 @@ document.getElementById('lbClose').addEventListener('click',()=>lb.close());
     $('tomeOrg').innerHTML=d.org;$('tomeTitle').innerHTML=d.title;$('tomeStatus').textContent='● '+d.status;
     $('tomeShort').innerHTML=d.short;$('tomeFrontTitle').innerHTML=d.title;
     $('tomeMeta').innerHTML=d.meta.split('|').map(x=>{const p=x.split('::');return '<div><dt>'+p[0]+'</dt><dd>'+p[1]+'</dd></div>'}).join('');
+    const bl=$('tomeBelts'),cols={Yellow:'#E0B21C',Green:'#2F8A4E',Black:'#151515','Master Black':'#151515'};
+    if(d.path){bl.hidden=false;bl.innerHTML=d.path.split('|').map((x,i)=>{const p=x.split('::'),c=i===0?'done':(i===1?'next todo':'todo');return '<li class="'+c+'" style="--belt:'+(cols[p[0]]||'#888')+'"><i></i><span>'+p[0]+'</span><small>'+p[1]+'</small></li>'}).join('');}
+    else{bl.hidden=true;bl.innerHTML='';}
     const im=$('tomeImg');im.src=d.img;im.alt=d.alt;$('tomeImgBtn').dataset.full=d.img;$('tomeImgBtn').dataset.cap=d.title.replace(/<[^>]+>/g,'')+', '+d.org.replace(/&amp;/g,'&');
     tome.setAttribute('aria-label',d.title.replace(/<[^>]+>/g,''));
     tome.classList.remove('in','open');tome.showModal();
