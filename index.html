@@ -159,11 +159,33 @@ svg.i{width:18px;height:18px;flex:none}
 .cred small{color:var(--muted);font-size:12px}
 .cred .dot{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--a1) 14%,transparent);color:var(--a1)}
 .cred b,.cred small{white-space:nowrap}
-.hero>.wrap{width:100%}
+.hero>.wrap{width:100%;position:relative;z-index:1}
 @media (min-width:981px){.hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}.hero .collage{max-height:660px}}
 @media (min-width:981px) and (max-width:1180px){.creds{gap:8px}.cred{padding:9px 11px;gap:8px}.cred .dot{display:none}}
 @media (max-width:560px){.creds{gap:6px}.cred{padding:8px 10px;flex:1 1 auto;justify-content:center}.cred .dot{display:none}.cred b{font-size:13px}.cred small{font-size:11px}}
 
+
+/* 25.11.2026 cinematic hero background: Earth's blue rim behind the hero (dark theme only).
+   The footage's black was lifted to the page colour (#151517) when it was encoded, and it sits behind the fixed stream layer (z-index -1),
+   so it melts into the page and the beige stream still draws over it. (Blend modes were unreliable over video.) */
+.hero-film{position:absolute;left:0;right:0;top:0;height:100svh;z-index:-1;pointer-events:none;overflow:hidden;display:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 18%,#000 72%,transparent 100%)}
+:root[data-theme="dark"] .hero-film{display:block}
+.hero-film video{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:62% 30%;
+  opacity:0;transform:translateY(16%) scale(1.08);transition:opacity 1.6s ease;animation:filmPush 26s ease-in-out infinite alternate}
+.hero-film video.on{opacity:.9}
+@keyframes filmPush{to{transform:translateY(14%) scale(1.15)}}
+@supports (animation-timeline:view()){.hero-film{animation:filmOut linear both;animation-timeline:view();animation-range:exit 0% exit 60%}}
+@keyframes filmOut{to{opacity:0;transform:translateY(6%)}}
+@media (prefers-reduced-motion:reduce){.hero-film video{animation:none}}
+/* phones: a tall narrow hero would crop the Earth to a flat haze, so the clip is sized wider than the screen and anchored low, which keeps the curve of the rim */
+@media (max-width:760px){.hero-film video{width:260%;height:auto;aspect-ratio:1600/904;left:50%;top:auto;bottom:16%;translate:-50% 0;object-fit:fill;transform:none;animation:filmPushM 26s ease-in-out infinite alternate}}
+@keyframes filmPushM{to{transform:scale(1.06)}}
+/* the Earth lights the bottom-left now; the old warm glow there was cut off by the hero's edge */
+:root[data-theme="dark"] .hero .aurora.b{display:none}
+/* the stats bar lets the Earth's glow through a little (dark theme) */
+:root[data-theme="dark"] .hero .stat{background:color-mix(in srgb,var(--bg) 78%,transparent)}
+:root[data-theme="dark"] .hero .stats{background:color-mix(in srgb,var(--line) 70%,transparent)}
 /* hero collage */
 .collage{position:relative;aspect-ratio:1/1;max-height:560px;width:100%;justify-self:end}
 .collage::before{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--a2) 22%,transparent),transparent 62%)}
@@ -178,7 +200,7 @@ svg.i{width:18px;height:18px;flex:none}
 .stage-tag{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:14px;border:1px solid var(--line-2);background:color-mix(in srgb,var(--card) 94%,transparent);box-shadow:var(--shadow);font-size:13px;animation:bob 6s ease-in-out infinite}
 .stage-tag b{display:block;font:600 14px "EB Garamond"}
 .stage-tag small{color:var(--muted)}
-.stage-tag.t1{right:-3%;top:1%}
+.stage-tag.t1{right:0;top:1%}   /* 25.11.2026: on the content edge (was 17 px past it) */
 .stage-tag .sq{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--grad);color:var(--on-a)}
 @keyframes bob{50%{transform:translateY(-10px)}}
 @media (max-width:560px){.stage-tag{display:none}}
@@ -820,6 +842,8 @@ footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 </style>
 </head>
 <body>
+<!-- 25.11.2026: the hero film lives outside <main> (which stacks at z-index 1) so it can sit behind the fixed stream layer; a script sizes it to the hero -->
+<div class="hero-film" aria-hidden="true"><video muted loop playsinline preload="metadata" poster="assets/hero-earth-poster.webp?v=2" data-src="assets/hero-earth.mp4?v=2"></video></div>
 <div id="intro" aria-hidden="true"><i class="intro-half top"></i><i class="intro-half bot"></i><div class="intro-mark"><div class="intro-name"><span>Osama</span> <span>Sunaallah</span></div><div class="intro-sub">Portfolio</div></div></div>
 <script>(function(){var d=document.documentElement,el=document.getElementById('intro');
 try{if(sessionStorage.getItem('os-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}sessionStorage.setItem('os-intro','1')}catch(e){}
@@ -1760,6 +1784,24 @@ function startStream(cv){
 // starts in the 3D queue right after the hero objects (priority 0.5: right after the hero bottle, before the device), then fades in
 if(window.WebGLRenderingContext){const cv=document.createElement('canvas');cv.className='stream-gl';cv.setAttribute('aria-hidden','true');cv.dataset.q3d='0.5';
   document.body.insertBefore(cv,document.body.firstChild);(window.__q3d||((e,f)=>f(e)))(cv,startStream)}
+</script>
+<script>
+/* hero film: load and play only in the dark theme, after the page has painted; pause while off screen */
+(function(){var v=document.querySelector('.hero-film video');if(!v)return;var loaded=false,vis=true;
+  var film=v.parentNode,hero=document.querySelector('.hero');
+  function fit(){if(hero){film.style.top=hero.offsetTop+'px';film.style.height=hero.offsetHeight+'px'}}
+  fit();if('ResizeObserver' in window&&hero)new ResizeObserver(fit).observe(hero);addEventListener('resize',fit);
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function dark(){return document.documentElement.dataset.theme!=='light'}
+  function sync(){if(!dark()){v.pause();return}
+    if(!loaded){loaded=true;v.src=v.dataset.src;v.addEventListener('playing',function(){v.classList.add('on')},{once:true});v.addEventListener('loadeddata',function(){if(reduce)v.classList.add('on')},{once:true})}
+    if(reduce){v.pause();return}
+    if(vis&&!document.hidden){var p=v.play();if(p&&p.catch)p.catch(function(){})}else v.pause()}
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(loaded||vis)sync()}).observe(v.parentNode);
+  document.addEventListener('visibilitychange',sync);
+  new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  var go=function(){setTimeout(sync,400)};if(document.readyState==='complete')go();else addEventListener('load',go);
+})();
 </script>
 </body>
 </html>
