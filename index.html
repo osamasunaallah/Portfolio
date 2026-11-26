@@ -633,27 +633,6 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
 .work-loop.native::-webkit-scrollbar{display:none}
 .work-loop.native .work.work-track{transform:none!important;will-change:auto;touch-action:auto}
 @media (max-width:760px){.sec{padding:64px 0}.contact{padding:72px 0 56px}.hero{padding:104px 0 36px}.sec-head{margin-bottom:28px}}
-/* (the halves are 99.6% opaque on purpose: the page underneath is then drawn during the hold, not in the opening frame) */
-/* Opening screen (22.11.2026), after the "headline reveal" video Osama sent: the name and "Portfolio" sit small on black,
-   then the black opens from a slit in the middle (two halves sliding apart) and the site is behind it. Only transform and
-   opacity move (GPU). It opens only once the hero's 3D scenes are built, and nothing builds while it opens. Once per session. */
-#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;contain:strict}
-#intro.out{pointer-events:none}
-.intro-half{position:absolute;left:0;right:0;height:50.5%;background:rgba(5,5,5,.996);will-change:transform;transform:translate3d(0,0,0);transition:transform .95s cubic-bezier(.76,0,.24,1)}
-.intro-half.top{top:0}.intro-half.bot{bottom:0}
-#intro.out .intro-half.top{transform:translate3d(0,-100%,0)}
-#intro.out .intro-half.bot{transform:translate3d(0,100%,0)}
-.intro-mark{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:calc(var(--fs,64px)*.2);color:#F4F4F6;will-change:opacity;transition:opacity .3s ease}
-#intro.out .intro-mark{opacity:0}
-/* sized by script to fill the screen (one line on desktop, two on phones), and shown only once EB Garamond has loaded */
-.intro-name{font:600 var(--fs,64px)/.95 "EB Garamond",Georgia,serif;letter-spacing:-.015em;white-space:nowrap;text-align:center;opacity:0;transform:translate3d(0,14px,0)}
-.intro-sub{font:500 max(12px,calc(var(--fs,64px)*.15))/1 "EB Garamond",Georgia,serif;letter-spacing:.42em;text-transform:uppercase;color:#9A9AA2;padding-left:.42em;opacity:0;transform:translate3d(0,10px,0)}
-#intro.go .intro-name{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .05s forwards}
-#intro.go .intro-sub{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .32s forwards}
-@keyframes intro-in{to{opacity:1;transform:translate3d(0,0,0)}}
-/* the 3D collage is already in place under the screen (fading live 3D canvases in is what stuttered);
-   only the name in the hero rises in once the screen opens, like the headline in the reference */
-.intro-on .hero h1 .ln>span{animation-play-state:paused!important}
 
 /* mobile-native (Emil Kowalski skill, 23.11.2026): native feel on phones */
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -839,41 +818,26 @@ footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
 :root[data-theme="light"] .bookcase{box-shadow:0 30px 60px -32px rgba(60,55,50,.5),inset 0 1px 0 rgba(255,255,255,.25)}
 :root[data-theme="light"] .shelf{background-image:var(--gv),radial-gradient(ellipse 70% 60% at 50% 100%,var(--glow),transparent 70%),linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.12) 30%,rgba(0,0,0,.22));
   background-size:600px 600px,600px 600px,auto,auto;background-color:var(--inner);background-blend-mode:soft-light,normal,normal,normal}
+/* Apple design pass (26.11.2026, Osama: "apply the apple design skill"). No layout or colour changes:
+   taps answer at once (no double-tap-zoom wait, no grey flash), light/dark switches cross-fade instead of jumping,
+   and the page follows the system settings "Reduce transparency" and "Increase contrast". */
+a,button,summary,label,select,[role="button"]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:ease}
+@media (prefers-reduced-transparency:reduce){.nav,.stage-tag{background:var(--bg)!important}}
+@media (prefers-contrast:more){:root[data-theme="dark"]{--line:rgba(255,255,255,.26);--line-2:rgba(255,255,255,.4)}:root[data-theme="light"]{--line:rgba(10,10,10,.3);--line-2:rgba(10,10,10,.45)}}
+/* 26.11.2026 (Osama: "almost all the heroes take too much time to appear, let them be there when I land"):
+   the hero is complete on the first frame. Its parts start visible (the reveal classes only add hover states later),
+   the name does not rise, and the scroll reveals below the hero are unchanged. */
+.hero .rv:not(.in),.hero .rv-st:not(.in)>*{opacity:1;transform:none;transition:none}
+.fx .hero .fx-line.fx-wait,.fx .hero .fx-words.fx-wait .fxw{opacity:1}
+.fx .hero .fx-line.fx-go,.fx .hero .fx-words.fx-go .fxw{animation:none}
+.hero h1 .ln>span,.fx .hero h1 .ln>span{transform:none;animation:none}
 </style>
 </head>
 <body>
 <!-- 25.11.2026: the hero film lives outside <main> (which stacks at z-index 1) so it can sit behind the fixed stream layer; a script sizes it to the hero -->
 <div class="hero-film" aria-hidden="true"><video muted loop playsinline preload="metadata" poster="assets/hero-earth-poster.webp?v=2" data-src="assets/hero-earth.mp4?v=2"></video></div>
-<div id="intro" aria-hidden="true"><i class="intro-half top"></i><i class="intro-half bot"></i><div class="intro-mark"><div class="intro-name"><span>Osama</span> <span>Sunaallah</span></div><div class="intro-sub">Portfolio</div></div></div>
-<script>(function(){var d=document.documentElement,el=document.getElementById('intro');
-try{if(sessionStorage.getItem('os-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}sessionStorage.setItem('os-intro','1')}catch(e){}
-d.classList.add('intro-on','intro-busy');var t0=0,opened=false,pump=function(){window.__q3dPump&&window.__q3dPump()};
-// the slit opens with nothing else running: 3D builds pause while it moves, and restart when it is done
-function open(){if(opened)return;opened=true;d.classList.add('intro-busy');el.classList.add('out');d.classList.remove('intro-on');
-  setTimeout(function(){el.remove();d.classList.remove('intro-busy');pump()},1000)}
-// wait until the hero's 3D scenes are built (or 3.2 s at most), at least 1.8 s on screen
-function ready(){var h=document.querySelectorAll('.hero .bottle3d,.hero .dev3d'),r=document.querySelectorAll('.hero .bottle3d.ready,.hero .dev3d.ready');
-  return r.length>=h.length&&(!document.querySelector('.stream-gl')||document.querySelector('.stream-gl.on'))&&(!window.__q3dHeroIdle||window.__q3dHeroIdle())}
-// and only once the page's main thread has been quiet for 0.35 s, so no other work lands during the opening
-var lastBusy=0;try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){lastBusy=Math.max(lastBusy,e.startTime+e.duration)})}).observe({entryTypes:['longtask']})}catch(e){}
-function check(){var t=performance.now()-t0,quiet=performance.now()-lastBusy>350;if(t>5000||(t>1800&&ready()&&quiet))open();else setTimeout(check,100)}
-el.addEventListener('click',open);
-// no scrolling under the screen, without hiding the scrollbar (that would resize the page and every 3D canvas)
-var stop=function(e){if(!opened)e.preventDefault()};addEventListener('wheel',stop,{passive:false});addEventListener('touchmove',stop,{passive:false});
-addEventListener('keydown',function(e){if(!opened&&/^(ArrowDown|ArrowUp|PageDown|PageUp|Space|Home|End)$/.test(e.code))e.preventDefault()});
-var nm=el.querySelector('.intro-name');
-// fit the name on one line: half the width on desktop, most of the width on phones
-function fit(){nm.style.fontSize='100px';
-  var r=nm.getBoundingClientRect(),fs=Math.min(100*innerWidth*(innerWidth<700?.82:.5)/r.width,100*innerHeight*.16/r.height,110);
-  nm.style.fontSize='';el.style.setProperty('--fs',fs.toFixed(1)+'px')}
-addEventListener('resize',function(){if(el.isConnected)fit()});
-// show the name only in its real font (no swap from the fallback font mid-animation); 1.6 s at most
-function whenFont(cb){var t=performance.now(),done=false,go=function(){if(!done){done=true;cb()}};
-  (function poll(){var ok=false;try{var fs=[].slice.call(document.fonts||[]).filter(function(f){return /EB Garamond/.test(f.family)});
-    if(fs.length){document.fonts.load('600 40px "EB Garamond"');ok=fs.some(function(f){return f.status==='loaded'})}}catch(e){ok=true}
-    if(ok||performance.now()-t>1600)go();else setTimeout(poll,40)})()}
-whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go');requestAnimationFrame(function(){t0=performance.now();
-  setTimeout(function(){d.classList.remove('intro-busy');pump()},450);setTimeout(check,1800)})})})})();</script>
+<!-- 26.11.2026 (Osama: "let the heroes be there when I land"): the opening screen was removed -->
 <canvas class="stream-pre" aria-hidden="true"></canvas>
 <script>
 /* Stream first frame (20.11.2026): drawn instantly with a plain 2D canvas, using the same maths, strands and seeds as the
@@ -979,9 +943,9 @@ whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go'
       </div>
     </div>
     <div class="stats rv-st" id="stats">
-      <div class="stat"><b class="grad-text" data-count="4">0</b><span>featured projects</span></div>
-      <div class="stat"><b class="grad-text" data-count="6000" data-suffix="+">0</b><span>lines of VBA automation</span></div>
-      <div class="stat"><b class="grad-text" data-count="350" data-suffix="+">0</b><span>SKUs planned per month</span></div>
+      <div class="stat"><b class="grad-text">4</b><span>featured projects</span></div>
+      <div class="stat"><b class="grad-text">6,000+</b><span>lines of VBA automation</span></div>
+      <div class="stat"><b class="grad-text">350+</b><span>SKUs planned per month</span></div>
     </div>
   </div>
 </section>
@@ -1237,7 +1201,7 @@ const isLight=()=>root.dataset.theme?root.dataset.theme==='light':matchMedia('(p
 const icon=()=>tb.innerHTML=`<svg class="i" aria-hidden="true"><use href="#i-${isLight()?'moon':'sun'}"/></svg>`;
 try{const t=localStorage.getItem('os-theme');if(t)root.dataset.theme=t}catch(e){}
 icon();
-tb.addEventListener('click',()=>{root.dataset.theme=isLight()?'dark':'light';try{localStorage.setItem('os-theme',root.dataset.theme)}catch(e){};icon();window.__osBar&&__osBar()});
+tb.addEventListener('click',()=>{const go=()=>{root.dataset.theme=isLight()?'dark':'light';try{localStorage.setItem('os-theme',root.dataset.theme)}catch(e){};icon();window.__osBar&&__osBar()};document.startViewTransition?document.startViewTransition(go):go()});
 
 /* nav + progress */
 const nav=document.getElementById('nav'),prog=document.getElementById('prog');
