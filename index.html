@@ -634,6 +634,28 @@ body *:not(svg):not(svg *):not(:is(h1,h2,h3,h1 *,h2 *,h3 *,.xp-big,.stat b,.sf-m
 .work-loop.native .work.work-track{transform:none!important;will-change:auto;touch-action:auto}
 @media (max-width:760px){.sec{padding:64px 0}.contact{padding:72px 0 56px}.hero{padding:104px 0 36px}.sec-head{margin-bottom:28px}}
 
+/* (the halves are 99.6% opaque on purpose: the page underneath is then drawn during the hold, not in the opening frame) */
+/* Opening screen (22.11.2026), after the "headline reveal" video Osama sent: the name and "Portfolio" sit small on black,
+   then the black opens from a slit in the middle (two halves sliding apart) and the site is behind it. Only transform and
+   opacity move (GPU). It opens only once the hero's 3D scenes are built, and nothing builds while it opens. Once per session. */
+#intro{position:fixed;inset:0;z-index:9999;cursor:pointer;contain:strict}
+#intro.out{pointer-events:none}
+.intro-half{position:absolute;left:0;right:0;height:50.5%;background:rgba(5,5,5,.996);will-change:transform;transform:translate3d(0,0,0);transition:transform .95s cubic-bezier(.76,0,.24,1)}
+.intro-half.top{top:0}.intro-half.bot{bottom:0}
+#intro.out .intro-half.top{transform:translate3d(0,-100%,0)}
+#intro.out .intro-half.bot{transform:translate3d(0,100%,0)}
+.intro-mark{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:calc(var(--fs,64px)*.2);color:#F4F4F6;will-change:opacity;transition:opacity .3s ease}
+#intro.out .intro-mark{opacity:0}
+/* sized by script to fill the screen (one line on desktop, two on phones), and shown only once EB Garamond has loaded */
+.intro-name{font:600 var(--fs,64px)/.95 "EB Garamond",Georgia,serif;letter-spacing:-.015em;white-space:nowrap;text-align:center;opacity:0;transform:translate3d(0,14px,0)}
+.intro-sub{font:500 max(12px,calc(var(--fs,64px)*.15))/1 "EB Garamond",Georgia,serif;letter-spacing:.42em;text-transform:uppercase;color:#9A9AA2;padding-left:.42em;opacity:0;transform:translate3d(0,10px,0)}
+#intro.go .intro-name{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .05s forwards}
+#intro.go .intro-sub{animation:intro-in .8s cubic-bezier(.22,1,.36,1) .32s forwards}
+@keyframes intro-in{to{opacity:1;transform:translate3d(0,0,0)}}
+/* the 3D collage is already in place under the screen (fading live 3D canvases in is what stuttered);
+   only the name in the hero rises in once the screen opens, like the headline in the reference */
+.intro-on .hero h1 .ln>span{animation-play-state:paused!important}
+
 /* mobile-native (Emil Kowalski skill, 23.11.2026): native feel on phones */
 html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 a,button,[role="button"],summary,label{touch-action:manipulation}
@@ -832,12 +854,54 @@ a,button,summary,label,select,[role="button"]{touch-action:manipulation;-webkit-
 .fx .hero .fx-line.fx-wait,.fx .hero .fx-words.fx-wait .fxw{opacity:1}
 .fx .hero .fx-line.fx-go,.fx .hero .fx-words.fx-go .fxw{animation:none}
 .hero h1 .ln>span,.fx .hero h1 .ln>span{transform:none;animation:none}
+/* marble film (27.11.2026): one fixed, screen-sized video layer under the hero film and the light stream */
+.marble-film{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:0;transition:opacity .7s ease;
+  background:var(--bg) url(assets/marble-dark-poster.webp?v=1) center/cover}
+:root[data-theme="light"] .marble-film{background-image:url(assets/marble-light-poster.webp?v=1)}
+.marble-film.on{opacity:.72}
+:root[data-theme="light"] .marble-film.on{opacity:.8}
+.marble-film video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 </style>
 </head>
 <body>
 <!-- 25.11.2026: the hero film lives outside <main> (which stacks at z-index 1) so it can sit behind the fixed stream layer; a script sizes it to the hero -->
 <div class="hero-film" aria-hidden="true"><video muted loop playsinline preload="metadata" poster="assets/hero-earth-poster.webp?v=2" data-src="assets/hero-earth.mp4?v=2"></video></div>
-<!-- 26.11.2026 (Osama: "let the heroes be there when I land"): the opening screen was removed -->
+<!-- 27.11.2026 (Osama): the cobalt-veined marble (after the Gold Live KSA marble) behind every section after the hero.
+     "More glowiness and animation", and no lag: the glow is baked into a 12 s seamless film (CUSTOM/tools/render_marble_video.py):
+     light flows along the veins, the stone breathes, and a band of light crosses it. One screen-sized video, fixed behind
+     the page; it fades in once the hero has scrolled away. -->
+<div class="marble-film" aria-hidden="true"><video muted loop playsinline preload="none"></video></div>
+<!-- 27.11.2026 (Osama): the opening screen is back: "Osama Sunaallah / Portfolio" on black, then it slides open onto the hero -->
+<div id="intro" aria-hidden="true"><i class="intro-half top"></i><i class="intro-half bot"></i><div class="intro-mark"><div class="intro-name"><span>Osama</span> <span>Sunaallah</span></div><div class="intro-sub">Portfolio</div></div></div>
+<script>(function(){var d=document.documentElement,el=document.getElementById('intro');
+try{if(sessionStorage.getItem('os-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}sessionStorage.setItem('os-intro','1')}catch(e){}
+d.classList.add('intro-on','intro-busy');var t0=0,opened=false,pump=function(){window.__q3dPump&&window.__q3dPump()};
+// the slit opens with nothing else running: 3D builds pause while it moves, and restart when it is done
+function open(){if(opened)return;opened=true;d.classList.add('intro-busy');el.classList.add('out');d.classList.remove('intro-on');
+  setTimeout(function(){el.remove();d.classList.remove('intro-busy');pump()},1000)}
+// wait until the hero's 3D scenes are built (or 3.2 s at most), at least 1.8 s on screen
+function ready(){var h=document.querySelectorAll('.hero .bottle3d,.hero .dev3d'),r=document.querySelectorAll('.hero .bottle3d.ready,.hero .dev3d.ready');
+  return r.length>=h.length&&(!document.querySelector('.stream-gl')||document.querySelector('.stream-gl.on'))&&(!window.__q3dHeroIdle||window.__q3dHeroIdle())}
+// and only once the page's main thread has been quiet for 0.35 s, so no other work lands during the opening
+var lastBusy=0;try{new PerformanceObserver(function(l){l.getEntries().forEach(function(e){lastBusy=Math.max(lastBusy,e.startTime+e.duration)})}).observe({entryTypes:['longtask']})}catch(e){}
+function check(){var t=performance.now()-t0,quiet=performance.now()-lastBusy>350;if(t>5000||(t>1800&&ready()&&quiet))open();else setTimeout(check,100)}
+el.addEventListener('click',open);
+// no scrolling under the screen, without hiding the scrollbar (that would resize the page and every 3D canvas)
+var stop=function(e){if(!opened)e.preventDefault()};addEventListener('wheel',stop,{passive:false});addEventListener('touchmove',stop,{passive:false});
+addEventListener('keydown',function(e){if(!opened&&/^(ArrowDown|ArrowUp|PageDown|PageUp|Space|Home|End)$/.test(e.code))e.preventDefault()});
+var nm=el.querySelector('.intro-name');
+// fit the name on one line: half the width on desktop, most of the width on phones
+function fit(){nm.style.fontSize='100px';
+  var r=nm.getBoundingClientRect(),fs=Math.min(100*innerWidth*(innerWidth<700?.82:.5)/r.width,100*innerHeight*.16/r.height,110);
+  nm.style.fontSize='';el.style.setProperty('--fs',fs.toFixed(1)+'px')}
+addEventListener('resize',function(){if(el.isConnected)fit()});
+// show the name only in its real font (no swap from the fallback font mid-animation); 1.6 s at most
+function whenFont(cb){var t=performance.now(),done=false,go=function(){if(!done){done=true;cb()}};
+  (function poll(){var ok=false;try{var fs=[].slice.call(document.fonts||[]).filter(function(f){return /EB Garamond/.test(f.family)});
+    if(fs.length){document.fonts.load('600 40px "EB Garamond"');ok=fs.some(function(f){return f.status==='loaded'})}}catch(e){ok=true}
+    if(ok||performance.now()-t>1600)go();else setTimeout(poll,40)})()}
+whenFont(function(){fit();requestAnimationFrame(function(){el.classList.add('go');requestAnimationFrame(function(){t0=performance.now();
+  setTimeout(function(){d.classList.remove('intro-busy');pump()},450);setTimeout(check,1800)})})})})();</script>
 <canvas class="stream-pre" aria-hidden="true"></canvas>
 <script>
 /* Stream first frame (20.11.2026): drawn instantly with a plain 2D canvas, using the same maths, strands and seeds as the
@@ -1698,7 +1762,7 @@ function startStream(cv){
       if(i<n-1){const b0=i*2;idx.push(b0,b0+1,b0+2,b0+1,b0+3,b0+2)}
     }
     for(let v=0;v<n*2;v++)aU[v]=aS[v]/len;
-    const L=m?48:120,aJ=new Float32Array(L),aSeed=new Float32Array(L);for(let i=0;i<L;i++){aJ[i]=i/(L-1);aSeed[i]=((Math.sin((i+1)*12.9898)*43758.5453)%1+1)%1}
+    const L=m?40:84,aJ=/* 27.11.2026: 84 lines (was 120) */new Float32Array(L),aSeed=new Float32Array(L);for(let i=0;i<L;i++){aJ[i]=i/(L-1);aSeed[i]=((Math.sin((i+1)*12.9898)*43758.5453)%1+1)%1}
     const g=new THREE.InstancedBufferGeometry();
     g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*2*3),3));
     [['aP',aP,2],['aN',aN,2],['aW',aW,1],['aF',aF,1],['aS',aS,1],['aU',aU,1],['aSide',aSide,1]].forEach(([nm,arr,sz])=>g.setAttribute(nm,new THREE.BufferAttribute(arr,sz)));
@@ -1721,7 +1785,7 @@ function startStream(cv){
     glow.material.uniforms.uAlpha.value=L?.07:.09;lines.material.uniforms.uAlpha.value=L?.5:1;sparks.material.uniforms.uAlpha.value=L?.5:.9;bloom.material.uniforms.uAlpha.value=L?.16:.55;
   }
   let W=0,H=0,sp=scrollY*K,vel=0,flow=0,time=0,last=0,lastY=scrollY,skip=false;
-  function size(){W=innerWidth;H=innerHeight;const pr=Math.min(devicePixelRatio||1,1);/* 25.11.2026: soft glowing lines, so 1x is enough; full-screen at 1.5x was the heaviest layer */R.setPixelRatio(pr);R.setSize(W,H,false);for(const o of all)o.material.uniforms.uPR.value=pr;build()}
+  function size(){W=innerWidth;H=innerHeight;const pr=Math.min(devicePixelRatio||1,1)*.75;/* 25.11.2026: soft glowing lines, so 1x is enough; full-screen at 1.5x was the heaviest layer. 27.11.2026 (Osama: "remove the lagging"): 0.75x, the soft lines look the same and the GPU does ~45% less */R.setPixelRatio(pr);R.setSize(W,H,false);for(const o of all)o.material.uniforms.uPR.value=pr;build()}
   function frame(now){
     const dt=Math.min(.05,(now-(last||now))/1000);last=now;
     if(!document.hidden){
@@ -1765,6 +1829,20 @@ if(window.WebGLRenderingContext){const cv=document.createElement('canvas');cv.cl
   document.addEventListener('visibilitychange',sync);
   new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   var go=function(){setTimeout(sync,400)};if(document.readyState==='complete')go();else addEventListener('load',go);
+})();
+</script>
+<script>
+/* marble film (27.11.2026): shown (and playing) only once the hero has mostly scrolled away; the theme picks the film;
+   paused in a hidden tab; a still frame with reduced motion */
+(function(){var f=document.querySelector('.marble-film'),v=f&&f.querySelector('video'),hero=document.querySelector('.hero');if(!v||!hero)return;
+  var root=document.documentElement,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,on=false,cur='';
+  function src(){var t=root.dataset.theme==='light'?'light':'dark';if(t!==cur){cur=t;v.src='assets/marble-'+t+'.mp4?v=1';if(on)play()}}
+  function play(){if(reduce||document.hidden||!on){v.pause();return}var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  function set(x){if(x===on)return;on=x;f.classList.toggle('on',x);if(x){src();play()}else v.pause()}
+  if('IntersectionObserver' in window)new IntersectionObserver(function(e){set(e[0].intersectionRatio<.35)},{threshold:[0,.35,.6,1]}).observe(hero);
+  else set(true);
+  document.addEventListener('visibilitychange',play);
+  new MutationObserver(function(){if(cur)src()}).observe(root,{attributes:true,attributeFilter:['data-theme']});
 })();
 </script>
 </body>
